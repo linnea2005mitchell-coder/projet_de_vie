@@ -1,12 +1,12 @@
 CXX = g++
 CXXFLAGS = -g -Wall -std=c++11
-CXXFILES = fichier1.cc fichier2.cc #lister tous les fichiers source: nom_fichier.cc
+CXXFILES = balls.cc bricks.cc message.cc paddle.cc tools.cc #lister tous les fichiers source: nom_fichier.cc
 OFILES = $(CXXFILES:.cc=.o)
 
-all: jeu #modifier avec nom de l'exécutable
+all: project #modifier avec nom de l'exécutable
 
-jeu   :  $(OFILES) 
-	$(CXX) $(OFILES) -o jeu
+project   :  $(OFILES) 
+	$(CXX) $(OFILES) -o project
 
 depend :
 	@echo " *** MISE A JOUR DES DEPENDANCES ***"
@@ -19,6 +19,12 @@ depend :
 
 clean:
 	@echo " *** EFFACE MODULES OBJET ET EXECUTABLE ***"
-	@/bin/rm -f *.o *.x *.cc~ *.h~ jeu
+	@/bin/rm -f *.o *.x *.cc~ *.h~ project
 
-#taper "make clean", ensuite "make depend, ensuite "make" dans le terminal pour que ça s'exécute
+#taper "make clean", ensuite "make depend, ensuite "make" dans le terminal pour que ça s'exécuteballs.o: balls.cc
+
+balls.o: balls.cc
+bricks.o: bricks.cc
+message.o: message.cc message.h
+paddle.o: paddle.cc
+tools.o: tools.cc
