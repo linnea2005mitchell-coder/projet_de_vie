@@ -1,1 +1,5 @@
-//la ptite boite à outils des familles
+#include <iostream> 
+#include <cmath>
+using namespace std;
+
+#include "tools.h"
