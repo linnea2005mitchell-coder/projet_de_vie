@@ -30,7 +30,6 @@ int main(){
         if(line[0]=='#'){
             ++compteur;
             etat = compteur;
-            cout << "# numéro: " << compteur << endl; //ligne à supprimer après
             continue;
         }  
 
