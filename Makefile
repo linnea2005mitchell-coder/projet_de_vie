@@ -28,3 +28,13 @@ bricks.o: bricks.cc
 message.o: message.cc message.h
 paddle.o: paddle.cc
 tools.o: tools.cc
+balls.o: balls.cc
+bricks.o: bricks.cc
+message.o: message.cc message.h
+paddle.o: paddle.cc
+tools.o: tools.cc
+balls.o: balls.cc
+bricks.o: bricks.cc
+message.o: message.cc message.h
+paddle.o: paddle.cc
+tools.o: tools.cc
