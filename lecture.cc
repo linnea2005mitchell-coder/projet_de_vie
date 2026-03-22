@@ -4,6 +4,7 @@
 #include <sstream>
 #include <string>
 #include <vector>
+#include "lecture.h"
 //inclure les modules nécessaires
 using namespace std;
  

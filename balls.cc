@@ -12,7 +12,7 @@ bool verif_balls(double& x, double& y, double& r, double& dx, double& dy){
     
     verif_delta(dx,dy);
 
-    if (((x-r) < 0) || ((y-r) < 0) || ((x+r) > arena_size) || ((y+r) > arena_size)) {
+    if (((x-r) < 0) || ((y-r) < 0) || ((x+r) > arena_size) || ((y+r) > arena_size)) { // zone
         message::ball_outside(x,y);
         return false;
     };
@@ -21,13 +21,12 @@ bool verif_balls(double& x, double& y, double& r, double& dx, double& dy){
     
     int c(0);
     for (const auto& b : stock) {
-        if (nouvelle.intersects(b)) { // autoriser l'accès à intersect 
-            //ajouter mess
-            message::collision_balls(size_t(c), stock.size());
+        if (nouvelle.intersects(b)) {  //check intersection
+            message::collision_balls(size_t(c), stock.size()); 
             return false; 
-        }
+        };
         c++;
-    }
+    };
 
     stock.push_back(nouvelle);
     return true;

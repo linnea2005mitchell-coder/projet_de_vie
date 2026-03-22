@@ -3,14 +3,14 @@
 #include <algorithm>
 #include "constants.h"
 
-bool verif_delta(double& dx, double& dy);
+void verif_delta(double& dx, double& dy);
 
 class Position {
 public: 
     Position(double x, double y) 
        : cx(x), cy(y) {}
-    double x() {return cx ;}
-    double y() {return cy ;}
+    double x() const {return cx ;}
+    double y() const {return cy ;}
 
 protected: 
     double cx,cy;
@@ -35,25 +35,23 @@ public :
 protected :
     double r;
 
-    bool intersects(const Cercle& other)  {
+    bool intersects(const Cercle& other) const { // rend true s'il y a intersection
         double d = sqrt((cx - other.cx)*(cx - other.cx) +
                      (cy - other.cy)*(cy - other.cy));
         return d < (r + other.r); // ici faire diff lors des test entre paddle et ball
         }
-    bool intersects(const Carre& c) const {
+    bool intersects(const Carre& c) const { // rend true s'il y a intersection
     
         double half = c.cote() / 2.0;
         double cx = c.x();
         double cy = c.y();
-        double closestX = std::max(cx - half, std::min(x, cx + half));
-        double closestY = std::max(cy - half, std::min(y, cy + half));
-        double dx = x - closestX;
-        double dy = y - closestY;
+        double closestX = std::max(cx - half, std::min(x(), cx + half));
+        double closestY = std::max(cy - half, std::min(y(), cy + half));
+        double dx = x() - closestX;
+        double dy = y() - closestY;
 
-        return (dx * dx + dy * dy) < (r * r);
-        }
-// ajouter intersection cercle brique 
-
+        return (dx*dx + dy*dy) < (r*r);
+        };
 };
 
 
@@ -67,7 +65,7 @@ public :
     Position::y;
     double cote() const {return cote_; };
 
-    bool intersects(const Carre& other) const {
+    bool intersects(const Carre& other) const { // rend true s'il y a intersection
         return abs(cx - other.cx) < (cote_/2 + other.cote_/2) &&
                abs(cy - other.cy) < (cote_/2 + other.cote_/2); }
 
