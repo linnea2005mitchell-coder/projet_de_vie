@@ -1,6 +1,6 @@
 CXX = g++
 CXXFLAGS = -g -Wall -std=c++11
-CXXFILES = balls.cc bricks.cc message.cc paddle.cc tools.cc #lister tous les fichiers source: nom_fichier.cc
+CXXFILES = balls.cc bricks.cc message.cc paddle.cc tools.cc message.cc lecture.cc project.cc #lister tous les fichiers source: nom_fichier.cc
 OFILES = $(CXXFILES:.cc=.o)
 
 all: project #modifier avec nom de l'exécutable
@@ -23,18 +23,13 @@ clean:
 
 #taper "make clean", ensuite "make depend, ensuite "make" dans le terminal pour que ça s'exécuteballs.o: balls.cc
 
-balls.o: balls.cc
-bricks.o: bricks.cc
+
+balls.o: balls.cc constants.h tools.h message.cc message.h balls.h \
+ tools.cc
+bricks.o: bricks.cc constants.h tools.h message.cc message.h bricks.h
 message.o: message.cc message.h
-paddle.o: paddle.cc
-tools.o: tools.cc
-balls.o: balls.cc
-bricks.o: bricks.cc
+paddle.o: paddle.cc constants.h tools.h message.cc message.h paddle.h
+tools.o: tools.cc message.cc message.h tools.h constants.h
 message.o: message.cc message.h
-paddle.o: paddle.cc
-tools.o: tools.cc
-balls.o: balls.cc
-bricks.o: bricks.cc
-message.o: message.cc message.h
-paddle.o: paddle.cc
-tools.o: tools.cc
+lecture.o: lecture.cc lecture.h
+project.o: project.cc

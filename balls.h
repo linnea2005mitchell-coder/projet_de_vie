@@ -1,6 +1,9 @@
 // message philosophique: saute dans une flaque avant que la flaque te saute
+#ifndef BALLS_H
+#define BALLS_H
+
 #include <vector>
-#include "tools.cc"
+#include "tools.h"
 
 bool verif_balls(double& x, double& y, double& r, double& dx, double& dy);
 
@@ -15,3 +18,4 @@ private :
 };
 
 vector<Ball> stock; 
+#endif

@@ -12,10 +12,7 @@ enum etatLecture {IGNORE=1, SCORE, LIVES, PADDLE, BRICKS, BALLS};
 constexpr int nbValeurs(5);
 static unsigned etat(0); 
 
-bool decodage_ligne(istringstream& line, vector <double>& tabValeurs);
-vector <double> lectureLigne(istringstream& data, vector <double>& tabValeurs);
-
-int main(){
+void lectureFichier(){
     ifstream fichier("tests/t01.txt"); //mettre "tests/nomdutest.txt"
     if(fichier.fail()){
         cout << "Impossible d'accéder au fichier." << endl;
@@ -47,7 +44,7 @@ int main(){
             } 
         }
     }
-    return 0;
+    fichier.close();
 }
 
 bool decodage_ligne(istringstream& data, vector <double>& tabValeurs){ //true=pas d'erreur, false=erreur
@@ -87,9 +84,13 @@ bool decodage_ligne(istringstream& data, vector <double>& tabValeurs){ //true=pa
     return true;
 }
 
-vector <double> lectureLigne(istringstream& data, vector <double>& tabValeurs){
+void lectureLigne(istringstream& data, vector <double>& tabValeurs){
     for(int i(0); i<nbValeurs; ++i){
         data >> tabValeurs[i]; 
     }
-    return tabValeurs;
+}
+
+int main(){
+    lectureFichier;
+    return 0;
 }

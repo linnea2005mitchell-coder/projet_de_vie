@@ -1,5 +1,8 @@
-#include <iostream> 
-#include "tools.h"
+#ifndef PADDLE_H
+#define PADDLE_H
+
+#include <iostream> //à enlever après 
+#include "tools.h" 
 
 
 bool verif_paddle(const double& x,const double& y,const double& r); 
@@ -12,3 +15,5 @@ using Cercle::intersects;
  //ajouter un compteur pour transmettre les index au fonction de collisions
 private :
 };
+
+#endif

@@ -1,4 +1,7 @@
-#include <iostream> 
+#ifndef TOOLS_H
+#define TOOLS_H
+
+#include <iostream>  //à enlever après
 #include <cmath>
 #include <algorithm>
 #include "constants.h"
@@ -18,7 +21,7 @@ protected:
 
 
 class Delta {
-    public: 
+public: 
     Delta(double x, double y) 
     : dx(x), dy(y) {}
     
@@ -74,4 +77,4 @@ protected :
     
 };
 
-
+#endif
