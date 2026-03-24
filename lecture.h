@@ -6,6 +6,6 @@
 
 bool decodage_ligne(std::istringstream& data, std::vector<double>& tabValeurs);
 void lectureLigne(std::istringstream& data, std::vector<double>& tabValeurs);
-void lectureFichier();
+void lectureFichier(const std::string& nomFichier);
 
 #endif

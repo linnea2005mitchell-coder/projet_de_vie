@@ -5,6 +5,7 @@
 #include <string>
 #include <vector>
 #include "lecture.h"
+#include "message.h"
 //inclure les modules nécessaires
 using namespace std;
  
@@ -12,8 +13,8 @@ enum etatLecture {IGNORE=1, SCORE, LIVES, PADDLE, BRICKS, BALLS};
 constexpr int nbValeurs(5);
 static unsigned etat(0); 
 
-void lectureFichier(){
-    ifstream fichier("tests/t01.txt"); //mettre "tests/nomdutest.txt"
+void lectureFichier(const string& nomFichier){ 
+    ifstream fichier("tests/" + nomFichier); 
     if(fichier.fail()){
         cout << "Impossible d'accéder au fichier." << endl;
         exit(EXIT_FAILURE);
@@ -44,6 +45,7 @@ void lectureFichier(){
             } 
         }
     }
+    cout << message::success() << endl;
     fichier.close();
 }
 
@@ -88,9 +90,4 @@ void lectureLigne(istringstream& data, vector <double>& tabValeurs){
     for(int i(0); i<nbValeurs; ++i){
         data >> tabValeurs[i]; 
     }
-}
-
-int main(){
-    lectureFichier;
-    return 0;
 }
