@@ -5,9 +5,10 @@ using namespace std;
 
 #include "balls.h"
 
-vector<Ball> stockBall;
+//vector<Ball> stockBall;
 
-bool verif_balls(double& x, double& y, double& r, double& dx, double& dy){
+bool verif_balls(double& x, double& y, double& r, double& dx, double& dy, 
+                 vector<Ball>& stockBall){
     
     if(verif_delta(dx,dy)) return false;
 

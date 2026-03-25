@@ -7,10 +7,18 @@
 #include "bricks.h"
 #include "paddle.h"
 
-bool decodage_ligne(std::istringstream& data, std::vector<double>& tabValeurs);
-void lectureLigne(std::istringstream& data, std::vector<double>& tabValeurs);
-void lectureFichier(const std::string& nomFichier);
-bool verif_score(int& score);
-bool verif_lives(int& live);
+struct Game {
+    int score;
+    int lives;
+    std::vector<Brick> stockBrick;
+    std::vector<Ball> stockBall;
+};
 
-#endif
+void lectureFichier(const std::string& nomFichier, Game& game);
+bool decodage_ligne(std::istringstream& data, std::vector<double>& tabValeurs, 
+                    Game& game);
+void lectureLigne(std::istringstream& data, std::vector<double>& tabValeurs);
+bool verif_score(int& score, Game& game);
+bool verif_lives(int& live, Game& game);
+
+#endif 

@@ -13,7 +13,7 @@ enum EtatLecture {IGNORE=1, SCORE, LIVES, PADDLE, BRICKS, BALLS};
 constexpr int NB_VALEURS(5);
 static unsigned etat(0); 
 
-void lectureFichier(const string& nomFichier){ 
+void lectureFichier(const string& nomFichier, Game& game){ 
     ifstream fichier("tests/" + nomFichier); 
     if(fichier.fail()){
         cout << "Impossible d'accéder au fichier." << endl;
@@ -40,28 +40,29 @@ void lectureFichier(const string& nomFichier){
         }
         else{
             istringstream data(line);
-            if(decodage_ligne(data, tabValeurs) == false){
+            if(decodage_ligne(data, tabValeurs, game) == false){
                 exit(EXIT_FAILURE);
             } 
         }
+        exit(EXIT_SUCCESS);
     }
     cout << message::success() << endl;
     fichier.close();
 }
 
-bool decodage_ligne(istringstream& data, vector <double>& tabValeurs){ //true=pas d'erreur, false=erreur
+bool decodage_ligne(istringstream& data, vector <double>& tabValeurs, Game& game){ 
     int valeur(0); //modification de double à int: vérifier que tout va bien
     switch(etat){
         case IGNORE:             
             break;
         case SCORE: 
             data >> valeur;
-            return(verif_score(valeur));
+            return(verif_score(valeur, game));
             break;
 
 	    case LIVES:
             data >> valeur;
-            return(verif_lives(valeur));
+            return(verif_lives(valeur, game));
 		    break;
         
         case PADDLE:
@@ -72,13 +73,13 @@ bool decodage_ligne(istringstream& data, vector <double>& tabValeurs){ //true=pa
         case BRICKS:
             lectureLigne(data, tabValeurs);
             return(verif_bricks(tabValeurs[0], tabValeurs[1], tabValeurs[2], 
-                                tabValeurs[3], tabValeurs[4]));	
+                                tabValeurs[3], tabValeurs[4], game.stockBrick));	
 		    break;
 
         case BALLS:
             lectureLigne(data, tabValeurs);
             return (verif_balls(tabValeurs[0], tabValeurs[1], tabValeurs[2], 
-                                tabValeurs[3], tabValeurs[4])); 
+                                tabValeurs[3], tabValeurs[4], game.stockBall)); 
 		    break;
 
 	    default: 
@@ -93,18 +94,20 @@ void lectureLigne(istringstream& data, vector <double>& tabValeurs){
     }
 }
 
-bool verif_score(int& score){
+bool verif_score(int& score, Game& game){ //changer le type en passant directement le champ score
     if (score<0){
         cout << message::invalid_score(score)<< endl;
         return false;
     };
+    game.score = score;
     return true;
 }
 
-bool verif_lives(int& live){
+bool verif_lives(int& live, Game& game){
     if (live<0){
         cout<< message::invalid_lives(live)<< endl;
         return false;
     };
+    game.lives = live;
     return true;
 }
