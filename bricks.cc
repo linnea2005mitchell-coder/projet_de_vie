@@ -14,26 +14,23 @@ bool verif_bricks(const double& type, const double& x, const double& y,
                            const double& c, const double& hitpoints){ 
     double halfC = c / 2.0;
     if (((x-halfC) <= 0) || ((y-halfC) <= 0) || ((x+halfC) >= arena_size) || ((y+halfC) >= arena_size)) { 
-        cout << "message: brick_outside" << endl; //message::brick_outside(x, y);
+        cout << message::brick_outside(x, y) << endl; 
         return false;
     };
     
     if (c < brick_size_min){
-        cout << "message: invalid_brick_size" << endl; 
-        message::invalid_brick_size(c);
+        cout << message::invalid_brick_size(c) << endl;
         return false;
     };
 
     if ((type != RAINBOW) && (type != BALLBRICK) && (type != SPLIT)){
-        cout << "message: invalid_brick_type" << endl; 
-        message::invalid_brick_type(type);
+        cout << message::invalid_brick_type(type) << endl; 
         return false;
     };
 
     if (type == RAINBOW){
         if(verif_hitpoints(hitpoints)){
-            cout << "message: invalid_hit_points" << endl; 
-            message::invalid_hit_points(hitpoints);
+            cout << message::invalid_hit_points(hitpoints) << endl; 
             return false;
         };
     };
@@ -43,8 +40,7 @@ bool verif_bricks(const double& type, const double& x, const double& y,
     int compteur(0);
     for (const auto& b : stockBrick) {
         if (nouvelle.intersects(b)) {  
-            cout << "message: collision_bricks" << endl; 
-            message::collision_bricks(size_t(compteur), stockBrick.size()); 
+            cout << message::collision_bricks(size_t(compteur), stockBrick.size()) << endl;  
             return false; 
         };
         compteur++;

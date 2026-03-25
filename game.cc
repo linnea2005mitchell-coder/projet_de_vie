@@ -68,7 +68,7 @@ bool decodage_ligne(istringstream& data, vector <double>& tabValeurs){ //true=pa
 		    break;
         
         case PADDLE:
-            data >> valeur; // corr
+            lectureLigne(data, tabValeurs);
             return(verif_paddle(tabValeurs[0], tabValeurs[1], tabValeurs[2]));	
 		    break;
         
