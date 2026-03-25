@@ -3,6 +3,9 @@
 #include <sstream>
 #include <string>
 #include <vector>
+#include "balls.h"
+#include "bricks.h"
+#include "paddle.h"
 
 bool decodage_ligne(std::istringstream& data, std::vector<double>& tabValeurs);
 void lectureLigne(std::istringstream& data, std::vector<double>& tabValeurs);

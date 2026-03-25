@@ -6,10 +6,7 @@
 #include <vector>
 #include "game.h"
 #include "message.h"
-#include "balls.h"
-#include "bricks.h"
-#include "paddle.h"
-//inclure les modules nécessaires
+
 using namespace std;
  
 enum EtatLecture {IGNORE=1, SCORE, LIVES, PADDLE, BRICKS, BALLS};
@@ -67,10 +64,10 @@ bool decodage_ligne(istringstream& data, vector <double>& tabValeurs){ //true=pa
             return(verif_lives(valeur));
 		    break;
         
-        case PADDLE:
-            data >> valeur; // corr
-            return(verif_paddle(tabValeurs[0], tabValeurs[1], tabValeurs[2]));	
-		    break;
+       // case PADDLE:
+           // data >> valeur; // corr
+           // return(verif_paddle(tabValeurs[0], tabValeurs[1], tabValeurs[2]));	
+		   // break;
         
         case BRICKS:
             lectureLigne(data, tabValeurs);

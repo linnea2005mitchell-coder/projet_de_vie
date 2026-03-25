@@ -6,7 +6,7 @@ using namespace std;
 
 void verif_delta(double& dx, double& dy){
     if (sqrt(dx*dx + dy*dy) > delta_norm_max) {
-        message::invalid_delta(dx,dy);
+        cout << message::invalid_delta(dx,dy) << endl;
         }; 
 }
 

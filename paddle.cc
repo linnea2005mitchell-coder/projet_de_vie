@@ -11,6 +11,6 @@ bool verif_paddle(const double& x, const double& y, const double& r) {
       Paddle pad(x,y,r);
       return true ;
      };
-   message::paddle_outside(x, y);
+   cout << message::paddle_outside(x, y) << endl;
    return false;
 }

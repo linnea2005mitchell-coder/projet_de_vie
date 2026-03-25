@@ -34,7 +34,6 @@ protected:
 class Carre : public Position {
 public : 
     using Position::x;
-    // ajouter compteur pour pouvoir le transmettre au fonction de collisions
     Carre(double x, double y, double c) 
         : Position (x, y), cote_(c) {}
     
