@@ -64,10 +64,10 @@ bool decodage_ligne(istringstream& data, vector <double>& tabValeurs){ //true=pa
             return(verif_lives(valeur));
 		    break;
         
-       // case PADDLE:
-           // data >> valeur; // corr
-           // return(verif_paddle(tabValeurs[0], tabValeurs[1], tabValeurs[2]));	
-		   // break;
+        case PADDLE:
+            lectureLigne(data, tabValeurs);
+            return(verif_paddle(tabValeurs[0], tabValeurs[1], tabValeurs[2]));	
+		    break;
         
         case BRICKS:
             lectureLigne(data, tabValeurs);
