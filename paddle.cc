@@ -1,6 +1,4 @@
 #include <iostream> 
-#include "constants.h"
-#include "message.cc"
 #include "paddle.h"
 using namespace std;
 

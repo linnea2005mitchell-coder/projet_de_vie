@@ -2,7 +2,6 @@
 #include <cmath>
 using namespace std;
 
-#include "message.cc"
 #include "tools.h"
 
 void verif_delta(double& dx, double& dy){

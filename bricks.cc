@@ -1,8 +1,6 @@
 #include <iostream> 
 #include <cmath>
 #include <vector>
-#include "constants.h"
-#include "message.h"
 #include "bricks.h"
 using namespace std;
 
@@ -21,18 +19,21 @@ bool verif_bricks(const double& type, const double& x, const double& y,
     };
     
     if (c < brick_size_min){
-        cout << "message: invalid_brick_size" << endl; //message::invalid_brick_size(c);
+        cout << "message: invalid_brick_size" << endl; 
+        message::invalid_brick_size(c);
         return false;
     };
 
     if ((type != RAINBOW) && (type != BALLBRICK) && (type != SPLIT)){
-        cout << "message: invalid_brick_type" << endl; //message::invalid_brick_type(type);
+        cout << "message: invalid_brick_type" << endl; 
+        message::invalid_brick_type(type);
         return false;
     };
 
     if (type == RAINBOW){
         if(verif_hitpoints(hitpoints)){
-            cout << "message: invalid_hit_points" << endl; //message::invalid_hit_points(hitpoints);
+            cout << "message: invalid_hit_points" << endl; 
+            message::invalid_hit_points(hitpoints);
             return false;
         };
     };
@@ -42,7 +43,8 @@ bool verif_bricks(const double& type, const double& x, const double& y,
     int compteur(0);
     for (const auto& b : stockBrick) {
         if (nouvelle.intersects(b)) {  
-            cout << "message: collision_bricks" << endl; //message::collision_bricks(size_t(compteur), stock.size()); 
+            cout << "message: collision_bricks" << endl; 
+            message::collision_bricks(size_t(compteur), stockBrick.size()); 
             return false; 
         };
         compteur++;

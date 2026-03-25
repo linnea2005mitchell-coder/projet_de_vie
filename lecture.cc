@@ -6,6 +6,9 @@
 #include <vector>
 #include "lecture.h"
 #include "message.h"
+#include "balls.h"
+#include "bricks.h"
+#include "paddle.h"
 //inclure les modules nécessaires
 using namespace std;
  
@@ -65,18 +68,18 @@ bool decodage_ligne(istringstream& data, vector <double>& tabValeurs){ //true=pa
 		    break;
         
         case PADDLE:
-            data >> valeur;
-            return(true);	//changer true par nomfonction(valeur)
+            data >> valeur; // corr
+            return(verif_paddle(tabValeurs[0], tabValeurs[1], tabValeurs[2]));	
 		    break;
         
         case BRICKS:
             lectureLigne(data, tabValeurs);
-            return(true);	//changer true par nomfonction(tabValeurs[0], tabValeurs[1], tabValeurs[2], tabValeurs[3], tabValeurs[4])
+            return(verif_bricks(tabValeurs[0], tabValeurs[1], tabValeurs[2], tabValeurs[3], tabValeurs[4]));	
 		    break;
 
         case BALLS:
             lectureLigne(data, tabValeurs);
-            return (true);     //changer true par nomfonction(tabValeurs[0], tabValeurs[1], tabValeurs[2], tabValeurs[3], tabValeurs[4])
+            return (verif_balls(tabValeurs[0], tabValeurs[1], tabValeurs[2], tabValeurs[3], tabValeurs[4])); 
 		    break;
 
 	    default: 

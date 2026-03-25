@@ -4,6 +4,7 @@
 #include <cmath>
 #include <algorithm>
 #include "constants.h"
+#include "message.h"
 
 void verif_delta(double& dx, double& dy);
 bool verif_outside(double& x, double& y, double& d);

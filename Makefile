@@ -59,3 +59,31 @@ message.o: message.cc message.h
 paddle.o: paddle.cc constants.h tools.h message.cc message.h paddle.h
 project.o: project.cc lecture.h
 tools.o: tools.cc message.cc message.h tools.h constants.h
+balls.o: balls.cc constants.h tools.h message.cc message.h balls.h
+bricks.o: bricks.cc constants.h tools.h message.h bricks.h
+lecture.o: lecture.cc lecture.h message.h
+message.o: message.cc message.h
+paddle.o: paddle.cc constants.h tools.h message.cc message.h paddle.h
+project.o: project.cc lecture.h
+tools.o: tools.cc message.cc message.h tools.h constants.h
+balls.o: balls.cc constants.h tools.h message.cc message.h balls.h
+bricks.o: bricks.cc constants.h tools.h message.h bricks.h
+lecture.o: lecture.cc lecture.h message.h
+message.o: message.cc message.h
+paddle.o: paddle.cc constants.h tools.h message.cc message.h paddle.h
+project.o: project.cc lecture.h
+tools.o: tools.cc message.cc message.h tools.h constants.h
+balls.o: balls.cc balls.h tools.h constants.h message.h
+bricks.o: bricks.cc constants.h tools.h message.h bricks.h
+lecture.o: lecture.cc lecture.h message.h
+message.o: message.cc message.h
+paddle.o: paddle.cc paddle.h tools.h constants.h message.h
+project.o: project.cc lecture.h
+tools.o: tools.cc tools.h constants.h message.h
+balls.o: balls.cc balls.h tools.h constants.h message.h
+bricks.o: bricks.cc bricks.h tools.h constants.h message.h
+lecture.o: lecture.cc lecture.h message.h
+message.o: message.cc message.h
+paddle.o: paddle.cc paddle.h tools.h constants.h message.h
+project.o: project.cc lecture.h
+tools.o: tools.cc tools.h constants.h message.h
