@@ -1,6 +1,7 @@
 #ifndef BRICKS_H
 #define BRICKS_H
 #include "tools.h" 
+#include <vector>
 
 class Brick : public Carre{
 public:
@@ -17,7 +18,6 @@ private:
 };
 
 bool verif_bricks(const double& type, const double& x, const double& y, 
-                  const double& c, const double& hitpoints);
-
+                  const double& c, const double& hitpoints, std::vector<Brick>& stockBrick);
 bool verif_hitpoints(const double& hitpoints);
 #endif 
