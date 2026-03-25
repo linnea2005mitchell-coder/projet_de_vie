@@ -74,6 +74,7 @@ public :
 
 protected :
     double cote_;
+    ~Carre(){}
     
 };
 

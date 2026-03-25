@@ -9,8 +9,8 @@
 //inclure les modules nécessaires
 using namespace std;
  
-enum etatLecture {IGNORE=1, SCORE, LIVES, PADDLE, BRICKS, BALLS};
-constexpr int nbValeurs(5);
+enum EtatLecture {IGNORE=1, SCORE, LIVES, PADDLE, BRICKS, BALLS};
+constexpr int NB_VALEURS(5);
 static unsigned etat(0); 
 
 void lectureFichier(const string& nomFichier){ 
@@ -23,7 +23,7 @@ void lectureFichier(const string& nomFichier){
     unsigned compteur(0);
     unsigned compteurB(0);
     string line;
-    vector <double> tabValeurs (nbValeurs, 0);
+    vector <double> tabValeurs (NB_VALEURS, 0);
 
     while(getline(fichier >> ws, line)){
         if(line[0]=='#'){
@@ -87,7 +87,7 @@ bool decodage_ligne(istringstream& data, vector <double>& tabValeurs){ //true=pa
 }
 
 void lectureLigne(istringstream& data, vector <double>& tabValeurs){
-    for(int i(0); i<nbValeurs; ++i){
+    for(int i(0); i<NB_VALEURS; ++i){
         data >> tabValeurs[i]; 
     }
 }

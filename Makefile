@@ -24,48 +24,8 @@ clean:
 #taper "make clean", ensuite "make depend, ensuite "make" dans le terminal pour que ça s'exécuteballs.o: balls.cc
 
 #g++ project.cc lecture.cc -o project
-
-lecture.o: lecture.cc lecture.h message.h
-project.o: project.cc lecture.h lecture.cc message.h
 balls.o: balls.cc constants.h tools.h message.cc message.h balls.h
-bricks.o: bricks.cc constants.h tools.h message.cc message.h bricks.h
-message.o: message.cc message.h
-paddle.o: paddle.cc constants.h tools.h message.cc message.h paddle.h
-tools.o: tools.cc message.cc message.h tools.h constants.h
-lecture.o: lecture.cc lecture.h message.h
-project.o: project.cc lecture.h lecture.cc message.h
-lecture.o: lecture.cc lecture.h message.h
-project.o: project.cc lecture.h lecture.cc message.h
-lecture.o: lecture.cc lecture.h message.h
-project.o: project.cc lecture.h
-lecture.o: lecture.cc lecture.h message.h
-project.o: project.cc lecture.h
-lecture.o: lecture.cc lecture.h message.h
-project.o: project.cc lecture.h
-message.o: message.cc message.h
-lecture.o: lecture.cc lecture.h message.h
-project.o: project.cc lecture.h
-message.o: message.cc message.h
-lecture.o: lecture.cc lecture.h message.h
-project.o: project.cc lecture.h
-balls.o: balls.cc constants.h tools.h message.cc message.h balls.h
-bricks.o: bricks.cc constants.h tools.h message.cc message.h bricks.h
-message.o: message.cc message.h
-lecture.o: lecture.cc lecture.h message.h
-project.o: project.cc lecture.h
-balls.o: balls.cc constants.h tools.h message.cc message.h balls.h
-bricks.o: bricks.cc constants.h tools.h message.cc message.h bricks.h
-message.o: message.cc message.h
-lecture.o: lecture.cc lecture.h message.h
-project.o: project.cc lecture.h
-balls.o: balls.cc constants.h tools.h message.cc message.h balls.h
-bricks.o: bricks.cc constants.h tools.h message.cc message.h bricks.h
-message.o: message.cc message.h
-lecture.o: lecture.cc lecture.h message.h
-project.o: project.cc lecture.h
-balls.o: balls.cc constants.h tools.h message.cc message.h balls.h
-balls.o: balls.cc constants.h tools.h message.cc message.h balls.h
-bricks.o: bricks.cc constants.h tools.h message.h bricks.h
+bricks.o: bricks.cc message.h bricks.h
 lecture.o: lecture.cc lecture.h message.h
 message.o: message.cc message.h
 paddle.o: paddle.cc constants.h tools.h message.cc message.h paddle.h
