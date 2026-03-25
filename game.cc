@@ -13,7 +13,7 @@ enum EtatLecture {IGNORE=1, SCORE, LIVES, PADDLE, BRICKS, BALLS};
 constexpr int NB_VALEURS(5);
 static unsigned etat(0); 
 
-void lectureFichier(const string& nomFichier){ 
+void lectureFichier(const string& nomFichier, infos& donnees){ 
     ifstream fichier("tests/" + nomFichier); 
     if(fichier.fail()){
         cout << "Impossible d'accéder au fichier." << endl;

@@ -3,6 +3,8 @@
 
 #include <vector>
 #include "tools.h"
+#include "paddle.h"
+#include "bricks.h"
 
 bool verif_balls(double& x, double& y, double& r, double& dx, double& dy);
 

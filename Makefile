@@ -106,3 +106,12 @@ paddle.o: paddle.cc paddle.h tools.h constants.h message.h
 project.o: project.cc game.h balls.h tools.h constants.h message.h \
   bricks.h paddle.h
 tools.o: tools.cc tools.h constants.h message.h
+balls.o: balls.cc balls.h tools.h constants.h message.h paddle.h bricks.h
+bricks.o: bricks.cc bricks.h tools.h constants.h message.h
+game.o: game.cc game.h balls.h tools.h constants.h message.h paddle.h \
+  bricks.h
+message.o: message.cc message.h
+paddle.o: paddle.cc paddle.h tools.h constants.h message.h
+project.o: project.cc game.h balls.h tools.h constants.h message.h \
+  paddle.h bricks.h
+tools.o: tools.cc tools.h constants.h message.h

@@ -6,11 +6,10 @@ using namespace std;
 
 int main(int argc, char* argv[]){
 
-    //vector<Ball> stockBall;  ????? ou mettre
-    //vector<Brick> stockBrick;
+    infos donnees();
 
     if(argc>1)
-        lectureFichier(argv[1]);
+        lectureFichier(argv[1], donnees);
     
     return 0;
 }
