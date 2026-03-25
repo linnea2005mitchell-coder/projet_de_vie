@@ -95,7 +95,7 @@ void lectureLigne(istringstream& data, vector <double>& tabValeurs){
 
 bool verif_score(int& score){
     if (score<0){
-        message::invalid_score(score);
+        cout << message::invalid_score(score)<< endl;
         return false;
     };
     return true;
@@ -103,7 +103,7 @@ bool verif_score(int& score){
 
 bool verif_lives(int& live){
     if (live<0){
-        message::invalid_lives(live);
+        cout<< message::invalid_lives(live)<< endl;
         return false;
     };
     return true;
