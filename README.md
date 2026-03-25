@@ -11,3 +11,6 @@ Définitions: mettre tous les include iostream et compagnie dans les fichiers.cc
 
 Syntaxe de lancement: dans terminal: ./project t01.txt
     si affiche No such file or directory s'assurer que make a bien été fait (doit afficher: Nothing to be done for 'all'.)
+
+Faire:  corriger lecture paddle
+        fonctions vérif score et lives

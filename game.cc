@@ -4,7 +4,7 @@
 #include <sstream>
 #include <string>
 #include <vector>
-#include "lecture.h"
+#include "game.h"
 #include "message.h"
 #include "balls.h"
 #include "bricks.h"
@@ -53,18 +53,18 @@ void lectureFichier(const string& nomFichier){
 }
 
 bool decodage_ligne(istringstream& data, vector <double>& tabValeurs){ //true=pas d'erreur, false=erreur
-    double valeur(0);
+    int valeur(0); //modification de double à int: vérifier que tout va bien
     switch(etat){
         case IGNORE:             
             break;
         case SCORE: 
             data >> valeur;
-            return(true);	//changer true par nomfonction(valeur))
+            return(verif_score(valeur));
             break;
 
 	    case LIVES:
             data >> valeur;
-            return(true);	//changer true par nomfonction(valeur)
+            return(verif_lives(valeur));
 		    break;
         
         case PADDLE:
@@ -74,12 +74,14 @@ bool decodage_ligne(istringstream& data, vector <double>& tabValeurs){ //true=pa
         
         case BRICKS:
             lectureLigne(data, tabValeurs);
-            return(verif_bricks(tabValeurs[0], tabValeurs[1], tabValeurs[2], tabValeurs[3], tabValeurs[4]));	
+            return(verif_bricks(tabValeurs[0], tabValeurs[1], tabValeurs[2], 
+                                tabValeurs[3], tabValeurs[4]));	
 		    break;
 
         case BALLS:
             lectureLigne(data, tabValeurs);
-            return (verif_balls(tabValeurs[0], tabValeurs[1], tabValeurs[2], tabValeurs[3], tabValeurs[4])); 
+            return (verif_balls(tabValeurs[0], tabValeurs[1], tabValeurs[2], 
+                                tabValeurs[3], tabValeurs[4])); 
 		    break;
 
 	    default: 
@@ -92,4 +94,20 @@ void lectureLigne(istringstream& data, vector <double>& tabValeurs){
     for(int i(0); i<NB_VALEURS; ++i){
         data >> tabValeurs[i]; 
     }
+}
+
+bool verif_score(int& score){
+    if (score<0){
+        message::invalid_score(score);
+        return false;
+    };
+    return true;
+}
+
+bool verif_lives(int& live){
+    if (live<0){
+        message::invalid_lives(live);
+        return false;
+    };
+    return true;
 }

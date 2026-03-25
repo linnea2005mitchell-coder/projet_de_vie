@@ -1,6 +1,6 @@
 #include <iostream>
 #include <string>
-#include "lecture.h"
+#include "game.h"
 using namespace std;
 
 

@@ -1,8 +1,11 @@
 #include <iostream> 
 #include <cmath>
+#include <vector>
 using namespace std;
 
 #include "balls.h"
+
+vector<Ball> stock; 
 
 // faire le check sur nb_ball dans l'interception
 // update les dependances dans le make files pr utiliser message & arenasize

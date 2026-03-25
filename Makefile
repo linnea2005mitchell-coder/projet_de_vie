@@ -1,6 +1,6 @@
 CXX = g++
 CXXFLAGS = -g -Wall -std=c++11
-CXXFILES = balls.cc bricks.cc lecture.cc message.cc paddle.cc project.cc tools.cc  #lister tous les fichiers source: nom_fichier.cc
+CXXFILES = balls.cc bricks.cc game.cc message.cc paddle.cc project.cc tools.cc  #lister tous les fichiers source: nom_fichier.cc
 OFILES = $(CXXFILES:.cc=.o)
 
 all: project #modifier avec nom de l'exécutable
@@ -23,67 +23,42 @@ clean:
 
 #taper "make clean", ensuite "make depend, ensuite "make" dans le terminal pour que ça s'exécuteballs.o: balls.cc
 
-#g++ project.cc lecture.cc -o project
-balls.o: balls.cc constants.h tools.h message.cc message.h balls.h
-bricks.o: bricks.cc message.h bricks.h
-lecture.o: lecture.cc lecture.h message.h
-message.o: message.cc message.h
-paddle.o: paddle.cc constants.h tools.h message.cc message.h paddle.h
-project.o: project.cc lecture.h
-tools.o: tools.cc message.cc message.h tools.h constants.h
-balls.o: balls.cc constants.h tools.h message.cc message.h balls.h
-bricks.o: bricks.cc bricks.h
-lecture.o: lecture.cc lecture.h message.h
-message.o: message.cc message.h
-paddle.o: paddle.cc constants.h tools.h message.cc message.h paddle.h
-project.o: project.cc lecture.h
-tools.o: tools.cc message.cc message.h tools.h constants.h
-balls.o: balls.cc constants.h tools.h message.cc message.h balls.h
-bricks.o: bricks.cc constants.h tools.h message.h bricks.h
-lecture.o: lecture.cc lecture.h message.h
-message.o: message.cc message.h
-paddle.o: paddle.cc constants.h tools.h message.cc message.h paddle.h
-project.o: project.cc lecture.h
-tools.o: tools.cc message.cc message.h tools.h constants.h
-balls.o: balls.cc constants.h tools.h message.cc message.h balls.h
-bricks.o: bricks.cc constants.h tools.h message.h bricks.h
-lecture.o: lecture.cc lecture.h message.h
-message.o: message.cc message.h
-paddle.o: paddle.cc constants.h tools.h message.cc message.h paddle.h
-project.o: project.cc lecture.h
-tools.o: tools.cc message.cc message.h tools.h constants.h
-balls.o: balls.cc constants.h tools.h message.cc message.h balls.h
-bricks.o: bricks.cc constants.h tools.h message.h bricks.h
-lecture.o: lecture.cc lecture.h message.h
-message.o: message.cc message.h
-paddle.o: paddle.cc constants.h tools.h message.cc message.h paddle.h
-project.o: project.cc lecture.h
-tools.o: tools.cc message.cc message.h tools.h constants.h
-balls.o: balls.cc constants.h tools.h message.cc message.h balls.h
-bricks.o: bricks.cc constants.h tools.h message.h bricks.h
-lecture.o: lecture.cc lecture.h message.h
-message.o: message.cc message.h
-paddle.o: paddle.cc constants.h tools.h message.cc message.h paddle.h
-project.o: project.cc lecture.h
-tools.o: tools.cc message.cc message.h tools.h constants.h
-balls.o: balls.cc constants.h tools.h message.cc message.h balls.h
-bricks.o: bricks.cc constants.h tools.h message.h bricks.h
-lecture.o: lecture.cc lecture.h message.h
-message.o: message.cc message.h
-paddle.o: paddle.cc constants.h tools.h message.cc message.h paddle.h
-project.o: project.cc lecture.h
-tools.o: tools.cc message.cc message.h tools.h constants.h
 balls.o: balls.cc balls.h tools.h constants.h message.h
-bricks.o: bricks.cc constants.h tools.h message.h bricks.h
-lecture.o: lecture.cc lecture.h message.h
+bricks.o: bricks.cc bricks.h tools.h constants.h message.h
+game.o: game.cc game.h message.h balls.h tools.h constants.h bricks.h \
+ paddle.h
 message.o: message.cc message.h
 paddle.o: paddle.cc paddle.h tools.h constants.h message.h
-project.o: project.cc lecture.h
 tools.o: tools.cc tools.h constants.h message.h
 balls.o: balls.cc balls.h tools.h constants.h message.h
 bricks.o: bricks.cc bricks.h tools.h constants.h message.h
-lecture.o: lecture.cc lecture.h message.h
+game.o: game.cc game.h message.h balls.h tools.h constants.h bricks.h \
+ paddle.h
 message.o: message.cc message.h
 paddle.o: paddle.cc paddle.h tools.h constants.h message.h
-project.o: project.cc lecture.h
+project.o: project.cc game.h
+tools.o: tools.cc tools.h constants.h message.h
+balls.o: balls.cc balls.h tools.h constants.h message.h
+bricks.o: bricks.cc bricks.h tools.h constants.h message.h
+game.o: game.cc game.h message.h balls.h tools.h constants.h bricks.h \
+ paddle.h
+message.o: message.cc message.h
+paddle.o: paddle.cc paddle.h tools.h constants.h message.h
+project.o: project.cc game.h
+tools.o: tools.cc tools.h constants.h message.h
+balls.o: balls.cc balls.h tools.h constants.h message.h
+bricks.o: bricks.cc bricks.h tools.h constants.h message.h
+game.o: game.cc game.h message.h balls.h tools.h constants.h bricks.h \
+ paddle.h
+message.o: message.cc message.h
+paddle.o: paddle.cc paddle.h tools.h constants.h message.h
+project.o: project.cc game.h
+tools.o: tools.cc tools.h constants.h message.h
+balls.o: balls.cc balls.h tools.h constants.h message.h
+bricks.o: bricks.cc bricks.h tools.h constants.h message.h
+game.o: game.cc game.h message.h balls.h tools.h constants.h bricks.h \
+ paddle.h
+message.o: message.cc message.h
+paddle.o: paddle.cc paddle.h tools.h constants.h message.h
+project.o: project.cc game.h
 tools.o: tools.cc tools.h constants.h message.h
