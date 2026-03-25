@@ -9,7 +9,7 @@ vector<Ball> stockBall;
 
 bool verif_balls(double& x, double& y, double& r, double& dx, double& dy){
     
-    verif_delta(dx,dy);
+    if(verif_delta(dx,dy)) return false;
 
     if (verif_outside(x,y,r)) { // zone
         cout << message::ball_outside(x,y)<< endl;

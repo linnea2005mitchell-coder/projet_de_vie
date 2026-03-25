@@ -4,13 +4,14 @@ using namespace std;
 
 #include "tools.h"
 
-void verif_delta(double& dx, double& dy){
+bool verif_delta(const double& dx, const double& dy){
     if (sqrt(dx*dx + dy*dy) > delta_norm_max) {
         cout << message::invalid_delta(dx,dy) << endl;
-        }; 
+        return true; }
+    return false; 
 }
 
-bool verif_outside(double& x, double& y, double& d){
+bool verif_outside(const double& x, const double& y, const double& d){
     return ((x-d) < 0) || ((y-d) < 0) || ((x+d) > arena_size) || ((y+d) > arena_size); //true si out
 }
 

@@ -13,7 +13,7 @@ vector<Brick> stockBrick; //mettre dans game? En tout cas pas le droit aux varia
 bool verif_bricks(const double& type, const double& x, const double& y, 
                            const double& c, const double& hitpoints){ 
     double halfC = c / 2.0;
-    if (((x-halfC) <= 0) || ((y-halfC) <= 0) || ((x+halfC) >= arena_size) || ((y+halfC) >= arena_size)) { 
+    if (verif_outside(x, y, halfC)) { 
         cout << message::brick_outside(x, y) << endl; 
         return false;
     };

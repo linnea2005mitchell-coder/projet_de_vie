@@ -6,8 +6,8 @@
 #include "constants.h"
 #include "message.h"
 
-void verif_delta(double& dx, double& dy);
-bool verif_outside(double& x, double& y, double& d);
+bool verif_delta(const double& dx, const double& dy);
+bool verif_outside(const double& x, const double& y, const double& d);
 
 class Position {
 public: 
