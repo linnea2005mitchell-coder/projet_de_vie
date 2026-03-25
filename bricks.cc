@@ -1,5 +1,6 @@
 #include <iostream> 
 #include <cmath>
+#include <vector>
 //#include "constants.h"
 //#include "message.h"
 #include "bricks.h"
@@ -9,13 +10,15 @@ enum BrickType {RAINBOW, BALLBRICK, SPLIT};
 enum HitPoints {ROUGE=1, ORANGE, JAUNE, VERT, CYAN, BLEU, VIOLET};
 constexpr int NB_INVALID_HITPOINTS(6);
 
+vector<Brick> stockBrick; //mettre dans game? En tout cas pas le droit aux variables globales
+
 //À SUPPRIMER UNE FOIS QUE CONSTANTS.H EST INCLU
 constexpr double arena_size = 100.0;
 constexpr double brick_size_min = 3.;
 //FIN SUPPRESSION
 
-bool Brick :: verif_bricks(const double& type, const double& x, const double& y, const double& c, const double& hitpoints){ //attention dépasse 87
-    cout << "liloulol" << endl; //supprimer
+bool verif_bricks(const double& type, const double& x, const double& y, 
+                           const double& c, const double& hitpoints){ 
     double halfC = c / 2.0;
     if (((x-halfC) <= 0) || ((y-halfC) <= 0) || ((x+halfC) >= arena_size) || ((y+halfC) >= arena_size)) { 
         cout << "message: brick_outside" << endl; //message::brick_outside(x, y);
@@ -33,23 +36,32 @@ bool Brick :: verif_bricks(const double& type, const double& x, const double& y,
     };
 
     if (type == RAINBOW){
-        int compteur(0);
-        for(int i(ROUGE); i<= VIOLET; i++){
-            if (hitpoints != i)
-                compteur++;
-        };
-        if(compteur != NB_INVALID_HITPOINTS) {
+        if(verif_hitpoints(hitpoints)){
             cout << "message: invalid_hit_points" << endl; //message::invalid_hit_points(hitpoints);
             return false;
         };
     };
 
-    //initialiser nouvelle brique (appeler fonction selon type de brique)
+    Brick nouvelle(type, x, y, c, hitpoints);
+    
+    int compteur(0);
+    for (const auto& b : stockBrick) {
+        if (nouvelle.intersects(b)) {  
+            cout << "message: collision_bricks" << endl; //message::collision_bricks(size_t(compteur), stock.size()); 
+            return false; 
+        };
+        compteur++;
+    };
+    stockBrick.push_back(nouvelle);
     return true;
 }
 
-int main(){  //à supprimer après
-    Brick test(0, 3, 95, 4, 5);
-    test.verif_bricks(test.getType(), test.x(), test.y(), test.cote(), test.getHitpoints());
-    return 0;
+bool verif_hitpoints(const double& hitpoints){
+    int compteur(0);
+    for(int i(ROUGE); i<= VIOLET; i++){
+        if (hitpoints != i)
+            compteur++;
+    };
+    if(compteur != NB_INVALID_HITPOINTS)
+        return true;
 }

@@ -51,8 +51,7 @@ void lectureFichier(const string& nomFichier){
 
 bool decodage_ligne(istringstream& data, vector <double>& tabValeurs){ //true=pas d'erreur, false=erreur
     double valeur(0);
-    switch(etat)
-        {
+    switch(etat){
         case IGNORE:             
             break;
         case SCORE: 
@@ -82,7 +81,7 @@ bool decodage_ligne(istringstream& data, vector <double>& tabValeurs){ //true=pa
 
 	    default: 
             break;  
-        }
+    }
     return true;
 }
 
