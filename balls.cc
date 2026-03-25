@@ -12,7 +12,7 @@ bool verif_balls(double& x, double& y, double& r, double& dx, double& dy){
     
     verif_delta(dx,dy);
 
-    if (((x-r) < 0) || ((y-r) < 0) || ((x+r) > arena_size) || ((y+r) > arena_size)) { // zone
+    if (verif_outside(x,y,r)) { // zone
         message::ball_outside(x,y);
         return false;
     };

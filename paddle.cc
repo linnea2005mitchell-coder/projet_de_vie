@@ -13,6 +13,6 @@ bool verif_paddle(const double& x, const double& y, const double& r) {
       Paddle pad(x,y,r);
       return true ;
      };
-   message::paddle_outside(double x, double y);
+   message::paddle_outside(x, y);
    return false;
 }
