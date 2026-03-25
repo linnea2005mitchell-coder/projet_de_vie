@@ -1,4 +1,3 @@
-// message philosophique: saute dans une flaque avant que la flaque te saute
 #ifndef BALLS_H
 #define BALLS_H
 
@@ -7,14 +6,14 @@
 
 bool verif_balls(double& x, double& y, double& r, double& dx, double& dy);
 
-class Ball : public Cercle {
+class Ball : public Cercle, public Delta {
 public: 
     using Cercle::intersects;
-
+    using Delta::Delta;
     Ball(double x, double y, double r, double dx, double dy)
-    : Cercle(x, y, r, dx, dy) {}
- //ajouter un compteur pour transmettre les index au fonction de collisions
-private :
+    : Cercle(x, y, r), Delta(dx,dy) {};
+ 
+private :;
 };
 
 vector<Ball> stock; 
