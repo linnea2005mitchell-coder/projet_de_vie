@@ -1,8 +1,8 @@
 #include <iostream> 
 #include <cmath>
 #include <vector>
-//#include "constants.h"
-//#include "message.h"
+#include "constants.h"
+#include "message.h"
 #include "bricks.h"
 using namespace std;
 
@@ -11,11 +11,6 @@ enum HitPoints {ROUGE=1, ORANGE, JAUNE, VERT, CYAN, BLEU, VIOLET};
 constexpr int NB_INVALID_HITPOINTS(6);
 
 vector<Brick> stockBrick; //mettre dans game? En tout cas pas le droit aux variables globales
-
-//À SUPPRIMER UNE FOIS QUE CONSTANTS.H EST INCLU
-constexpr double arena_size = 100.0;
-constexpr double brick_size_min = 3.;
-//FIN SUPPRESSION
 
 bool verif_bricks(const double& type, const double& x, const double& y, 
                            const double& c, const double& hitpoints){ 
@@ -54,7 +49,7 @@ bool verif_bricks(const double& type, const double& x, const double& y,
     };
     stockBrick.push_back(nouvelle);
     return true;
-}
+};
 
 bool verif_hitpoints(const double& hitpoints){
     int compteur(0);
@@ -64,4 +59,5 @@ bool verif_hitpoints(const double& hitpoints){
     };
     if(compteur != NB_INVALID_HITPOINTS)
         return true;
-}
+    return false;
+};
