@@ -8,8 +8,6 @@ enum BrickType {RAINBOW, BALLBRICK, SPLIT};
 enum HitPoints {ROUGE=1, ORANGE, JAUNE, VERT, CYAN, BLEU, VIOLET};
 constexpr int NB_INVALID_HITPOINTS(6);
 
-//vector<Brick> stockBrick; //mettre dans game? En tout cas pas le droit aux variables globales
-
 bool verif_bricks(const double& type, const double& x, const double& y, 
                   const double& c, const double& hitpoints, vector<Brick>& stockBrick){ 
     double halfC = c / 2.0;

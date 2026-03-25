@@ -44,25 +44,25 @@ void lectureFichier(const string& nomFichier, Game& game){
                 exit(EXIT_FAILURE);
             } 
         }
-        exit(EXIT_SUCCESS);
     }
     cout << message::success() << endl;
     fichier.close();
+    exit(EXIT_SUCCESS);
 }
 
 bool decodage_ligne(istringstream& data, vector <double>& tabValeurs, Game& game){ 
-    int valeur(0); //modification de double à int: vérifier que tout va bien
+    int valeur(0);
     switch(etat){
         case IGNORE:             
             break;
         case SCORE: 
             data >> valeur;
-            return(verif_score(valeur, game));
+            return(verif_score(valeur, game.score));
             break;
 
 	    case LIVES:
             data >> valeur;
-            return(verif_lives(valeur, game));
+            return(verif_lives(valeur, game.lives));
 		    break;
         
         case PADDLE:
@@ -94,20 +94,20 @@ void lectureLigne(istringstream& data, vector <double>& tabValeurs){
     }
 }
 
-bool verif_score(int& score, Game& game){ //changer le type en passant directement le champ score
+bool verif_score(int& score, int& scoreGame){ 
     if (score<0){
         cout << message::invalid_score(score)<< endl;
         return false;
     };
-    game.score = score;
+    scoreGame = score;
     return true;
 }
 
-bool verif_lives(int& live, Game& game){
+bool verif_lives(int& live, int& liveGame){
     if (live<0){
         cout<< message::invalid_lives(live)<< endl;
         return false;
     };
-    game.lives = live;
+    liveGame = live;
     return true;
 }
