@@ -22,5 +22,6 @@ bool verif_score(int& score, int& scoreGame);
 bool verif_lives(int& live, int& liveGame);
 bool intersects_brick_paddle(const Game& game);
 bool intersects_ball_brick(const Game& game);
+bool intersects_paddle_ball(const Game& game);
 
 #endif 

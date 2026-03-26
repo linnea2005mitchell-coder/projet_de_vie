@@ -36,5 +36,5 @@ bool Cercle::intersects(const Carre& c) const {
     double dx = x() - closestX;
     double dy = y() - closestY;
 
-    return (dx*dx + dy*dy) < (r*r);
+    return (dx*dx + dy*dy) < (r*r); // true su intersects 
 }

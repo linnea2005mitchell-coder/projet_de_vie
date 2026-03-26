@@ -81,7 +81,7 @@ bool verif_ligne(istringstream& data, Game& game){
             lectureLigne(data, tabValeurs);
             return (verif_balls(tabValeurs[0], tabValeurs[1], tabValeurs[2], 
                                 tabValeurs[3], tabValeurs[4], game.stockBall) 
-                                or intersects_ball_brick(game)); 
+                                or intersects_ball_brick(game) or intersects_paddle_ball(game)); 
 		    break;
 
 	    default: 
@@ -115,15 +115,22 @@ bool verif_lives(int& live, int& liveGame){
 }
 
 bool intersects_brick_paddle(const Game& game){ //vérif dernière brick avec paddle. true=intersection, false=pas d'intersection
-
+    int c(0);
+    for (const auto& brick : game.stockBrick) {
+        if (game.pad.intersects(brick)) {  //check intersection
+            cout << message::collision_paddle_brick(size_t(c)) << endl;
+            return true; 
+        };
+        c++;
+    }
     return false;
 }
 
 
-bool intersects_ball_brick(const Game& game){ //vérif dernière balle avec stock de brique==>inverser ball et brick. true = intesection, false=pas d'intersection
+bool intersects_ball_brick(const Game& game){ //vérif dernière balle avec stock de brique==>inverser ball et brick. true = intesection
     int k(0);
     Ball derniere = game.stockBall[game.stockBall.size()-1]; //un peu moche. autre façon de faire?
-    for (const auto& brick : game.stockBall) {
+    for (const auto& brick : game.stockBrick) {
         if (derniere.intersects(brick)) {  
             cout << message::collision_ball_brick(size_t(k), game.stockBall.size()) << endl;
             return true; 
@@ -131,4 +138,13 @@ bool intersects_ball_brick(const Game& game){ //vérif dernière balle avec stoc
         k++;
     };
     return false;
+}
+
+bool intersects_paddle_ball(const Game& game){
+
+    Ball derniere = game.stockBall[game.stockBall.size()-1];
+        if (derniere.intersects(game.pad)) {
+         cout << message::collision_paddle_ball(game.stockBall.size()) << endl;
+            return true; 
+        };
 }
