@@ -60,4 +60,12 @@ protected :
 
 };
 
+struct Game {
+    int score;
+    int lives;
+    std::vector<Brick> stockBrick;
+    std::vector<Ball> stockBall;
+    Paddle pad;
+};
+
 #endif

@@ -7,14 +7,6 @@
 #include "bricks.h"
 #include "paddle.h"
 
-struct Game {
-    int score;
-    int lives;
-    std::vector<Brick> stockBrick;
-    std::vector<Ball> stockBall;
-    Paddle pad;
-};
-
 void lectureFichier(const std::string& nomFichier, Game& game);
 bool decodage_ligne(std::istringstream& data, std::vector<double>& tabValeurs, 
                     Game& game);
