@@ -3,8 +3,6 @@
 
 #include <vector>
 #include "tools.h"
-#include "paddle.h"
-#include "bricks.h"
 
 class Ball : public Cercle, public Delta {
 public: 
@@ -16,6 +14,7 @@ public:
 private :;
 };
 
-bool verif_balls(double& x, double& y, double& r, double& dx, double& dy, Game& game);
+bool verif_balls(double& x, double& y, double& r, double& dx, double& dy, 
+                 std::vector<Ball>& stockBall);
 
 #endif

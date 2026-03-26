@@ -3,9 +3,6 @@
 
 #include "tools.h" 
 
-
-bool verif_paddle(const double& x,const double& y,const double& r, const Paddle& pad); 
-
 class Paddle : public Cercle {
 public: 
 using Cercle::intersects;
@@ -15,5 +12,7 @@ using Cercle::intersects;
  
 private :;
 };
+
+bool verif_paddle(const double& x,const double& y,const double& r, Paddle& pad); 
 
 #endif

@@ -57,15 +57,6 @@ protected :
 
     bool intersects(const Cercle& other) const;
     bool intersects(const Carre& c) const;
-
-};
-
-struct Game {
-    int score;
-    int lives;
-    std::vector<Brick> stockBrick;
-    std::vector<Ball> stockBall;
-    Paddle pad;
 };
 
 #endif
