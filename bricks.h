@@ -18,6 +18,6 @@ private:
 };
 
 bool verif_bricks(const double& type, const double& x, const double& y, 
-                  const double& c, const double& hitpoints, std::vector<Brick>& stockBrick);
+                  const double& c, const double& hitpoints, Game& game);
 bool verif_hitpoints(const double& hitpoints);
 #endif 

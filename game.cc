@@ -67,19 +67,19 @@ bool decodage_ligne(istringstream& data, vector <double>& tabValeurs, Game& game
         
         case PADDLE:
             lectureLigne(data, tabValeurs);
-            return(verif_paddle(tabValeurs[0], tabValeurs[1], tabValeurs[2]));	
+            return(verif_paddle(tabValeurs[0], tabValeurs[1], tabValeurs[2],game.pad));	
 		    break;
         
         case BRICKS:
             lectureLigne(data, tabValeurs);
             return(verif_bricks(tabValeurs[0], tabValeurs[1], tabValeurs[2], 
-                                tabValeurs[3], tabValeurs[4], game.stockBrick));	
+                                tabValeurs[3], tabValeurs[4], game.stockBrick, game));	
 		    break;
 
         case BALLS:
             lectureLigne(data, tabValeurs);
             return (verif_balls(tabValeurs[0], tabValeurs[1], tabValeurs[2], 
-                                tabValeurs[3], tabValeurs[4], game.stockBall)); 
+                                tabValeurs[3], tabValeurs[4], game.stockBall, game)); 
 		    break;
 
 	    default: 

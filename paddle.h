@@ -4,7 +4,7 @@
 #include "tools.h" 
 
 
-bool verif_paddle(const double& x,const double& y,const double& r); 
+bool verif_paddle(const double& x,const double& y,const double& r, const Paddle& pad); 
 
 class Paddle : public Cercle {
 public: 

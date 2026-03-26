@@ -9,7 +9,7 @@ enum HitPoints {ROUGE=1, ORANGE, JAUNE, VERT, CYAN, BLEU, VIOLET};
 constexpr int NB_INVALID_HITPOINTS(6);
 
 bool verif_bricks(const double& type, const double& x, const double& y, 
-                  const double& c, const double& hitpoints, vector<Brick>& stockBrick){ 
+                  const double& c, const double& hitpoints, Game& game){ 
     double halfC = c / 2.0;
     if (verif_outside(x, y, halfC)) { 
         cout << message::brick_outside(x, y) << endl; 
@@ -36,16 +36,16 @@ bool verif_bricks(const double& type, const double& x, const double& y,
     Brick nouvelle(type, x, y, c, hitpoints);
     
     int compteur(0);
-    for (const auto& b : stockBrick) {
+    for (const auto& b : game.stockBrick) {
         if (nouvelle.intersects(b)) {  
-            cout << message::collision_bricks(size_t(compteur), stockBrick.size()) << endl;  
+            cout << message::collision_bricks(size_t(compteur), game.stockBrick.size()) << endl;  
             return false; 
         };
         compteur++;
     };
-    stockBrick.push_back(nouvelle);
+    game.stockBrick.push_back(nouvelle);
     return true;
-};
+};// ajouter intersect avec paddle
 
 bool verif_hitpoints(const double& hitpoints){
     int compteur(0);
