@@ -114,7 +114,7 @@ bool verif_lives(int& live, int& liveGame){
     return false;
 }
 
-bool intersects_brick_paddle(const Game& game){ //vérif dernière brick avec paddle. true=intersection, false=pas d'intersection
+bool intersects_brick_paddle(const Game& game){ //vérif dernière brick avec paddle. true=intersection
     int c(0);
     for (const auto& brick : game.stockBrick) {
         if (game.pad.intersects(brick)) {  //check intersection
@@ -129,7 +129,7 @@ bool intersects_brick_paddle(const Game& game){ //vérif dernière brick avec pa
 
 bool intersects_ball_brick(const Game& game){ //vérif dernière balle avec stock de brique. true = intesection
     int k(0);
-    Ball derniere = game.stockBall[game.stockBall.size()-1]; //un peu moche. autre façon de faire?
+    Ball derniere = game.stockBall.back(); 
     for (const auto& brick : game.stockBrick) {
         if (derniere.intersects(brick)) {  
             cout << message::collision_ball_brick(game.stockBall.size()-1, size_t(k)) << endl;
