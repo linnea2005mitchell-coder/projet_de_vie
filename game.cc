@@ -127,12 +127,12 @@ bool intersects_brick_paddle(const Game& game){ //vérif dernière brick avec pa
 }
 
 
-bool intersects_ball_brick(const Game& game){ //vérif dernière balle avec stock de brique==>inverser ball et brick. true = intesection
+bool intersects_ball_brick(const Game& game){ //vérif dernière balle avec stock de brique. true = intesection
     int k(0);
     Ball derniere = game.stockBall[game.stockBall.size()-1]; //un peu moche. autre façon de faire?
     for (const auto& brick : game.stockBrick) {
         if (derniere.intersects(brick)) {  
-            cout << message::collision_ball_brick(size_t(k), game.stockBall.size()) << endl;
+            cout << message::collision_ball_brick(game.stockBall.size(), size_t(k)) << endl;
             return true; 
         };
         k++;
@@ -142,9 +142,10 @@ bool intersects_ball_brick(const Game& game){ //vérif dernière balle avec stoc
 
 bool intersects_paddle_ball(const Game& game){
 
-    Ball derniere = game.stockBall[game.stockBall.size()-1];
+    Ball derniere = game.stockBall[game.stockBall.size()];
         if (derniere.intersects(game.pad)) {
          cout << message::collision_paddle_ball(game.stockBall.size()) << endl;
             return true; 
         };
+        return false;
 }

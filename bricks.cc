@@ -40,7 +40,7 @@ bool verif_bricks(const double& type, const double& x, const double& y,
         if (nouvelle.intersects(b)) {  
             cout << message::collision_bricks(size_t(compteur), stockBrick.size()) 
             << endl;  
-            return false; 
+            return true; 
         };
         compteur++;
     };
