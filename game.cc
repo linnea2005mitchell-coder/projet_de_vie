@@ -132,7 +132,7 @@ bool intersects_ball_brick(const Game& game){ //vérif dernière balle avec stoc
     Ball derniere = game.stockBall[game.stockBall.size()-1]; //un peu moche. autre façon de faire?
     for (const auto& brick : game.stockBrick) {
         if (derniere.intersects(brick)) {  
-            cout << message::collision_ball_brick(game.stockBall.size(), size_t(k)) << endl;
+            cout << message::collision_ball_brick(game.stockBall.size()-1, size_t(k)) << endl;
             return true; 
         };
         k++;
@@ -142,9 +142,9 @@ bool intersects_ball_brick(const Game& game){ //vérif dernière balle avec stoc
 
 bool intersects_paddle_ball(const Game& game){
 
-    Ball derniere = game.stockBall[game.stockBall.size()];
+    Ball derniere = game.stockBall[game.stockBall.size()-1];
         if (derniere.intersects(game.pad)) {
-         cout << message::collision_paddle_ball(game.stockBall.size()) << endl;
+         cout << message::collision_paddle_ball(game.stockBall.size()-1) << endl;
             return true; 
         };
         return false;
