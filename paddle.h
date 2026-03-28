@@ -13,6 +13,6 @@ using Cercle::intersects;
 private :;
 };
 
-bool verif_paddle(const double& x,const double& y,const double& r, Paddle& pad); 
+bool verif_paddle(double x, double y, double r, Paddle& pad); 
 
 #endif

@@ -14,7 +14,8 @@ public:
 private :;
 };
 
-bool verif_balls(double& x, double& y, double& r, double& dx, double& dy, 
-                 std::vector<Ball>& stockBall);
+bool verif_ball(double x, double y, double r, double dx, double dy, 
+                std::vector<Ball>& stockBall);
+bool verif_delta(double dx, double dy);
 
 #endif

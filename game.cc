@@ -6,146 +6,162 @@
 #include <vector>
 #include "game.h"
 #include "message.h"
-
 using namespace std;
  
-enum EtatLecture {IGNORE=1, SCORE, LIVES, PADDLE, BRICKS, BALLS};
-constexpr int NB_VALEURS(5);
-static unsigned etat(0); 
+enum EtatLecture {SCORE, LIVES, PADDLE, NB_BRICKS, BRICKS, NB_BALLS, BALLS};
+constexpr size_t NB_VAL_PAD(3); 
+constexpr size_t NB_VAL_BRICK(4);
+constexpr size_t NB_VAL_BALL(5);
+static unsigned etat(0);
 
-void lectureFichier(const string& nomFichier, Game& game){ 
-    ifstream fichier("tests/" + nomFichier); 
+void lecture_fichier(const string& nomFichier, Game& game){ 
+    ifstream fichier("tests/" + nomFichier);      //changer "tests/"" avec nom dossier
     if(fichier.fail()){
         cout << "Impossible d'accéder au fichier." << endl;
         exit(EXIT_FAILURE);
     }
 
-    unsigned compteur(0);
-    unsigned compteurB(0);
+    int compteur(0);
     string line;
+    vector<double> tabVal;
 
     while(getline(fichier >> ws, line)){
-        if(line[0]=='#'){
-            ++compteur;
-            etat = compteur;
-            continue;
-        }  
-
-        if((etat==BRICKS) and compteurB==0){
-            ++compteurB;  
-        }
-        else if ((etat==BALLS) and compteurB==1){
-            ++compteurB;  
-        }
-        else{
-            istringstream data(line);
-            if(verif_ligne(data, game)){ 
-                exit(EXIT_FAILURE);
-            } 
-        }
+        if(line[0]=='#') continue; 
+        istringstream data(line);
+        if(lecture_ligne(data, tabVal, compteur, game)) exit(EXIT_FAILURE);
     }
+    
     cout << message::success() << endl;
     fichier.close();
     exit(EXIT_SUCCESS);
 }
 
-bool verif_ligne(istringstream& data, Game& game){ 
-    int valeur(0);
-    vector <double> tabValeurs (NB_VALEURS, 0);
+bool lecture_ligne(istringstream& data, vector<double>& tabVal, int& compteur, Game& game){
+    double valeur(0);
+    while(data>>valeur){ 
+        switch(etat){
+            case SCORE:
+            case LIVES: if(verif_ligne(valeur, tabVal, game)) return true; 
+                break; 
+            case PADDLE: 
+                if(tabVal.size() != NB_VAL_PAD) tabVal.push_back(valeur);
+                if(tabVal.size() == NB_VAL_PAD){
+                    if(verif_ligne(valeur, tabVal, game)) return true; 
+                }
+                break;
+            case NB_BRICKS:
+            case NB_BALLS: compteur = valeur; 
+                etat++; break;
+            case BRICKS:
+                if (lecture_brick(valeur, compteur, tabVal, game)) return true; 
+                break;
+            case BALLS: 
+                if(compteur>0){
+                    if(tabVal.size() < NB_VAL_BALL) tabVal.push_back(valeur);
+                    if(tabVal.size()==NB_VAL_BALL){
+                        compteur--;
+                        if(verif_ligne(valeur, tabVal, game)) return true;
+                    }
+                }
+                break;
+            default: break;
+        }
+    }
+    return false;
+}
+
+bool verif_ligne(int valeur, vector <double>& tabVal, Game& game){ 
     switch(etat){
-        case IGNORE:             
-            break;
         case SCORE: 
-            data >> valeur;
-            return(verif_score(valeur, game.score));
+            etat++;
+            if(verif_score(valeur, game.score)) return true;
             break;
-
 	    case LIVES:
-            data >> valeur;
-            return(verif_lives(valeur, game.lives));
-		    break;
-        
+            etat++;
+            if(verif_lives(valeur, game.lives)) return true;
+            break;
         case PADDLE:
-            lectureLigne(data, tabValeurs);
-            return(verif_paddle(tabValeurs[0], tabValeurs[1], tabValeurs[2], game.pad));	
-		    break;
-        
+            etat++;
+            if(verif_paddle(tabVal[0], tabVal[1], tabVal[2], game.pad)) return true;
+            tabVal.clear();	break;
         case BRICKS:
-            lectureLigne(data, tabValeurs);
-            return(verif_bricks(tabValeurs[0], tabValeurs[1], tabValeurs[2], 
-                                tabValeurs[3], tabValeurs[4], game.stockBrick) 
-                                or intersects_brick_paddle(game));	
-		    break;
-
+            if(verif_brick(tabVal[0], tabVal[1], tabVal[2], tabVal[3], tabVal[4], 
+               game.stockBrick) or intersects_brick_paddle(game)) return true;   
+            tabVal.clear();	break;
         case BALLS:
-            lectureLigne(data, tabValeurs);
-            return (verif_balls(tabValeurs[0], tabValeurs[1], tabValeurs[2], 
-                                tabValeurs[3], tabValeurs[4], game.stockBall) 
-                                or intersects_ball_brick(game) or intersects_paddle_ball(game)); 
-		    break;
-
+            if(verif_ball(tabVal[0], tabVal[1], tabVal[2], tabVal[3], tabVal[4], 
+               game.stockBall) or intersects_ball_brick(game) 
+               or intersects_paddle_ball(game)) return true;
+            tabVal.clear(); break;
 	    default: 
             break;  
     }
     return false;
 }
 
-void lectureLigne(istringstream& data, vector <double>& tabValeurs){
-    for(int i(0); i<NB_VALEURS; ++i){
-        data >> tabValeurs[i]; 
+bool lecture_brick(double valeur, int& compteur, vector<double>& tabVal, Game& game){
+    if(compteur>0){
+        if(tabVal.size() < NB_VAL_BRICK) tabVal.push_back(valeur);
+        else if(tabVal.size()==NB_VAL_BRICK && tabVal[0]==0){
+            compteur--;
+            tabVal.push_back(valeur);
+            if(verif_ligne(valeur, tabVal, game)) return true; 
+        }
+        if(tabVal.size()==NB_VAL_BRICK && tabVal[0]!=0){
+            compteur--;
+            tabVal.push_back(-1);
+            if(verif_ligne(valeur, tabVal, game)) return true; 
+        }
     }
+    if(compteur==0) etat++; 
+    return false;
 }
 
-bool verif_score(int& score, int& scoreGame){ 
+bool verif_score(int score, int& scoreGame){ 
     if (score<0){
         cout << message::invalid_score(score)<< endl;
         return true;
-    };
+    }
     scoreGame = score;
     return false;
 }
 
-bool verif_lives(int& live, int& liveGame){
+bool verif_lives(int live, int& liveGame){
     if (live<0){
         cout<< message::invalid_lives(live)<< endl;
         return true;
-    };
+    }
     liveGame = live;
     return false;
 }
 
-bool intersects_brick_paddle(const Game& game){ //vérif dernière brick avec paddle. true=intersection
-    int c(0);
-    for (const auto& brick : game.stockBrick) {
-        if (game.pad.intersects(brick)) {  //check intersection
-            cout << message::collision_paddle_brick(size_t(c)) << endl;
-            return true; 
-        };
-        c++;
+bool intersects_brick_paddle(const Game& game){ 
+    Brick derniere = game.stockBrick.back(); 
+    if (game.pad.intersects(derniere)) {
+        cout << message::collision_paddle_brick(game.stockBrick.size()-1) << endl;
+        return true; 
     }
     return false;
 }
 
-
-bool intersects_ball_brick(const Game& game){ //vérif dernière balle avec stock de brique. true = intesection
+bool intersects_ball_brick(const Game& game){ 
     int k(0);
     Ball derniere = game.stockBall.back(); 
     for (const auto& brick : game.stockBrick) {
         if (derniere.intersects(brick)) {  
             cout << message::collision_ball_brick(game.stockBall.size()-1, size_t(k)) << endl;
             return true; 
-        };
+        }
         k++;
-    };
+    }
     return false;
 }
 
 bool intersects_paddle_ball(const Game& game){
-
-    Ball derniere = game.stockBall[game.stockBall.size()-1];
+    Ball derniere = game.stockBall.back();
         if (derniere.intersects(game.pad)) {
          cout << message::collision_paddle_ball(game.stockBall.size()-1) << endl;
             return true; 
-        };
+        }
         return false;
 }

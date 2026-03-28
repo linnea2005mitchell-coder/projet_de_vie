@@ -21,7 +21,7 @@ clean:
 	@echo " *** EFFACE MODULES OBJET ET EXECUTABLE ***"
 	@/bin/rm -f *.o *.x *.cc~ *.h~ project
 
-#taper "make clean", ensuite "make depend, ensuite "make" dans le terminal pour que ça s'exécuteballs.o: balls.cc
+#taper "make clean", "make depend, "make" dans le terminal
 
 balls.o: balls.cc balls.h tools.h constants.h message.h
 bricks.o: bricks.cc bricks.h tools.h constants.h message.h
@@ -31,13 +31,4 @@ message.o: message.cc message.h
 paddle.o: paddle.cc paddle.h tools.h constants.h message.h
 project.o: project.cc game.h balls.h tools.h constants.h message.h \
  bricks.h paddle.h
-tools.o: tools.cc tools.h constants.h message.h
-balls.o: balls.cc balls.h tools.h constants.h message.h
-bricks.o: bricks.cc bricks.h tools.h constants.h message.h
-game.o: game.cc game.h balls.h tools.h constants.h message.h bricks.h \
-  paddle.h
-message.o: message.cc message.h
-paddle.o: paddle.cc paddle.h tools.h constants.h message.h
-project.o: project.cc game.h balls.h tools.h constants.h message.h \
-  bricks.h paddle.h
 tools.o: tools.cc tools.h constants.h message.h

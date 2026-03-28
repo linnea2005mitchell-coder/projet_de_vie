@@ -5,15 +5,13 @@ using namespace std;
 
 #include "balls.h"
 
-bool verif_balls(double& x, double& y, double& r, double& dx, double& dy, 
-                 vector<Ball>& stockBall){
-    
-    if(verif_delta(dx,dy)) return true;
+bool verif_ball(double x, double y, double r, double dx, double dy, 
+                vector<Ball>& stockBall){
 
-    if (verif_outside(x,y,r)) { 
-        cout << message::ball_outside(x,y)<< endl;
+    if ((x-r) < 0 || y < 0 || (x+r) > arena_size || (y+r) > arena_size) { 
+        cout << message::ball_outside(x, y) << endl; 
         return true;
-    };
+    }
 
     Ball nouvelle(x, y, r, dx, dy);
     
@@ -22,10 +20,20 @@ bool verif_balls(double& x, double& y, double& r, double& dx, double& dy,
         if (nouvelle.intersects(ball)) {  
             cout << message::collision_balls(size_t(c), stockBall.size()) << endl;
             return true; 
-        };
+        }
         c++;
-    };
+    }
+
+    if(verif_delta(dx,dy)) return true;
 
     stockBall.push_back(nouvelle);
     return false;
 };
+
+bool verif_delta(double dx, double dy){
+    if (sqrt(dx*dx + dy*dy) > delta_norm_max) {
+        cout << message::invalid_delta(dx,dy) << endl;
+        return true; 
+    }
+    return false; 
+}

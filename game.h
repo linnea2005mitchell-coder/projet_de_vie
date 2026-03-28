@@ -10,16 +10,19 @@
 struct Game {
     int score;
     int lives;
+    Paddle pad;
     std::vector<Brick> stockBrick;
     std::vector<Ball> stockBall;
-    Paddle pad;
 };
 
-void lectureFichier(const std::string& nomFichier, Game& game);
-bool verif_ligne(std::istringstream& data, Game& game);
-void lectureLigne(std::istringstream& data, std::vector<double>& tabValeurs);
-bool verif_score(int& score, int& scoreGame);
-bool verif_lives(int& live, int& liveGame);
+void lecture_fichier(const std::string& nomFichier, Game& game);
+bool lecture_ligne(std::istringstream& data, std::vector<double>& tabVal, 
+                   int& compteur, Game& game);
+bool verif_ligne(int valeur, std::vector <double>& tabVal, Game& game);
+bool lecture_brick(double valeur, int& compteur, std::vector<double>& tabVal, 
+                    Game& game);
+bool verif_score(int score, int& scoreGame);
+bool verif_lives(int live, int& liveGame);
 bool intersects_brick_paddle(const Game& game);
 bool intersects_ball_brick(const Game& game);
 bool intersects_paddle_ball(const Game& game);

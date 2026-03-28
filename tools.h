@@ -6,10 +6,6 @@
 #include "constants.h"
 #include "message.h"
 
-bool verif_delta(const double& dx, const double& dy);
-bool verif_outside(const double& x, const double& y, const double& d);
-
-
 class Position {
 public: 
     Position(double x, double y) 
@@ -39,11 +35,10 @@ public :
         : Position (x, y), cote_(c) {}
     
     double cote() const {return cote_; };
-    bool intersects(const Carre& other) const; // rend true s'il y a intersection
+    bool intersects(const Carre& other) const;
        
 protected :
     double cote_;
-    virtual ~Carre() {}
 };
 
 
