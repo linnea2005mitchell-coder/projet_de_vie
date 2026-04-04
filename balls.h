@@ -4,14 +4,14 @@
 #include <vector>
 #include "tools.h"
 
-class Ball : public Cercle, public Delta {
+class Ball {
 public: 
-    using Cercle::intersects;
-    using Delta::Delta;
     Ball(double x, double y, double r, double dx, double dy)
-    : Cercle(x, y, r), Delta(dx,dy) {};
+    : corp(x, y, r), del(dx,dy) {};
  
-private :;
+private :
+Cercle corp;
+Delta del;
 };
 
 bool verif_ball(double x, double y, double r, double dx, double dy, 

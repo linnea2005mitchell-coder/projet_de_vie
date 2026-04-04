@@ -74,23 +74,23 @@ bool verif_ligne(int valeur, vector <double>& tabVal, Game& game){
     switch(etat){
         case SCORE: 
             etat++;
-            if(verif_score(valeur, game.score)) return true;
+            if(verif_score(valeur, game.score())) return true;
             break;
 	    case LIVES:
             etat++;
-            if(verif_lives(valeur, game.lives)) return true;
+            if(verif_lives(valeur, game.lives())) return true;
             break;
         case PADDLE:
             etat++;
-            if(verif_paddle(tabVal[0], tabVal[1], tabVal[2], game.pad)) return true;
+            if(verif_paddle(tabVal[0], tabVal[1], tabVal[2], game.pad())) return true;
             tabVal.clear();	break;
         case BRICKS:
             if(verif_brick(tabVal[0], tabVal[1], tabVal[2], tabVal[3], tabVal[4], 
-               game.stockBrick) or intersects_brick_paddle(game)) return true;   
+               game.stockBrick()) or intersects_brick_paddle(game)) return true;   
             tabVal.clear();	break;
         case BALLS:
             if(verif_ball(tabVal[0], tabVal[1], tabVal[2], tabVal[3], tabVal[4], 
-               game.stockBall) or intersects_ball_brick(game) 
+               game.stockBall()) or intersects_ball_brick(game) 
                or intersects_paddle_ball(game)) return true;
             tabVal.clear(); break;
 	    default: 

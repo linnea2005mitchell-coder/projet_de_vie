@@ -7,12 +7,23 @@
 #include "bricks.h"
 #include "paddle.h"
 
-struct Game {
-    int score;
-    int lives;
-    Paddle pad;
-    std::vector<Brick> stockBrick;
-    std::vector<Ball> stockBall;
+class Game {
+public : 
+   Game(int s, int l, double x, double y ,double r) 
+   : score_(s), lives_(l), pad_(x,y,r) {}
+   int score() const {return score_ ;}
+   int lives() const {return lives_ ;}
+   Paddle pad() const {return pad_;}
+   vector<Brick> stockBrick() const {return stockBricks;}
+   vector<Ball> stockBall() const {return stockBalls;}
+   
+
+private: 
+    int score_;
+    int lives_;
+    Paddle pad_;
+    std::vector<Brick> stockBricks;
+    std::vector<Ball> stockBalls;
 };
 
 void lecture_fichier(const std::string& nomFichier, Game& game);

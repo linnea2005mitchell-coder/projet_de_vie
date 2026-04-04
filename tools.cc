@@ -5,14 +5,14 @@ using namespace std;
 #include "tools.h"
 
 bool Carre::intersects(const Carre& other) const {
-    return abs(cx - other.cx) < (cote_/2 + other.cote_/2) &&
-               abs(cy - other.cy) < (cote_/2 + other.cote_/2); 
+    return abs(x() - other.x()) < (cote_/2 + other.cote_/2) &&
+               abs(y() - other.y()) < (cote_/2 + other.cote_/2); 
 }
 
 
 bool Cercle::intersects(const Cercle& other) const {
-    double d = sqrt((x() - other.cx)*(x() - other.cx) +
-                     (y()- other.cy)*(y()- other.cy));
+    double d = sqrt((x() - other.x())*(x() - other.x()) +
+                     (y()- other.y())*(y()- other.y()));
     return d < (r + other.r);
 }
 

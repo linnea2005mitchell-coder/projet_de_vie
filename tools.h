@@ -28,27 +28,32 @@ protected:
 };
 
 
-class Carre : public Position {
+class Carre {
 public : 
-    using Position::x;
     Carre(double x, double y, double c) 
-        : Position (x, y), cote_(c) {}
+        : cote_(c), pos(x,y) {}
     
     double cote() const {return cote_; };
+    double x() const {return pos.x(); }
+    double y() const {return pos.y(); }
     bool intersects(const Carre& other) const;
        
 protected :
     double cote_;
+    Position pos;
 };
 
 
-class Cercle : public Position {
+class Cercle {
 public : 
     Cercle(double x, double y, double ray) 
-        : Position (x, y), r(ray) {}
+        : pos(x, y), r(ray) {}
+    double x() const {return pos.x(); }
+    double y() const {return pos.y(); }
 
 protected :
     double r;
+    Position pos;
 
     bool intersects(const Cercle& other) const;
     bool intersects(const Carre& c) const;
