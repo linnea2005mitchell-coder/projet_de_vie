@@ -8,6 +8,7 @@ class Ball {
 public: 
     Ball(double x, double y, double r, double dx, double dy)
     : corp(x, y, r), del(dx,dy) {};
+    //bool intersectCercle::intersects(const Cercle& other)
  
 private :
 Cercle corp;
