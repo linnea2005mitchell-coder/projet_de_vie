@@ -9,13 +9,13 @@
 
 class Game {
 public : 
-   Game(int s, int l, double x, double y ,double r) 
-   : score_(s), lives_(l), pad_(x,y,r) {}
-   int score() const {return score_ ;}
-   int lives() const {return lives_ ;}
-   Paddle pad() const {return pad_;}
-   vector<Brick> stockBrick() const {return stockBricks;}
-   vector<Ball> stockBall() const {return stockBalls;}
+   Game(int s, int l, Paddle p, std::vector<Brick> sbrick, std::vector<Ball> sball) 
+   : score_(s), lives_(l), pad_(p), stockBricks(sbrick), stockBalls(sball) {}
+   int& score() {return score_ ;}
+   int& lives() {return lives_ ;}
+   Paddle& pad() {return pad_;}
+   std::vector<Brick>& stockBrick() {return stockBricks;}
+   std::vector<Ball>& stockBall() {return stockBalls;}
    
 
 private: 
@@ -32,10 +32,10 @@ bool lecture_ligne(std::istringstream& data, std::vector<double>& tabVal,
 bool verif_ligne(int valeur, std::vector <double>& tabVal, Game& game);
 bool lecture_brick(double valeur, int& compteur, std::vector<double>& tabVal, 
                     Game& game);
-bool verif_score(int score, int& scoreGame);
-bool verif_lives(int live, int& liveGame);
-bool intersects_brick_paddle(const Game& game);
-bool intersects_ball_brick(const Game& game);
-bool intersects_paddle_ball(const Game& game);
+bool verif_score(int& score, int& scoreGame);
+bool verif_lives(int& live, int& liveGame);
+bool intersects_brick_paddle(Game& game);
+bool intersects_ball_brick(Game& game);
+bool intersects_paddle_ball(Game& game);
 
 #endif 

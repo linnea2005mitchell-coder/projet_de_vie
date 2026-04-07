@@ -117,7 +117,7 @@ bool lecture_brick(double valeur, int& compteur, vector<double>& tabVal, Game& g
     return false;
 }
 
-bool verif_score(int score, int& scoreGame){ 
+bool verif_score(int& score, int& scoreGame){ 
     if (score<0){
         cout << message::invalid_score(score)<< endl;
         return true;
@@ -126,7 +126,7 @@ bool verif_score(int score, int& scoreGame){
     return false;
 }
 
-bool verif_lives(int live, int& liveGame){
+bool verif_lives(int& live, int& liveGame){
     if (live<0){
         cout<< message::invalid_lives(live)<< endl;
         return true;
@@ -135,20 +135,20 @@ bool verif_lives(int live, int& liveGame){
     return false;
 }
 
-bool intersects_brick_paddle(const Game& game){ 
+bool intersects_brick_paddle(Game& game){ 
     Brick derniere = game.stockBrick().back(); 
-    if (game.pad().intersects(derniere)) {
+    if (game.pad().corps().intersects(derniere.corps())) {
         cout << message::collision_paddle_brick(game.stockBrick().size()-1) << endl;
         return true; 
     }
     return false;
 }
 
-bool intersects_ball_brick(const Game& game){ 
+bool intersects_ball_brick(Game& game){ 
     int k(0);
     Ball derniere = game.stockBall().back(); 
     for (const auto& brick : game.stockBrick()) {
-        if (derniere.intersects(brick)) {  
+        if (derniere.intersects(brick.corps())) {  
             cout << message::collision_ball_brick(game.stockBall().size()-1, size_t(k)) << endl;
             return true; 
         }
@@ -157,9 +157,9 @@ bool intersects_ball_brick(const Game& game){
     return false;
 }
 
-bool intersects_paddle_ball(const Game& game){
+bool intersects_paddle_ball(Game& game){
     Ball derniere = game.stockBall().back();
-        if (derniere.intersects(game.pad())) {
+        if (derniere.intersects(game.pad().corps())) {
          cout << message::collision_paddle_ball(game.stockBall().size()-1) << endl;
             return true; 
         }

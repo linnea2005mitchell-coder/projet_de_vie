@@ -47,16 +47,15 @@ protected :
 class Cercle {
 public : 
     Cercle(double x, double y, double ray) 
-        : pos(x, y), r(ray) {}
+        :  r(ray), pos(x, y) {}
     double x() const {return pos.x(); }
     double y() const {return pos.y(); }
+    bool intersects(const Cercle& other) const;
+    bool intersects(const Carre& c) const;
 
 protected :
     double r;
     Position pos;
-
-    bool intersects(const Cercle& other) const;
-    bool intersects(const Carre& c) const;
 };
 
 #endif

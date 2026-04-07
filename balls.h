@@ -7,12 +7,15 @@
 class Ball {
 public: 
     Ball(double x, double y, double r, double dx, double dy)
-    : corp(x, y, r), del(dx,dy) {};
-    //bool intersectCercle::intersects(const Cercle& other)
- 
-private :
-Cercle corp;
-Delta del;
+    : corps_(x, y, r), del(dx,dy) {};
+
+    const Cercle& corps() const { return corps_;}
+    bool intersects(const Cercle& other) {return corps_.intersects(other); }
+    bool intersects(const Carre& c) {return corps_.intersects(c); }
+    
+protected :
+    Cercle corps_;
+    Delta del;
 };
 
 bool verif_ball(double x, double y, double r, double dx, double dy, 

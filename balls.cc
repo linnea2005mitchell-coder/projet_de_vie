@@ -17,7 +17,7 @@ bool verif_ball(double x, double y, double r, double dx, double dy,
     
     int c(0);
     for (const auto& ball : stockBall) {
-        if (nouvelle.intersects(ball)) {  
+        if (nouvelle.intersects(ball.corps())) {  
             cout << message::collision_balls(size_t(c), stockBall.size()) << endl;
             return true; 
         }
