@@ -34,7 +34,7 @@ bool verif_brick(double type, double x, double y, double c, double hitpoints,
         }
     }
 
-    Brick nouvelle(type, x, y, c, hitpoints);
+    Brick nouvelle(type, x, y, c, hitpoints); //créer directement le bon type de brique
     int compteur(0);
     for (const auto& b : stockBrick) {
         if (nouvelle.intersects(b)) {  
@@ -48,7 +48,7 @@ bool verif_brick(double type, double x, double y, double c, double hitpoints,
     return false;
 } 
 
-bool verif_hitpoints(double hitpoints){
+bool Rainbow_brick::verif_hitpoints(double hitpoints){
     int compteur(0);
     for(int i(ROUGE); i<= VIOLET; i++){
         if (hitpoints != i)
@@ -56,4 +56,21 @@ bool verif_hitpoints(double hitpoints){
     }
     if(compteur != NB_INVALID_HITPOINTS) return true;
     return false;
+}
+
+void Rainbow_brick::impact(){
+    if (hitpoints>1)
+        hitpoints--;
+    if (hitpoints==0)
+        ~Rainbow_brick();  //comment détruire cette brique?
+}
+
+void Ball_brick::impact(){
+    //supprime la brique et création d'une nouvelle balle de même centre 
+    //et de la vitesse delta de la balle qui créée l'impact
+}
+void Split_brick::impact(){
+    //supprimer cette brique et en créer 4 nouvelles
+    //couleurs identiques aux hitpoints des rainbow_bricks
+    //processus récursif==>s'appelle lui-même jusqu'à atteindre une condition d'arrêt
 }

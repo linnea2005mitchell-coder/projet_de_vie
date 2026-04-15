@@ -6,8 +6,9 @@
 class Brick {
 public:
     Brick(double t, double x, double y, double c, double h) 
-        : corps_(x, y, c), type(t), hitpoints(h){} 
+        : corps_(x, y, c), type(t), hitpoints(h){} //mettre hitpoints ici ou comme attribut spécifique à Rainbow_brick?
 
+    ~Brick() = default; //revoir
     double getType(){return type; }
     double getHitpoints(){return hitpoints; }
     const Carre& corps() const { return corps_;}
@@ -18,7 +19,45 @@ protected:
     double type, hitpoints; 
 };
 
+class Rainbow_brick : public Brick{
+public:
+    Rainbow_brick(double t, double x, double y, double c, double h)
+        : Brick(t, x, y, c, h){ 
+            if(!verif_hitpoints(h))
+                hitpoints=h;
+            }
+    ~Rainbow_brick() = default; //revoir
+
+    bool verif_hitpoints(double hitpoints);
+    void impact();
+
+private:
+    double hitpoints;
+};
+
+class Ball_brick : public Brick{
+public:
+    Ball_brick(double t, double x, double y, double c, double h)
+        : Brick(t, x, y, c, h){}
+    ~Ball_brick() = default; //revoir
+
+    void impact();
+
+private:
+    //a une balle?
+};
+
+class Split_brick : public Brick{
+public:
+    Split_brick(double t, double x, double y, double c, double h)
+        : Brick(t, x, y, c, h){}
+    ~Split_brick() = default; //revoir
+
+    void impact();
+private:
+};
+
 bool verif_brick(double type, double x, double y, double c, double hitpoints, 
                  std::vector<Brick>& stockBrick);
-bool verif_hitpoints(double hitpoints);
+bool verif_hitpoints(double hitpoints); //à supprimer si c'est dans la classe rainbow_brick
 #endif 
