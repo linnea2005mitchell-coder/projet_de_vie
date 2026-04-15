@@ -5,7 +5,6 @@
 using namespace std;
 
 enum BrickType {RAINBOW, BALLBRICK, SPLIT};
-enum HitPoints {ROUGE=1, ORANGE, JAUNE, VERT, CYAN, BLEU, VIOLET};
 constexpr int NB_INVALID_HITPOINTS(6);
 
 bool verif_brick(double type, double x, double y, double c, double hitpoints, 
@@ -27,7 +26,7 @@ bool verif_brick(double type, double x, double y, double c, double hitpoints,
         return true;
     }
 
-    //if (type == RAINBOW){
+    //if (type == RAINBOW){ //à supprimer si verif_hitpoints est dans la classe Rainbow_brick
         //if(verif_hitpoints(hitpoints)){
             //cout << message::invalid_hit_points(hitpoints) << endl; 
             //return true;
@@ -50,7 +49,7 @@ bool verif_brick(double type, double x, double y, double c, double hitpoints,
 
 bool Rainbow_brick::verif_hitpoints(double hitpoints){
     int compteur(0);
-    for(int i(ROUGE); i<= VIOLET; i++){
+    for(int i(RED); i<= PURPLE; i++){
         if (hitpoints != i)
             compteur++;
     }
@@ -73,4 +72,32 @@ void Split_brick::impact(){
     //supprimer cette brique et en créer 4 nouvelles
     //couleurs identiques aux hitpoints des rainbow_bricks
     //processus récursif==>s'appelle lui-même jusqu'à atteindre une condition d'arrêt
+}
+
+vector<Split_brick> newBricks(Split_brick& oldBrick){ 
+    vector<Split_brick> newBricks;
+    Carre oldCorps = oldBrick.corps();
+
+    double newSize = (oldCorps.cote() - split_brick_gap)/2; 
+    if (newSize < brick_size_min){
+        //détruire old brick
+        return newBricks;
+    }
+    double offset = (newSize/2) + (split_brick_gap/2);
+    double cx = oldCorps.x(); 
+    double cy = oldCorps.y(); 
+
+    Position posTL(cx-offset, cy+offset);
+    Position posTR(cx+offset, cy+offset);
+    Position posBL(cx-offset, cy-offset);
+    Position posBR(cx+offset, cy-offset);
+
+    int newColor = oldBrick.getHitpoints() - 1; 
+
+    newBricks.push_back(Split_brick(SPLIT, posTL.x(), posTL.y(), newSize, newColor));
+    newBricks.push_back(Split_brick(SPLIT, posTR.x(), posTR.y(), newSize, newColor));
+    newBricks.push_back(Split_brick(SPLIT, posBL.x(), posBL.y(), newSize, newColor));
+    newBricks.push_back(Split_brick(SPLIT, posBR.x(), posBR.y(), newSize, newColor));
+    //détruire oldBrick
+    return newBricks;
 }

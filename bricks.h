@@ -2,6 +2,7 @@
 #define BRICKS_H
 #include "tools.h" 
 #include <vector>
+#include <memory>
 
 class Brick {
 public:
@@ -11,7 +12,7 @@ public:
     ~Brick() = default; //revoir
     double getType(){return type; }
     double getHitpoints(){return hitpoints; }
-    const Carre& corps() const { return corps_;}
+    const Carre& corps() const { return corps_;} //plutôt faire fonctions pour avoir directemetn x, y, t?
     bool intersects(const Brick& other) const {return corps_.intersects(other.corps());};
 
 protected: 
@@ -54,6 +55,7 @@ public:
     ~Split_brick() = default; //revoir
 
     void impact();
+    std::vector<Split_brick> newBricks(Split_brick& oldBrick); //voir comment faire avec ce tableau et/ou tableau stockBricks
 private:
 };
 
