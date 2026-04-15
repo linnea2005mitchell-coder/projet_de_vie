@@ -1,43 +1,33 @@
-CXX = g++
-CXXFLAGS = -g -Wall -std=c++11
-CXXFILES = balls.cc bricks.cc game.cc message.cc paddle.cc project.cc tools.cc  #lister tous les fichiers source: nom_fichier.cc
-OFILES = $(CXXFILES:.cc=.o)
+OUT      := project
+CXX      := g++
+CXXFLAGS := -Wall -std=c++17
+PKGS     := gtkmm-4.0
+LINKING  := $(shell pkg-config --cflags $(PKGS))
+LDLIBS   := $(shell pkg-config --libs $(PKGS))
 
-all: project #modifier avec nom de l'exécutable
+BUILD_DIR := build
 
-project   :  $(OFILES) 
-	$(CXX) $(OFILES) -o project
+CXXFILES := graphic.cc project.cc gui.cc
+OFILES   := $(addprefix $(BUILD_DIR)/, $(CXXFILES:.cc=.o))
 
-depend :
-	@echo " *** MISE A JOUR DES DEPENDANCES ***"
-	@(sed '/^# DO NOT DELETE THIS LINE/q' Makefile && \
-	  $(CXX) -MM $(CXXFLAGS) $(CXXFILES) | \
-	  egrep -v "/usr/include" \
-	 ) >Makefile.new
-	@mv Makefile.new Makefile
+.PHONY: all clean tests
 
+all: $(OUT)
+
+$(BUILD_DIR)/%.o: %.cc
+	@mkdir -p $(dir $@)
+	@echo "Compiling $<..."
+	@$(CXX) $(CXXFLAGS) $(LINKING) -c $< -o $@
+
+$(OUT): $(OFILES)
+	@$(CXX) $(CXXFLAGS) $(LINKING) $^ -o $@ $(LDLIBS)
 
 clean:
-	@echo " *** EFFACE MODULES OBJET ET EXECUTABLE ***"
-	@/bin/rm -f *.o *.x *.cc~ *.h~ project
+	@echo "Cleaning project..."
+	@rm -rf $(BUILD_DIR) $(OUT)
 
-#taper "make clean", "make depend, "make" dans le terminal
-
-balls.o: balls.cc balls.h tools.h constants.h message.h
-bricks.o: bricks.cc bricks.h tools.h constants.h message.h
-game.o: game.cc game.h balls.h tools.h constants.h message.h bricks.h \
- paddle.h
-message.o: message.cc message.h
-paddle.o: paddle.cc paddle.h tools.h constants.h message.h
-project.o: project.cc game.h balls.h tools.h constants.h message.h \
- bricks.h paddle.h
-tools.o: tools.cc tools.h constants.h message.h
-balls.o: balls.cc balls.h tools.h constants.h message.h
-bricks.o: bricks.cc bricks.h tools.h constants.h message.h
-game.o: game.cc game.h balls.h tools.h constants.h message.h bricks.h \
-  paddle.h
-message.o: message.cc message.h
-paddle.o: paddle.cc paddle.h tools.h constants.h message.h
-project.o: project.cc game.h balls.h tools.h constants.h message.h \
-  bricks.h paddle.h
-tools.o: tools.cc tools.h constants.h message.h
+tests: $(OUT)
+	@for test in $$(ls tests); do \
+		echo "Running $$test..."; \
+		./$(OUT) tests/$$test; \
+	done
