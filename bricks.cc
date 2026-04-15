@@ -27,12 +27,12 @@ bool verif_brick(double type, double x, double y, double c, double hitpoints,
         return true;
     }
 
-    if (type == RAINBOW){
-        if(verif_hitpoints(hitpoints)){
-            cout << message::invalid_hit_points(hitpoints) << endl; 
-            return true;
-        }
-    }
+    //if (type == RAINBOW){
+        //if(verif_hitpoints(hitpoints)){
+            //cout << message::invalid_hit_points(hitpoints) << endl; 
+            //return true;
+        //}
+    //}
 
     Brick nouvelle(type, x, y, c, hitpoints); //créer directement le bon type de brique
     int compteur(0);
@@ -61,8 +61,8 @@ bool Rainbow_brick::verif_hitpoints(double hitpoints){
 void Rainbow_brick::impact(){
     if (hitpoints>1)
         hitpoints--;
-    if (hitpoints==0)
-        ~Rainbow_brick();  //comment détruire cette brique?
+    if (hitpoints==0);
+        //~Rainbow_brick();  //comment détruire cette brique?
 }
 
 void Ball_brick::impact(){

@@ -1,6 +1,8 @@
 #include <iostream>
 #include <string>
+#include <gtkmm/application.h>
 #include "game.h"
+#include "gui.h"
 using namespace std;
 
 
@@ -11,7 +13,7 @@ int main(int argc, char* argv[]){
         file_name = argv[1];
         lecture_fichier(argv[1], game);
     }
-    
+
     auto app = Gtk::Application::create();
     return app->make_window_and_run<My_window>(1, argv, file_name);
 
