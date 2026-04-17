@@ -56,7 +56,7 @@ bool verif_brick(double type, double x, double y, double c, double hitpoints,
         }
         compteur++;
     }
-    stockBrick.push_back(nouvelle);
+    stockBrick.push_back(move(nouvelle));
     return false;
 } 
 
