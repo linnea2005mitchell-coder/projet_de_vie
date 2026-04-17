@@ -63,6 +63,6 @@ private:
 };
 
 bool verif_brick(double type, double x, double y, double c, double hitpoints, 
-                 std::vector<Brick>& stockBrick);
+                 std::vector<unique_ptr<Brick>>& stockBrick);
 //bool verif_hitpoints(double hitpoints); //à supprimer si c'est dans la classe rainbow_brick
 #endif 
