@@ -21,6 +21,7 @@ protected:
 };
 
 class Rainbow_brick : public Brick{
+    using Brick::intersects;
 public:
     Rainbow_brick(double t, double x, double y, double c, double h)
         : Brick(t, x, y, c, h){ 
@@ -37,6 +38,7 @@ private:
 };
 
 class Ball_brick : public Brick{
+    using Brick::intersects;
 public:
     Ball_brick(double t, double x, double y, double c, double h)
         : Brick(t, x, y, c, h){}
@@ -49,6 +51,7 @@ private:
 };
 
 class Split_brick : public Brick{
+    using Brick::intersects;
 public:
     Split_brick(double t, double x, double y, double c, double h)
         : Brick(t, x, y, c, h){}

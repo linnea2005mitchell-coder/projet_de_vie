@@ -8,7 +8,7 @@ enum BrickType {RAINBOW, BALLBRICK, SPLIT};
 constexpr int NB_INVALID_HITPOINTS(6);
 
 bool verif_brick(double type, double x, double y, double c, double hitpoints, 
-                 std::vector<Brick>& stockBrick){      
+                 std::vector<std::unique_ptr<Brick>>& stockBrick){      
     if ((type != RAINBOW) && (type != BALLBRICK) && (type != SPLIT)){
         cout << message::invalid_brick_type(type) << endl; 
         return true;
@@ -32,11 +32,24 @@ bool verif_brick(double type, double x, double y, double c, double hitpoints,
             //return true;
         //}
     //}
+    unique_ptr<Brick> nouvelle = nullptr;
 
-    Brick nouvelle(type, x, y, c, hitpoints); //créer directement le bon type de brique
+    switch (BrickType(type)) 
+        {
+        case RAINBOW : 
+            nouvelle = make_unique<Rainbow_brick>(type, x, y, c, hitpoints);
+            break;
+        case BALLBRICK: 
+            nouvelle = make_unique<Rainbow_brick>(type, x, y, c, hitpoints);
+            break;
+        case SPLIT: 
+            nouvelle = make_unique<Rainbow_brick>(type, x, y, c, hitpoints);
+            break;
+    };
+
     int compteur(0);
     for (const auto& b : stockBrick) {
-        if (nouvelle.intersects(b)) {  
+        if (nouvelle ->intersects(*b)) {  
             cout << message::collision_bricks(size_t(compteur), stockBrick.size()) 
             << endl;  
             return true; 

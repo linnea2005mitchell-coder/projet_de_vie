@@ -15,7 +15,7 @@ constexpr size_t NB_VAL_BALL(5);
 static unsigned etat(0);
 
 void lecture_fichier(const string& nomFichier, Game& game){ 
-    ifstream fichier("tests/" + nomFichier);      //changer "tests/"" avec nom dossier
+    ifstream fichier("tests_rendu1/" + nomFichier);      //changer "tests/"" avec nom dossier
     if(fichier.fail()){
         cout << "Impossible d'accéder au fichier." << endl;
         exit(EXIT_FAILURE);
@@ -136,7 +136,7 @@ bool verif_lives(int& live, int& liveGame){
 }
 
 bool intersects_brick_paddle(Game& game){ 
-    Brick derniere = game.stockBrick().back(); 
+    Brick derniere = *game.stockBrick().back(); 
     if (game.pad().corps().intersects(derniere.corps())) {
         cout << message::collision_paddle_brick(game.stockBrick().size()-1) << endl;
         return true; 
@@ -148,7 +148,7 @@ bool intersects_ball_brick(Game& game){
     int k(0);
     Ball derniere = game.stockBall().back(); 
     for (const auto& brick : game.stockBrick()) {
-        if (derniere.intersects(brick.corps())) {  
+        if (derniere.intersects((*brick).corps())) {  
             cout << message::collision_ball_brick(game.stockBall().size()-1, size_t(k)) << endl;
             return true; 
         }
