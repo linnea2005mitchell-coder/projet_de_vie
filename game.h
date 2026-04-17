@@ -14,7 +14,7 @@ public :
    int& score() {return score_ ;}
    int& lives() {return lives_ ;}
    Paddle& pad() {return pad_;}
-   std::vector<Brick>& stockBrick() {return stockBricks;}
+   std::vector<Brick>& stockBrick() {return stockBricks;} //faire collection hétérogène?
    std::vector<Ball>& stockBall() {return stockBalls;}
    
 

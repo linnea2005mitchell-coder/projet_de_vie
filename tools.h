@@ -5,6 +5,7 @@
 #include <algorithm>
 #include "constants.h"
 #include "message.h"
+#include "graphic.h"
 
 class Position {
 public: 
