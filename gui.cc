@@ -200,6 +200,8 @@ void My_window::dialog_response(int response, Gtk::FileChooserDialog *dialog)
         {
             cout << "open file " << file_name << endl; // TODO: set game from a file
             dialog->hide();
+            lecture_fichier(file_name, game_);
+            queue_draw();
         }
         break;
     case SAVE_FILE:
