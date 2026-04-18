@@ -11,7 +11,7 @@
 class Game {
 public : 
    Game(int s, int l, Paddle p, std::vector<std::unique_ptr<Brick>> sbrick, std::vector<Ball> sball) 
-   : score_(s), lives_(l), pad_(p), stockBricks(sbrick), stockBalls(sball) {}
+   : score_(s), lives_(l), pad_(p), stockBricks(std::move(sbrick)), stockBalls(sball) {}
    int& score() {return score_ ;}
    int& lives() {return lives_ ;}
    Paddle& pad() {return pad_;}

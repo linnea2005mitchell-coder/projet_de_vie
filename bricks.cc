@@ -56,7 +56,7 @@ bool verif_brick(double type, double x, double y, double c, double hitpoints,
         }
         compteur++;
     }
-    stockBrick.push_back(move(nouvelle));
+    stockBrick.push_back(std::move(nouvelle));
     return false;
 } 
 
@@ -73,7 +73,7 @@ bool Rainbow_brick::verif_hitpoints(double hitpoints){
 void Rainbow_brick::impact(){
     if (hitpoints>1)
         hitpoints--;
-    if (hitpoints==0);
+    if (hitpoints==0); 
         //~Rainbow_brick();  //comment détruire cette brique?
 }
 
