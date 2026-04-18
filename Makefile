@@ -67,3 +67,10 @@ game.o: game.cc game.h balls.h tools.h constants.h message.h graphic.h \
 message.o: message.cc message.h
 paddle.o: paddle.cc paddle.h tools.h constants.h message.h graphic.h
 tools.o: tools.cc tools.h constants.h message.h graphic.h
+balls.o: balls.cc balls.h tools.h constants.h message.h graphic.h
+bricks.o: bricks.cc bricks.h tools.h constants.h message.h graphic.h
+game.o: game.cc game.h balls.h tools.h constants.h message.h graphic.h \
+  bricks.h paddle.h
+message.o: message.cc message.h
+paddle.o: paddle.cc paddle.h tools.h constants.h message.h graphic.h
+tools.o: tools.cc tools.h constants.h message.h graphic.h

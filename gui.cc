@@ -24,13 +24,14 @@ enum Buttons
 
 constexpr unsigned drawing_size(500);
 
-My_window::My_window(string file_name)
+My_window::My_window(string file_name, Game game)
     : main_box(Gtk::Orientation::HORIZONTAL), panel_box(Gtk::Orientation::VERTICAL),
       command_box(Gtk::Orientation::VERTICAL), loop_activated(false),
       buttons({Gtk::Button("exit"), Gtk::Button("open"), Gtk::Button("save"),
                Gtk::Button("restart"), Gtk::Button("start"), Gtk::Button("step")}),
       info_frame("Infos :"), info_text({Gtk::Label("score:"), Gtk::Label("lives:"),
-                                        Gtk::Label("bricks:"), Gtk::Label("balls:")})
+                                        Gtk::Label("bricks:"), Gtk::Label("balls:")}), 
+                                        game_(std::move(game)), file_name_(file_name)
 {
     set_title("Brick Breaker");
     set_child(main_box);
@@ -44,6 +45,11 @@ My_window::My_window(string file_name)
     set_mouse_controller();
     set_infos();
     set_drawing();
+
+    if (!file_name.empty()) {
+        lecture_fichier(file_name, game_);
+        update_infos(); 
+        queue_draw();}
     // TODO: set the game
 }
 void My_window::set_commands()

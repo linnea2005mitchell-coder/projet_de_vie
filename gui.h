@@ -11,15 +11,11 @@ class My_window : public Gtk::Window
 {
 public:
     My_window(std::string file_name, Game game)
-    : game_(std::move(game)), file_name_(file_name)
-
-    { 
-        init_ui(); 
-    }
 
     Game game_;
 
 private:
+    std::string file_name_;
     Gtk::Box main_box, panel_box, command_box;
     Gtk::Grid info_grid;
     bool loop_activated;
