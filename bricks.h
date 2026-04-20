@@ -21,6 +21,7 @@ protected:
 };
 
 class Rainbow_brick : public Brick{
+    using Brick::intersects;
 public:
     Rainbow_brick(double t, double x, double y, double c, double h)
         : Brick(t, x, y, c, h){ 
@@ -37,6 +38,7 @@ private:
 };
 
 class Ball_brick : public Brick{
+    using Brick::intersects;
 public:
     Ball_brick(double t, double x, double y, double c, double h)
         : Brick(t, x, y, c, h){}
@@ -49,6 +51,7 @@ private:
 };
 
 class Split_brick : public Brick{
+    using Brick::intersects;
 public:
     Split_brick(double t, double x, double y, double c, double h)
         : Brick(t, x, y, c, h){}
@@ -60,6 +63,6 @@ private:
 };
 
 bool verif_brick(double type, double x, double y, double c, double hitpoints, 
-                 std::vector<Brick>& stockBrick);
+                 std::vector<std::unique_ptr<Brick>>& stockBrick);
 //bool verif_hitpoints(double hitpoints); //à supprimer si c'est dans la classe rainbow_brick
 #endif 

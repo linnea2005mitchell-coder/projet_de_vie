@@ -3,18 +3,19 @@
 #include <sstream>
 #include <string>
 #include <vector>
+#include <memory>
 #include "balls.h"
 #include "bricks.h"
 #include "paddle.h"
 
 class Game {
 public : 
-   Game(int s, int l, Paddle p, std::vector<Brick> sbrick, std::vector<Ball> sball) 
-   : score_(s), lives_(l), pad_(p), stockBricks(sbrick), stockBalls(sball) {}
+   Game(int s, int l, Paddle p, std::vector<std::unique_ptr<Brick>> sbrick, std::vector<Ball> sball) 
+   : score_(s), lives_(l), pad_(p), stockBricks(std::move(sbrick)), stockBalls(sball) {}
    int& score() {return score_ ;}
    int& lives() {return lives_ ;}
    Paddle& pad() {return pad_;}
-   std::vector<Brick>& stockBrick() {return stockBricks;} //faire collection hétérogène?
+   std::vector<std::unique_ptr<Brick>>& stockBrick() {return stockBricks;} 
    std::vector<Ball>& stockBall() {return stockBalls;}
    
 
@@ -22,7 +23,7 @@ private:
     int score_;
     int lives_;
     Paddle pad_;
-    std::vector<Brick> stockBricks;
+    std::vector<std::unique_ptr<Brick>> stockBricks;
     std::vector<Ball> stockBalls;
 };
 
