@@ -27,3 +27,11 @@ bool Cercle::intersects(const Carre& c) const {
 
     return (dx*dx + dy*dy) < (r*r); 
 }
+
+void Carre::drawFull() const{
+    drawSquareFull(pos.x(), pos.y(), cote_, color_); 
+}
+
+void Carre::drawEmpty() const{
+    
+}

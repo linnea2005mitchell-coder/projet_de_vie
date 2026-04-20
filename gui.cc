@@ -24,7 +24,7 @@ enum Buttons
 
 constexpr unsigned drawing_size(500);
 
-My_window::My_window(string file_name, Game game)
+My_window::My_window(std::string file_name, Game& game)
     : main_box(Gtk::Orientation::HORIZONTAL), panel_box(Gtk::Orientation::VERTICAL),
       command_box(Gtk::Orientation::VERTICAL), loop_activated(false),
       buttons({Gtk::Button("exit"), Gtk::Button("open"), Gtk::Button("save"),
@@ -270,6 +270,9 @@ void My_window::on_draw(const Cairo::RefPtr<Cairo::Context> &cr, int width, int 
     cr->translate((width - side) / 2, (height + side) / 2);
     cr->scale(side / (arena_size), -side / (arena_size));
     // TODO: draw the game
+    //==>appeler draw_game
+    Carre test(32.3, 44, 11.5, CYAN); 
+    test.drawFull();
 }
 
 void My_window::set_mouse_controller()

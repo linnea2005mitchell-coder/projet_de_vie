@@ -56,3 +56,10 @@ void set_color(Color color)
     }
     (*ptcr)->set_source_rgb(r, g, b);
 }
+
+void drawSquareFull(double x, double y, double cote, Color color){
+    set_color(color);
+
+    (*ptcr)->rectangle(x, y, cote, cote);
+    (*ptcr)->fill();
+}

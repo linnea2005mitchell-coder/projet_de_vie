@@ -10,7 +10,7 @@
 class My_window : public Gtk::Window
 {
 public:
-    My_window(std::string file_name, Game game)
+    My_window(std::string file_name, Game& game);
 
     Game game_;
 

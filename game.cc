@@ -15,7 +15,7 @@ constexpr size_t NB_VAL_BALL(5);
 static unsigned etat(0);
 
 void lecture_fichier(const string& nomFichier, Game& game){ 
-    ifstream fichier("tests_rendu1/" + nomFichier);      //changer "tests/"" avec nom dossier
+    ifstream fichier(nomFichier);      //changer "tests/"" avec nom dossier
     if(fichier.fail()){
         cout << "Impossible d'accéder au fichier." << endl;
         exit(EXIT_FAILURE);
