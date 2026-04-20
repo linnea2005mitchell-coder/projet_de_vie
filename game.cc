@@ -4,6 +4,7 @@
 #include <sstream>
 #include <string>
 #include <vector>
+#include <filesystem>
 #include "game.h"
 #include "message.h"
 using namespace std;
@@ -164,4 +165,10 @@ bool intersects_paddle_ball(Game& game){
             return true; 
         }
         return false;
+}
+
+void ecriture_fichier(const string& file_name, const Game& game){
+    ofstream file(file_name);
+
+
 }

@@ -39,4 +39,6 @@ bool intersects_brick_paddle(Game& game);
 bool intersects_ball_brick(Game& game);
 bool intersects_paddle_ball(Game& game);
 
+void ecriture_fichier(const string& file_name, const Game& game)
+
 #endif 

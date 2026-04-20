@@ -204,7 +204,7 @@ void My_window::dialog_response(int response, Gtk::FileChooserDialog *dialog)
     case OPEN_FILE:
         if (file_name != "")
         {
-            cout << "open file " << file_name << endl; // TODO: set game from a file
+            cout << "open file " << file_name << endl; // TODO: s'assurer que ça affiche et update correctement
             Game game( 0, 0, {}, {}, {});
             lecture_fichier(file_name, game);
 
@@ -217,6 +217,16 @@ void My_window::dialog_response(int response, Gtk::FileChooserDialog *dialog)
         if (file_name != "")
         {
             cout << "save file " << file_name << endl; // TODO: save the game
+            
+            filesystem::path final_path = file_path;
+            if (final_path.extension() != ".txt") {
+                final_path += ".txt";
+            }
+
+            string chemin = final_path.string();
+            cout << "Sauvegarde dans : " << chemin << endl;
+
+            ecriture_fichier(chemin, game_);
             dialog->hide();
         }
         break;
