@@ -25,13 +25,12 @@ enum Buttons
 constexpr unsigned drawing_size(500);
 
 My_window::My_window(string file_name, Game game)
-    : main_box(Gtk::Orientation::HORIZONTAL), panel_box(Gtk::Orientation::VERTICAL),
+    : game_(std::move(game)), file_name_(file_name), main_box(Gtk::Orientation::HORIZONTAL), panel_box(Gtk::Orientation::VERTICAL),
       command_box(Gtk::Orientation::VERTICAL), loop_activated(false),
       buttons({Gtk::Button("exit"), Gtk::Button("open"), Gtk::Button("save"),
                Gtk::Button("restart"), Gtk::Button("start"), Gtk::Button("step")}),
       info_frame("Infos :"), info_text({Gtk::Label("score:"), Gtk::Label("lives:"),
-                                        Gtk::Label("bricks:"), Gtk::Label("balls:")}), 
-                                        game_(std::move(game)), file_name_(file_name)
+                                        Gtk::Label("bricks:"), Gtk::Label("balls:")})
 {
     set_title("Brick Breaker");
     set_child(main_box);
@@ -187,14 +186,15 @@ void My_window::set_dialog(Gtk::FileChooserDialog *dialog)
 }
 void My_window::dialog_response(int response, Gtk::FileChooserDialog *dialog)
 {
-    filesystem::path file_name = "";
-    if (dialog->get_file())
-    {
-        file_name = dialog->get_file()->get_path();
-        if (file_name.extension() != ".txt")
-        {
+    filesystem::path file_path = dialog->get_file()->get_path();
+    string file_name;
+    if (dialog->get_file()){
+
+        
+        if (file_path.extension() != ".txt"){
             file_name = "";
-        }
+            }
+        file_name = file_path.filename().string();
     }
     switch (response)
     {
@@ -205,9 +205,12 @@ void My_window::dialog_response(int response, Gtk::FileChooserDialog *dialog)
         if (file_name != "")
         {
             cout << "open file " << file_name << endl; // TODO: set game from a file
-            dialog->hide();
-            lecture_fichier(file_name, game_);
+            Game game( 0, 0, {}, {}, {});
+            lecture_fichier(file_name, game);
+
+            update_infos(); 
             queue_draw();
+            dialog->hide();
         }
         break;
     case SAVE_FILE:
