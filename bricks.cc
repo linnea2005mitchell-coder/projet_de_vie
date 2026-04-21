@@ -13,24 +13,23 @@ bool verif_brick(double type, double x, double y, double c, double hitpoints,
         cout << message::invalid_brick_type(type) << endl; 
         return true;
     }              
-
     double halfC = c / 2.0;
     if ((x-halfC) < 0 || (y-halfC) < 0 || (x+halfC) > arena_size 
         || (y+halfC) > arena_size) { 
         cout << message::brick_outside(x, y) << endl; 
         return true;
     }
-
     if (c < brick_size_min){
         cout << message::invalid_brick_size(c) << endl;
         return true;
     }
 
-    if (type == RAINBOW){ //à supprimer si verif_hitpoints est dans la classe Rainbow_brick
+    hitpoints--;
+    if (type == RAINBOW){ //vérifier que verif_hitpoints fonctionne bien
         if(verif_hitpoints(hitpoints)) return true;
     }
-
     Color color = static_cast<Color>(hitpoints);
+
     unique_ptr<Brick> nouvelle = nullptr;
     switch (BrickType(type)) 
         {
@@ -78,9 +77,9 @@ bool verif_hitpoints(double hitpoints){
 }
 
 void Rainbow_brick::impact(){
-    if (hitpoints>1)
-        hitpoints--;
-    if (hitpoints==0); 
+    if (hitpoints_>1)
+        hitpoints_--;
+    if (hitpoints_==0); 
         //~Rainbow_brick();  //comment détruire cette brique?
 }
 
@@ -125,5 +124,10 @@ vector<Split_brick> newBricks(Split_brick& oldBrick){
 }
 
 void Brick::drawBrick() const{
-    
+    corps_.drawFull();
+}
+
+void Ball_brick::drawBrick() const{
+    corps_.drawFull();
+    //appelle dessin balle
 }

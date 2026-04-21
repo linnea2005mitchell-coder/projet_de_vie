@@ -270,9 +270,11 @@ void My_window::on_draw(const Cairo::RefPtr<Cairo::Context> &cr, int width, int 
     cr->translate((width - side) / 2, (height + side) / 2);
     cr->scale(side / (arena_size), -side / (arena_size));
     // TODO: draw the game
-    //==>appeler draw_game
-    Carre test(32.3, 44, 11.5, CYAN); 
-    test.drawFull();
+    //game().stockBrick().push_back(unique_ptr<Brick>(new Brick(1, 25, 44, 16, BLUE))); //test
+    //game().stockBall().push_back(Ball(10, 40.5, new_ball_radius, 15, 15)); //test
+    game().drawGame();
+    //Paddle paddle(12, 13, 20);
+    //paddle.drawPaddle();
 }
 
 void My_window::set_mouse_controller()

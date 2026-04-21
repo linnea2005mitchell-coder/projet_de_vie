@@ -57,6 +57,8 @@ public :
     double y() const {return pos.y(); }
     bool intersects(const Cercle& other) const;
     bool intersects(const Carre& c) const;
+    void drawFull() const;
+    void drawEmpty() const;
 
 protected :
     double r;

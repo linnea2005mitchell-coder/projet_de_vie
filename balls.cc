@@ -37,3 +37,7 @@ bool verif_delta(double dx, double dy){
     }
     return false; 
 }
+
+void Ball::drawBall() const{
+    corps_.drawFull();
+}

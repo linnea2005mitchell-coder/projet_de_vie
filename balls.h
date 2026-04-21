@@ -12,6 +12,8 @@ public:
     const Cercle& corps() const { return corps_;}
     bool intersects(const Cercle& other) {return corps_.intersects(other); }
     bool intersects(const Carre& c) {return corps_.intersects(c); }
+
+    void drawBall() const;
     
 protected :
     Cercle corps_;

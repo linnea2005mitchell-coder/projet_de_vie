@@ -11,9 +11,9 @@ public:
 
     ~Brick() = default; //revoir
     double getType(){return type; }
-    const Carre& corps() const { return corps_;} //plutôt faire fonctions pour avoir directemetn x, y, t?
-    bool intersects(const Brick& other) const {return corps_.intersects(other.corps());};
-    void drawBrick() const;
+    const Carre& corps() const { return corps_;} 
+    bool intersects(const Brick& other) const{return corps_.intersects(other.corps());}
+    virtual void drawBrick() const;
 
 protected: 
     Carre corps_;
@@ -24,14 +24,15 @@ class Rainbow_brick : public Brick{
     using Brick::intersects;
 public:
     Rainbow_brick(double t, double x, double y, double c, Color color)
-        : Brick(t, x, y, c, color){}
+        : Brick(t, x, y, c, color){hitpoints_=static_cast<int>(color);
+                                   ++hitpoints_;}
     ~Rainbow_brick() = default; //revoir
+    int hitpoints(){return hitpoints_;}
 
-    bool verif_hitpoints(double hitpoints);
     void impact();
 
 private:
-    double hitpoints;
+    int hitpoints_;
 };
 
 class Ball_brick : public Brick{
@@ -42,6 +43,7 @@ public:
     ~Ball_brick() = default; //revoir
 
     void impact();
+    void drawBrick() const;
 
 private:
     //a une balle?

@@ -14,3 +14,7 @@ bool verif_paddle(double x, double y, double r, Paddle& pad) {
 	cout << message::paddle_outside(x, y) << endl;
 	return true;
 }
+
+void Paddle::drawPaddle() const{
+    corps_.drawEmpty();
+}

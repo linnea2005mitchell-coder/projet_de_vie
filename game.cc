@@ -32,8 +32,8 @@ void lecture_fichier(const string& nomFichier, Game& game){
     }
     
     cout << message::success() << endl;
-    fichier.close();
-    exit(EXIT_SUCCESS);
+    //fichier.close();
+    //exit(EXIT_SUCCESS);
 }
 
 bool lecture_ligne(istringstream& data, vector<double>& tabVal, int& compteur, Game& game){
@@ -109,7 +109,7 @@ bool lecture_brick(double valeur, int& compteur, vector<double>& tabVal, Game& g
         }
         if(tabVal.size()==NB_VAL_BRICK && tabVal[0]!=0){
             compteur--;
-            tabVal.push_back(-1);
+            tabVal.push_back(1); 
             if(verif_ligne(valeur, tabVal, game)) return true; 
         }
     }
@@ -164,4 +164,15 @@ bool intersects_paddle_ball(Game& game){
             return true; 
         }
         return false;
+}
+
+void Game::drawGame(){
+    drawSquareEmpty(0, 0, arena_size, GREY);
+    pad_.drawPaddle();
+    for(auto& p : stockBrick()){
+        p->drawBrick();
+    }
+    for(auto& p : stockBall()){
+        p.drawBall();
+    }
 }
