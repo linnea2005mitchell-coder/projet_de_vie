@@ -139,7 +139,8 @@ bool verif_lives(int& live, int& liveGame){
 bool intersects_brick_paddle(Game& game){ 
     Brick derniere = *game.stockBrick().back(); 
     if (game.pad().corps().intersects(derniere.corps())) {
-        cout << message::collision_paddle_brick(game.stockBrick().size()-1) << endl;
+        cout << message::collision_paddle_brick
+        (game.stockBrick().size()-1) << endl;
         return true; 
     }
     return false;
@@ -150,7 +151,8 @@ bool intersects_ball_brick(Game& game){
     Ball derniere = game.stockBall().back(); 
     for (const auto& brick : game.stockBrick()) {
         if (derniere.intersects((*brick).corps())) {  
-            cout << message::collision_ball_brick(game.stockBall().size()-1, size_t(k)) << endl;
+            cout << message::collision_ball_brick
+            (game.stockBall().size()-1, size_t(k)) << endl;
             return true; 
         }
         k++;
@@ -167,8 +169,38 @@ bool intersects_paddle_ball(Game& game){
         return false;
 }
 
-void ecriture_fichier(const string& file_name, const Game& game){
-    ofstream file(file_name);
+void ecriture_fichier(const string& path, const Game& game){
+    ofstream file(path);
+    
+    file << "# score" << endl;
+    file << game.score() << endl << endl;
 
+    file << "# lives" << endl;
+    file << game.lives() << endl << endl;
 
+    file << "# paddle" << endl;
+    file << game.pad().corps().x() << " " << game.pad().corps().y() 
+    << " " << game.pad().corps().r() << endl << endl;
+    
+
+    file << "# bricks" << endl;
+    file << game.stockBrick().size() << endl; 
+
+    for (const auto& brick_ptr : game.stockBrick()) {
+        if (brick_ptr){
+            file << "\t" << *brick.getType() << " " << *brick.corps().x() << " " 
+                 << *brick.corps().y() << " " << *brick.corps().cote() << " [" 
+                 << *brick.getHitpoints() << "]" << endl;
+        }
+    }
+    file << endl;
+
+    file << "# balls" << endl;
+    file << game.stockBall().size() << endl; 
+
+    for (const auto& ball : game.stockBall()) {
+            file << "\t" << ball.corps().x() << " " << ball.corps().y() << " " 
+            << ball.corps().r() << " " << ball.dx() << " " << ball.dy() << endl;
+    }
+    file << endl;
 }

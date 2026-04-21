@@ -12,7 +12,7 @@ public:
     ~Brick() = default; //revoir
     double getType(){return type; }
     double getHitpoints(){return hitpoints; }
-    const Carre& corps() const { return corps_;} //plutôt faire fonctions pour avoir directemetn x, y, t?
+    const Carre& corps() const { return corps_;} //plutôt faire fonctions pour avoir directemetn x, y, t? ouai c'est un peu long ik mais les methodes intersects fonctionnent avec cercle ou carré comme param dcp j'ai trouvé + simple mais c'est #relou
     bool intersects(const Brick& other) const {return corps_.intersects(other.corps());};
 
 protected: 
