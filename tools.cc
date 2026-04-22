@@ -38,10 +38,10 @@ void Carre::drawEmpty() const{
 
 void Cercle::drawFull() const{
     Color color = BLACK;
-    drawCircleFull(x(), y(), r, color );
+    drawCircleFull(x(), y(), r, color);
 }
 
 void Cercle::drawEmpty() const{
     Color color = BLACK;
-    drawCircleEmpty(x(), y(), r, color );
+    drawCircleEmpty(x(), y(), r, color);
 }

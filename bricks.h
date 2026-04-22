@@ -46,18 +46,21 @@ public:
     void drawBrick() const;
 
 private:
-    //a une balle?
+    
 };
 
 class Split_brick : public Brick{
     using Brick::intersects;
 public:
-    Split_brick(double t, double x, double y, double c, Color color)
-        : Brick(t, x, y, c, color){}
+    Split_brick(double t, double x, double y, double c, Color color) 
+        : Brick(t, x, y, c, color){} 
     ~Split_brick() = default; //revoir
 
     void impact();
-    std::vector<Split_brick> newBricks(Split_brick& oldBrick); //voir comment faire avec ce tableau et/ou tableau stockBricks
+    std::vector<std::unique_ptr<Split_brick>> newBricks() const; //voir comment faire avec ce tableau et/ou tableau stockBricks
+    void drawBrick() const;
+
+    
 private:
 };
 
@@ -65,5 +68,5 @@ bool verif_brick(double type, double x, double y, double c, double hitpoints,
                  std::vector<std::unique_ptr<Brick>>& stockBrick);
 bool verif_intersect(std::vector<std::unique_ptr<Brick>>& stockBrick, 
                      std::unique_ptr<Brick>& nouvelle);
-bool verif_hitpoints(double hitpoints); //à supprimer si c'est dans la classe rainbow_brick
+bool verif_hitpoints(double hitpoints); 
 #endif 
