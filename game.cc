@@ -186,12 +186,15 @@ void ecriture_fichier(const string& path, const Game& game){
     file << "# bricks" << endl;
     file << game.stockBrick().size() << endl; 
 
-    for (const auto& brick_ptr : game.stockBrick()) {
-        if (brick_ptr){
-            file << "\t" << *brick.getType() << " " << *brick.corps().x() << " " 
-                 << *brick.corps().y() << " " << *brick.corps().cote() << " [" 
-                 << *brick.getHitpoints() << "]" << endl;
-        }
+    for (const auto& brick : game.stockBrick()) {
+        if (brick){
+            file << "\t" << brick->getType() << " " << brick->corps().x() << " " 
+                 << brick->corps().y() << " " << brick->corps().cote(); 
+                 
+                 if (brick->getType() == RAINBOW_BRICK){ 
+                    file << " [" << *brick.Hitpoints() << "]";  /// rechecker 
+                 }
+                file << endl; 
     }
     file << endl;
 
@@ -202,10 +205,12 @@ void ecriture_fichier(const string& path, const Game& game){
             file << "\t" << ball.corps().x() << " " << ball.corps().y() << " " 
             << ball.corps().r() << " " << ball.dx() << " " << ball.dy() << endl;
     }
-    file << endl;
+    file << endl; 
+}
 
     
 void Game::drawGame(){
+
     drawSquareEmpty(0, 0, arena_size, GREY);
     pad_.drawPaddle();
     for(auto& p : stockBrick()){

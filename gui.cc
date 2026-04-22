@@ -24,7 +24,7 @@ enum Buttons
 
 constexpr unsigned drawing_size(500);
 
-My_window::My_window(string file_name, Game& game)
+My_window::My_window(string file_name, Game game)
     : game_(std::move(game)), file_name_(file_name), main_box(Gtk::Orientation::HORIZONTAL), panel_box(Gtk::Orientation::VERTICAL),
       command_box(Gtk::Orientation::VERTICAL), loop_activated(false),
       buttons({Gtk::Button("exit"), Gtk::Button("open"), Gtk::Button("save"),

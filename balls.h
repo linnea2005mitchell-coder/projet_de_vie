@@ -10,6 +10,9 @@ public:
     : corps_(x, y, r), del(dx,dy) {};
 
     const Cercle& corps() const { return corps_;}
+    const double& dx() const { return del.dx();}
+    const double& dy() const { return del.dy();}
+
     bool intersects(const Cercle& other) {return corps_.intersects(other); }
     bool intersects(const Carre& c) {return corps_.intersects(c); }
 
