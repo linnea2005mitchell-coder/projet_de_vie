@@ -22,10 +22,12 @@ protected:
 class Delta {
 public: 
     Delta(double x, double y) 
-    : dx(x), dy(y) {}
+    : dx_(x), dy_(y) {}
     
+    double dx() const {return dx_ ;}
+    double dy() const {return dy_ ;}
 protected: 
-    double dx, dy;
+    double dx_, dy_;
 };
 
 
@@ -52,16 +54,17 @@ protected :
 class Cercle {
 public : 
     Cercle(double x, double y, double ray) 
-        :  r(ray), pos(x, y) {}
+        :  r_(ray), pos(x, y) {}
     double x() const {return pos.x(); }
     double y() const {return pos.y(); }
+    double r() const {return r_; }
     bool intersects(const Cercle& other) const;
     bool intersects(const Carre& c) const;
     void drawFull() const;
     void drawEmpty() const;
 
 protected :
-    double r;
+    double r_;
     Position pos;
 };
 
