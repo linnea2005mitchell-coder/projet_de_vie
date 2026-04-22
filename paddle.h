@@ -9,6 +9,8 @@ public:
     Paddle(double x, double y, double r)
     : corps_ (x, y, r) {}
     const Cercle& corps() const { return corps_;}
+
+    void drawPaddle() const;
  
 protected :
 Cercle corps_;

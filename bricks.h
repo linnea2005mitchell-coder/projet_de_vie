@@ -6,45 +6,44 @@
 
 class Brick {
 public:
-    Brick(double t, double x, double y, double c, double h) 
-        : corps_(x, y, c), type(t), hitpoints(h){} //mettre hitpoints ici ou comme attribut spécifique à Rainbow_brick?
+    Brick(double t, double x, double y, double c, Color color) 
+        : corps_(x, y, c, color), type(t){} 
 
     ~Brick() = default; //revoir
     double getType(){return type; }
-    double getHitpoints(){return hitpoints; }
-    const Carre& corps() const { return corps_;} //plutôt faire fonctions pour avoir directemetn x, y, t? ouai c'est un peu long ik mais les methodes intersects fonctionnent avec cercle ou carré comme param dcp j'ai trouvé + simple mais c'est #relou
-    bool intersects(const Brick& other) const {return corps_.intersects(other.corps());};
+    const Carre& corps() const { return corps_;} 
+    bool intersects(const Brick& other) const{return corps_.intersects(other.corps());}
+    virtual void drawBrick() const;
 
 protected: 
     Carre corps_;
-    double type, hitpoints; 
+    double type; 
 };
 
 class Rainbow_brick : public Brick{
     using Brick::intersects;
 public:
-    Rainbow_brick(double t, double x, double y, double c, double h)
-        : Brick(t, x, y, c, h){ 
-            if(!verif_hitpoints(h))
-                hitpoints=h;
-            }
+    Rainbow_brick(double t, double x, double y, double c, Color color)
+        : Brick(t, x, y, c, color){hitpoints_=static_cast<int>(color);
+                                   ++hitpoints_;}
     ~Rainbow_brick() = default; //revoir
+    int hitpoints(){return hitpoints_;}
 
-    bool verif_hitpoints(double hitpoints);
     void impact();
 
 private:
-    double hitpoints;
+    int hitpoints_;
 };
 
 class Ball_brick : public Brick{
     using Brick::intersects;
 public:
-    Ball_brick(double t, double x, double y, double c, double h)
-        : Brick(t, x, y, c, h){}
+    Ball_brick(double t, double x, double y, double c, Color color)
+        : Brick(t, x, y, c, color){}
     ~Ball_brick() = default; //revoir
 
     void impact();
+    void drawBrick() const;
 
 private:
     //a une balle?
@@ -53,8 +52,8 @@ private:
 class Split_brick : public Brick{
     using Brick::intersects;
 public:
-    Split_brick(double t, double x, double y, double c, double h)
-        : Brick(t, x, y, c, h){}
+    Split_brick(double t, double x, double y, double c, Color color)
+        : Brick(t, x, y, c, color){}
     ~Split_brick() = default; //revoir
 
     void impact();
@@ -64,5 +63,7 @@ private:
 
 bool verif_brick(double type, double x, double y, double c, double hitpoints, 
                  std::vector<std::unique_ptr<Brick>>& stockBrick);
-//bool verif_hitpoints(double hitpoints); //à supprimer si c'est dans la classe rainbow_brick
+bool verif_intersect(std::vector<std::unique_ptr<Brick>>& stockBrick, 
+                     std::unique_ptr<Brick>& nouvelle);
+bool verif_hitpoints(double hitpoints); //à supprimer si c'est dans la classe rainbow_brick
 #endif 

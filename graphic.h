@@ -14,4 +14,9 @@ enum Color
     GREY,
     WHITE,
 };
+
+void drawSquareFull(double x, double y, double cote, Color color);
+void drawSquareEmpty(double x, double y, double cote, Color color);
+void drawCircleFull(double x, double y, double rayon, Color color);
+void drawCircleEmpty(double x, double y, double rayon, Color color);
 #endif

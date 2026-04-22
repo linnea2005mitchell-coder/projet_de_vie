@@ -56,3 +56,27 @@ void set_color(Color color)
     }
     (*ptcr)->set_source_rgb(r, g, b);
 }
+
+void drawSquareFull(double x, double y, double cote, Color color){
+    set_color(color);
+    double xBL = x - cote/2;
+    double yBL = y -cote/2;
+    (*ptcr)->rectangle(xBL, yBL, cote, cote);
+    (*ptcr)->fill(); 
+}
+void drawSquareEmpty(double x, double y, double cote, Color color){
+    set_color(color);
+    (*ptcr)->rectangle(x, y, cote, cote);
+    (*ptcr)->stroke(); 
+}
+
+void drawCircleFull(double x, double y, double rayon, Color color){
+    set_color(color);
+    (*ptcr)->arc(x, y, rayon, 0.0, 2.0 * M_PI);
+    (*ptcr)->fill();
+}
+void drawCircleEmpty(double x, double y, double rayon, Color color){
+    set_color(color);
+    (*ptcr)->arc(x, y, rayon, 0.0, 2.0 * M_PI);
+    (*ptcr)->stroke();
+}

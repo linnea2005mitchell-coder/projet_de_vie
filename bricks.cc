@@ -8,45 +8,48 @@ enum BrickType {RAINBOW, BALLBRICK, SPLIT};
 constexpr int NB_INVALID_HITPOINTS(6);
 
 bool verif_brick(double type, double x, double y, double c, double hitpoints, 
-                 std::vector<std::unique_ptr<Brick>>& stockBrick){      
+                 vector<unique_ptr<Brick>>& stockBrick){      
     if ((type != RAINBOW) && (type != BALLBRICK) && (type != SPLIT)){
         cout << message::invalid_brick_type(type) << endl; 
         return true;
     }              
-
     double halfC = c / 2.0;
     if ((x-halfC) < 0 || (y-halfC) < 0 || (x+halfC) > arena_size 
         || (y+halfC) > arena_size) { 
         cout << message::brick_outside(x, y) << endl; 
         return true;
     }
-
     if (c < brick_size_min){
         cout << message::invalid_brick_size(c) << endl;
         return true;
     }
 
-    //if (type == RAINBOW){ //à supprimer si verif_hitpoints est dans la classe Rainbow_brick
-        //if(verif_hitpoints(hitpoints)){
-            //cout << message::invalid_hit_points(hitpoints) << endl; 
-            //return true;
-        //}
-    //}
-    unique_ptr<Brick> nouvelle = nullptr;
+    hitpoints--;
+    if (type == RAINBOW){ //vérifier que verif_hitpoints fonctionne bien
+        if(verif_hitpoints(hitpoints)) return true;
+    }
+    Color color = static_cast<Color>(hitpoints);
 
+    unique_ptr<Brick> nouvelle = nullptr;
     switch (BrickType(type)) 
         {
         case RAINBOW : 
-            nouvelle = make_unique<Rainbow_brick>(type, x, y, c, hitpoints);
+            nouvelle = make_unique<Rainbow_brick>(type, x, y, c, color);
             break;
         case BALLBRICK: 
-            nouvelle = make_unique<Rainbow_brick>(type, x, y, c, hitpoints);
+            nouvelle = make_unique<Rainbow_brick>(type, x, y, c, color);
             break;
         case SPLIT: 
-            nouvelle = make_unique<Rainbow_brick>(type, x, y, c, hitpoints);
+            nouvelle = make_unique<Rainbow_brick>(type, x, y, c, color);
             break;
     };
+    if(verif_intersect(stockBrick, nouvelle)) return true;
+   
+    return false;
+} 
 
+bool verif_intersect(vector<unique_ptr<Brick>>& stockBrick, 
+                     unique_ptr<Brick>& nouvelle){
     int compteur(0);
     for (const auto& b : stockBrick) {
         if (nouvelle ->intersects(*b)) {  
@@ -58,22 +61,25 @@ bool verif_brick(double type, double x, double y, double c, double hitpoints,
     }
     stockBrick.push_back(std::move(nouvelle));
     return false;
-} 
+}
 
-bool Rainbow_brick::verif_hitpoints(double hitpoints){
+bool verif_hitpoints(double hitpoints){
     int compteur(0);
     for(int i(RED); i<= PURPLE; i++){
         if (hitpoints != i)
             compteur++;
     }
-    if(compteur != NB_INVALID_HITPOINTS) return true;
+    if(compteur != NB_INVALID_HITPOINTS){
+        cout << message::invalid_hit_points(hitpoints) << endl; 
+        return true;
+    }
     return false;
 }
 
 void Rainbow_brick::impact(){
-    if (hitpoints>1)
-        hitpoints--;
-    if (hitpoints==0); 
+    if (hitpoints_>1)
+        hitpoints_--;
+    if (hitpoints_==0); 
         //~Rainbow_brick();  //comment détruire cette brique?
 }
 
@@ -105,7 +111,9 @@ vector<Split_brick> newBricks(Split_brick& oldBrick){
     Position posBL(cx-offset, cy-offset);
     Position posBR(cx+offset, cy-offset);
 
-    int newColor = oldBrick.getHitpoints() - 1; 
+    int index = static_cast<int>(oldCorps.color());
+    index--; 
+    Color newColor = static_cast<Color>(index);
 
     newBricks.push_back(Split_brick(SPLIT, posTL.x(), posTL.y(), newSize, newColor));
     newBricks.push_back(Split_brick(SPLIT, posTR.x(), posTR.y(), newSize, newColor));
@@ -113,4 +121,13 @@ vector<Split_brick> newBricks(Split_brick& oldBrick){
     newBricks.push_back(Split_brick(SPLIT, posBR.x(), posBR.y(), newSize, newColor));
     //détruire oldBrick
     return newBricks;
+}
+
+void Brick::drawBrick() const{
+    corps_.drawFull();
+}
+
+void Ball_brick::drawBrick() const{
+    corps_.drawFull();
+    //appelle dessin balle
 }

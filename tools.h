@@ -31,17 +31,21 @@ protected:
 
 class Carre {
 public : 
-    Carre(double x, double y, double c) 
-        : cote_(c), pos(x,y) {}
+    Carre(double x, double y, double c, Color color) 
+        : cote_(c), pos(x,y), color_(color) {}
     
     double cote() const {return cote_; };
     double x() const {return pos.x(); }
     double y() const {return pos.y(); }
+    Color color() const {return color_;}
     bool intersects(const Carre& other) const;
-       
+    void drawFull() const;
+    void drawEmpty() const;
+    
 protected :
     double cote_;
     Position pos;
+    Color color_;
 };
 
 
@@ -54,6 +58,8 @@ public :
     double r() const {return r_; }
     bool intersects(const Cercle& other) const;
     bool intersects(const Carre& c) const;
+    void drawFull() const;
+    void drawEmpty() const;
 
 protected :
     double r_;
