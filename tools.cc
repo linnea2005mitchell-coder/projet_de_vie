@@ -13,7 +13,7 @@ bool Carre::intersects(const Carre& other) const {
 bool Cercle::intersects(const Cercle& other) const {
     double d = sqrt((x() - other.x())*(x() - other.x()) +
                      (y()- other.y())*(y()- other.y()));
-    return d < (r + other.r);
+    return d < (r() + other.r());
 }
 
 bool Cercle::intersects(const Carre& c) const {
@@ -25,7 +25,7 @@ bool Cercle::intersects(const Carre& c) const {
     double dx = x() - closestX;
     double dy = y() - closestY;
 
-    return (dx*dx + dy*dy) < (r*r); 
+    return (dx*dx + dy*dy) < (r()*r()); 
 }
 
 void Carre::drawFull() const{
@@ -38,10 +38,10 @@ void Carre::drawEmpty() const{
 
 void Cercle::drawFull() const{
     Color color = BLACK;
-    drawCircleFull(x(), y(), r, color );
+    drawCircleFull(x(), y(), r(), color );
 }
 
 void Cercle::drawEmpty() const{
     Color color = BLACK;
-    drawCircleEmpty(x(), y(), r, color );
+    drawCircleEmpty(x(), y(), r(), color );
 }

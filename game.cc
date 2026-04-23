@@ -169,7 +169,7 @@ bool intersects_paddle_ball(Game& game){
         return false;
 }
 
-void ecriture_fichier(const string& path, const Game& game){
+void ecriture_fichier(const string& path, Game& game){
     ofstream file(path);
     
     file << "# score" << endl;
@@ -191,8 +191,10 @@ void ecriture_fichier(const string& path, const Game& game){
             file << "\t" << brick->getType() << " " << brick->corps().x() << " " 
                  << brick->corps().y() << " " << brick->corps().cote(); 
                  
-                 if (brick->getType() == RAINBOW_BRICK){ 
-                    file << " [" << *brick.Hitpoints() << "]";  /// rechecker 
+                 if (brick->getType() == 0){ 
+                    int hitpoints=static_cast<int>(brick->corps().color());
+                    ++hitpoints;
+                    file << " [" << hitpoints << "]";  
                  }
                 file << endl; 
     }
@@ -206,7 +208,7 @@ void ecriture_fichier(const string& path, const Game& game){
             << ball.corps().r() << " " << ball.dx() << " " << ball.dy() << endl;
     }
     file << endl; 
-}
+}}
 
     
 void Game::drawGame(){
