@@ -24,8 +24,8 @@ public:
     Delta(double x, double y) 
     : dx_(x), dy_(y) {}
     
-    double dx() const {return dx_ ;}
-    double dy() const {return dy_ ;}
+    const double& dx() const {return dx_ ;}
+    const double& dy() const {return dy_ ;}
 protected: 
     double dx_, dy_;
 };

@@ -197,6 +197,7 @@ void ecriture_fichier(const string& path, Game& game){
                     file << " [" << hitpoints << "]";  
                  }
                 file << endl; 
+        }
     }
     file << endl;
 
@@ -208,7 +209,7 @@ void ecriture_fichier(const string& path, Game& game){
             << ball.corps().r() << " " << ball.dx() << " " << ball.dy() << endl;
     }
     file << endl; 
-}}
+}
 
     
 void Game::drawGame(){
