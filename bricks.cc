@@ -37,10 +37,10 @@ bool verif_brick(double type, double x, double y, double c, double hitpoints,
             nouvelle = make_unique<Rainbow_brick>(type, x, y, c, color);
             break;
         case BALLBRICK: 
-            nouvelle = make_unique<Rainbow_brick>(type, x, y, c, color);
+            nouvelle = make_unique<Ball_brick>(type, x, y, c, color);
             break;
         case SPLIT: 
-            nouvelle = make_unique<Rainbow_brick>(type, x, y, c, color);
+            nouvelle = make_unique<Split_brick>(type, x, y, c, color);
             break;
     };
     if(verif_intersect(stockBrick, nouvelle)) return true;
@@ -93,33 +93,33 @@ void Split_brick::impact(){
     //processus récursif==>s'appelle lui-même jusqu'à atteindre une condition d'arrêt
 }
 
-vector<Split_brick> newBricks(Split_brick& oldBrick){ 
-    vector<Split_brick> newBricks;
-    Carre oldCorps = oldBrick.corps();
+vector<unique_ptr<Split_brick>> Split_brick::newBricks() const{ 
+    vector<unique_ptr<Split_brick>> newBricks;
+    double newSize = (corps().cote() - split_brick_gap)/2;
 
-    double newSize = (oldCorps.cote() - split_brick_gap)/2; 
-    if (newSize < brick_size_min){
-        //détruire old brick
+    if (newSize >= brick_size_min) {
+        double offset = (corps().cote() + split_brick_gap)/4;
+
+        Position posTL(corps().x() - offset, corps().y() + offset);
+        Position posTR(corps().x() + offset, corps().y() + offset);
+        Position posBL(corps().x() - offset, corps().y() - offset);
+        Position posBR(corps().x() + offset, corps().y() - offset);
+
+        int index = static_cast<int>(corps().color());
+        index++; 
+        Color newColor = static_cast<Color>(index);
+
+        newBricks.push_back(make_unique<Split_brick>(SPLIT, posTL.x(), posTL.y(), 
+                                                     newSize, newColor));
+        newBricks.push_back(make_unique<Split_brick>(SPLIT, posTR.x(), posTR.y(), 
+                                                     newSize, newColor));
+        newBricks.push_back(make_unique<Split_brick>(SPLIT, posBL.x(), posBL.y(), 
+                                                     newSize, newColor));
+        newBricks.push_back(make_unique<Split_brick>(SPLIT, posBR.x(), posBR.y(), 
+                                                     newSize, newColor));
+    
         return newBricks;
     }
-    double offset = (newSize/2) + (split_brick_gap/2);
-    double cx = oldCorps.x(); 
-    double cy = oldCorps.y(); 
-
-    Position posTL(cx-offset, cy+offset);
-    Position posTR(cx+offset, cy+offset);
-    Position posBL(cx-offset, cy-offset);
-    Position posBR(cx+offset, cy-offset);
-
-    int index = static_cast<int>(oldCorps.color());
-    index--; 
-    Color newColor = static_cast<Color>(index);
-
-    newBricks.push_back(Split_brick(SPLIT, posTL.x(), posTL.y(), newSize, newColor));
-    newBricks.push_back(Split_brick(SPLIT, posTR.x(), posTR.y(), newSize, newColor));
-    newBricks.push_back(Split_brick(SPLIT, posBL.x(), posBL.y(), newSize, newColor));
-    newBricks.push_back(Split_brick(SPLIT, posBR.x(), posBR.y(), newSize, newColor));
-    //détruire oldBrick
     return newBricks;
 }
 
@@ -129,5 +129,17 @@ void Brick::drawBrick() const{
 
 void Ball_brick::drawBrick() const{
     corps_.drawFull();
-    //appelle dessin balle
+    drawCircleFull(corps().x(), corps().y(), new_ball_radius, BLACK);
 }
+
+void Split_brick::drawBrick() const {
+    corps().drawFull();
+
+    vector<unique_ptr<Split_brick>> newBricksTab = this->newBricks(); 
+    if (newBricksTab.size()>0) {
+        for (auto& b : newBricksTab){
+            b->drawBrick();
+        }
+    }
+}
+
