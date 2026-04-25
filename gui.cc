@@ -46,9 +46,16 @@ My_window::My_window(string file_name, Game game)
     set_drawing();
 
     if (!file_name.empty()) {
-        lecture_fichier(file_name, game_);
+        if(!lecture_fichier(file_name, game_)){
+            game_.set_correctFile(false);
+            reset_game(game_);
+        }
+        else{
+            game_.set_correctFile(true);
+        }
         update_infos(); 
-        queue_draw();}
+        queue_draw();
+    }
     // TODO: set the game
 }
 void My_window::set_commands()
@@ -205,8 +212,11 @@ void My_window::dialog_response(int response, Gtk::FileChooserDialog *dialog)
         if (file_name != "")
         {
             cout << "open file " << file_name << endl; // TODO: s'assurer que ça affiche et update correctement
-            Game game( 0, 0, {}, {}, {});
-            lecture_fichier(file_name, game);
+            Game game( 0, 0, {}, {}, {}); //pk créé un nouveau jeu?
+            
+            if(!lecture_fichier(file_name, game)){
+            reset_game(game);
+            }
 
             update_infos(); 
             queue_draw();
@@ -283,11 +293,14 @@ void My_window::on_draw(const Cairo::RefPtr<Cairo::Context> &cr, int width, int 
     cr->translate((width - side) / 2, (height + side) / 2);
     cr->scale(side / (arena_size), -side / (arena_size));
     // TODO: draw the game
-    //game().stockBrick().push_back(unique_ptr<Brick>(new Brick(1, 25, 44, 16, BLUE))); //test
-    //game().stockBall().push_back(Ball(10, 10, new_ball_radius, 15, 15)); //test
+    cr->set_source_rgb(1.0, 1.0, 1.0);
+    cr->paint(); //arène vide (tout blanc)
+
+    cr->rectangle(0, 0, arena_size, arena_size); 
+    cr->clip(); 
+    cr->set_line_width(1.0);
     game().drawGame();
-    //Paddle paddle(12, 13, 20); //test
-    //paddle.drawPaddle(); //test
+    
 }
 
 void My_window::set_mouse_controller()
@@ -311,4 +324,9 @@ void My_window::on_drawing_left_click(int n_press, double x, double y)
 void My_window::on_drawing_move(double x, double y)
 {
     cout << __func__ << endl; // TODO
+}
+
+void My_window::reset_game(Game& game){
+   cout << "Reset de game réussi wouhou" << endl;
+   game.clear();
 }

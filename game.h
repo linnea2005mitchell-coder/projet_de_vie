@@ -11,7 +11,7 @@
 class Game {
 public : 
     Game(int s, int l, Paddle p, std::vector<std::unique_ptr<Brick>> sbrick, std::vector<Ball> sball) 
-    : score_(s), lives_(l), pad_(p), stockBricks(std::move(sbrick)), stockBalls(sball) {}
+    : score_(s), lives_(l), pad_(p), stockBricks(std::move(sbrick)), stockBalls(sball), correctFile_(true) {}
     int& score() {return score_ ;}
     int& lives() {return lives_ ;}
     Paddle& pad() {return pad_;}
@@ -19,6 +19,8 @@ public :
     std::vector<Ball>& stockBall() {return stockBalls;}
 
     void drawGame(); 
+    void clear();
+    void set_correctFile(bool result){correctFile_ = result;}
 
 private: 
     int score_;
@@ -26,9 +28,10 @@ private:
     Paddle pad_;
     std::vector<std::unique_ptr<Brick>> stockBricks;
     std::vector<Ball> stockBalls;
+    bool correctFile_;
 };
 
-void lecture_fichier(const std::string& nomFichier, Game& game);
+bool lecture_fichier(const std::string& nomFichier, Game& game);
 bool lecture_ligne(std::istringstream& data, std::vector<double>& tabVal, 
                    int& compteur, Game& game);
 bool verif_ligne(int valeur, std::vector <double>& tabVal, Game& game);
