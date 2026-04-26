@@ -14,6 +14,7 @@ public :
     : score_(s), lives_(l), pad_(p), stockBricks(std::move(sbrick)), stockBalls(sball), correctFile_(true) {}
     int& score() {return score_ ;}
     int& lives() {return lives_ ;}
+    bool correctFile() const{return correctFile_;}
     Paddle& pad() {return pad_;}
     std::vector<std::unique_ptr<Brick>>& stockBrick() {return stockBricks;} 
     std::vector<Ball>& stockBall() {return stockBalls;}
