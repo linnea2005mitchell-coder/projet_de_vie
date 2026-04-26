@@ -233,12 +233,7 @@ void My_window::dialog_response(int response, Gtk::FileChooserDialog *dialog)
         {
             cout << "save file " << file_name << endl; // TODO: save the game
             
-            filesystem::path final_path = file_path;
-            if (final_path.extension() != ".txt") {
-                final_path += ".txt";
-            }
-
-            string chemin = final_path.string();
+            string chemin = file_path.string();
             cout << "Sauvegarde dans : " << chemin << endl;
 
             ecriture_fichier(chemin, game_);

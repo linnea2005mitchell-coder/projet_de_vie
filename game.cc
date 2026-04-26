@@ -194,7 +194,7 @@ void ecriture_fichier(const string& path, Game& game){
                  if (brick->getType() == 0){ 
                     int hitpoints=static_cast<int>(brick->corps().color());
                     ++hitpoints;
-                    file << " [" << hitpoints << "]";  
+                    file << hitpoints;  
                  }
                 file << endl; 
         }
