@@ -1,5 +1,7 @@
 #include <filesystem>
 #include <iostream>
+#include <string>
+#include <array>
 #include "constants.h"
 #include "graphic_gui.h"
 #include "gui.h"
@@ -284,10 +286,21 @@ void My_window::set_infos()
 void My_window::update_infos()
 // TODO: update the different counters
 {
-    for (auto &value : info_value)
-    {
-        value.set_text("0");
+    if (!game_.correctFile()){
+        for (auto &value : info_value)
+        {
+            value.set_text("0");
+        }
     }
+    else{
+        array<string, 4> values({to_string(game_.score()), to_string(game_.lives()), 
+                                 to_string(game_.stockBrick().size()), 
+                                 to_string(game_.stockBall().size())});  //voir si ça donne la bonne valeur après modif du nombre
+        for (size_t i=0; i<info_value.size(); i++){
+            info_value[i].set_text(values[i]);
+        }
+    }
+
 }
 
 void My_window::update_game() // faire toutes les modifs pr un move 
