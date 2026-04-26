@@ -189,12 +189,12 @@ void ecriture_fichier(const string& path, Game& game){
     for (const auto& brick : game.stockBrick()) {
         if (brick){
             file << brick->getType() << " " << brick->corps().x() << " " 
-                 << brick->corps().y() << " " << brick->corps().cote() << " " ; 
+                 << brick->corps().y() << " " << brick->corps().cote() ; 
                  
                  if (brick->getType() == 0){ 
                     int hitpoints=static_cast<int>(brick->corps().color());
                     ++hitpoints;
-                    file << hitpoints;  
+                    file << " " << hitpoints;  
                  }
                 file << endl; 
         }
