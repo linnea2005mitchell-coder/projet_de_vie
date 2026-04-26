@@ -48,17 +48,15 @@ My_window::My_window(string file_name, Game game)
     set_infos();
     set_drawing();
 
-    if (!file_name.empty()) {
-        if(!lecture_fichier(file_name, game_)){
-            game_.set_correctFile(false);
-            reset_game(game_);
-        }
-        else{
-            game_.set_correctFile(true);
-        }
-        update_infos(); 
-        queue_draw();
+    if(file_name.empty() || !lecture_fichier(file_name, game_)){
+        game_.set_correctFile(false);
+        reset_game(game_);
     }
+    else{
+        game_.set_correctFile(true);
+    }
+    update_infos(); 
+    queue_draw();
     // TODO: set the game
 }
 void My_window::set_commands()
@@ -361,9 +359,25 @@ void My_window::on_drawing_left_click(int n_press, double x, double y)
 void My_window::on_drawing_move(double x, double y)
 {
     cout << __func__ << endl; // TODO
+
+    double side = min(get_allocated_width(), get_allocated_height());
+    double scale = side / arena_size; // Exemple, ajuste selon ta logique
+
+    // Conversion : Coordonnée Jeu = (Coordonnée Pixel / Efficacité) + Décalage
+    // Ou selon ta logique exacte dans on_draw :
+    // Si on_draw fait : translate(0,0) puis scale(...), alors x_pixel = x_jeu * scale
+    
+    double gameX = x / scale; // Exemple simple
+    double gameY = y / scale; 
+
+
+    game_.pad().setPos(gameX, game_.pad().corps().y());
+    cout << game_.pad().corps().x() << endl;
+
+    //update game
+    queue_draw();
 }
 
-void My_window::reset_game(Game& game){
-   cout << "Reset de game réussi wouhou" << endl;
-   game.clear();
+void My_window::reset_game(Game& game){ 
+   game.clear(); //direct mettre ça au lieu d'appeler la fonction reset_game?
 }

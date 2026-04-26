@@ -13,6 +13,10 @@ public:
        : cx(x), cy(y) {}
     double x() const {return cx ;}
     double y() const {return cy ;}
+    void setPos(double x, double y){
+        cx = x;
+        cy = y;
+    }
 
     void set_x(double nx) { cx = nx; }
     void set_y(double ny) { cy = ny; }
@@ -62,6 +66,7 @@ public :
     double x() const {return pos.x(); }
     double y() const {return pos.y(); }
     double r() const {return r_; }
+    void setPos(double x, double y) {pos.setPos(x, y);}
 
     void set_x(double new_x) { pos.set_x(new_x); }
     void set_y(double new_y) { pos.set_y(new_y); }

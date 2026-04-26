@@ -9,7 +9,7 @@ public:
     Brick(double t, double x, double y, double c, Color color) 
         : corps_(x, y, c, color), type(t){} 
 
-   virtual ~Brick() = default; //revoir
+    virtual ~Brick() = default; //revoir
     double getType(){return type; }
     const Carre& corps() const { return corps_;} 
     bool intersects(const Brick& other) const{return corps_.intersects(other.corps());}
