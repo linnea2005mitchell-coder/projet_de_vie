@@ -133,6 +133,10 @@ void My_window::start_clicked()
 void My_window::step_clicked()
 {
     cout << __func__ << endl; // TODO: make a single update
+    reset_game(game_);
+    set_drawing();
+    update_infos();
+    queue_draw();
 }
 void My_window::set_key_controller()
 {
@@ -147,12 +151,18 @@ bool My_window::key_pressed(guint keyval, guint keycode, Gdk::ModifierType state
     {
     case '1':
         // TODO: make a single update
+        step_clicked();
+        cout << "[ Via Keyboard : key 1 ]" << endl;
         return true;
     case 's':
         // TODO: pause or unpause the game
+        start_clicked();
+        cout << "[ Via Keyboard : key s ]" << endl;
         return true;
     case 'r':
         // TODO: reset the game from the last read file
+        restart_clicked();
+        cout << "[ Via Keyboard : key r ]" << endl;
         return true;
     default:
         break;
@@ -213,29 +223,29 @@ void My_window::dialog_response(int response, Gtk::FileChooserDialog *dialog)
     case OPEN_FILE:
         if (file_name != "")
         {
-            cout << "open file " << file_name << endl; // TODO: s'assurer que ça affiche et update correctement
-            Game game( 0, 0, {}, {}, {}); //pk créé un nouveau jeu?
-            
-            if(!lecture_fichier(file_name, game)){
-            reset_game(game);
+            cout << "open file " << file_name << endl; 
+            if(!lecture_fichier(file_path, game_)){
+                game_.set_correctFile(false);
+                reset_game(game_);
+                set_drawing();
+                update_infos();
+                queue_draw();
             }
-
-            update_infos(); 
-            queue_draw();
+            else{
+                game_.set_correctFile(true);
+                set_drawing();
+                update_infos();
+                queue_draw();
+            }
             dialog->hide();
         }
         break;
     case SAVE_FILE:
         if (file_name != "")
         {
-            cout << "save file " << file_name << endl; // TODO: save the game
+            cout << "save file " << file_name << endl; 
             
-            filesystem::path final_path = file_path;
-            if (final_path.extension() != ".txt") {
-                final_path += ".txt";
-            }
-
-            string chemin = final_path.string();
+            string chemin = file_path.string();
             cout << "Sauvegarde dans : " << chemin << endl;
 
             ecriture_fichier(chemin, game_);
@@ -299,6 +309,7 @@ void My_window::set_drawing()
     drawing.set_expand();
     drawing.set_draw_func(sigc::mem_fun(*this, &My_window::on_draw));
 }
+
 void My_window::on_draw(const Cairo::RefPtr<Cairo::Context> &cr, int width, int height)
 {
     graphic_set_context(cr);
@@ -312,7 +323,7 @@ void My_window::on_draw(const Cairo::RefPtr<Cairo::Context> &cr, int width, int 
     cr->rectangle(0, 0, arena_size, arena_size); 
     cr->clip(); 
     cr->set_line_width(1.0);
-    game().drawGame();
+    game_.drawGame();
     
 }
 
