@@ -18,9 +18,8 @@ static unsigned etat(0);
 bool lecture_fichier(const string& nomFichier, Game& game){ 
     ifstream fichier(nomFichier);      //changer "tests/"" avec nom dossier
     if(fichier.fail()){
-        cout << "Impossible d'accéder au fichier." << endl;
-       // exit(EXIT_FAILURE);
-       return false;
+        cout << "Impossible d'accéder au fichier." << endl; //à supprimer
+        return false; 
     }
 
     int compteur(0);
@@ -30,16 +29,12 @@ bool lecture_fichier(const string& nomFichier, Game& game){
     while(getline(fichier >> ws, line)){
         if(line[0]=='#') continue; 
         istringstream data(line);
-        if(lecture_ligne(data, tabVal, compteur, game)) {
-            exit(EXIT_FAILURE);
+        if(lecture_ligne(data, tabVal, compteur, game)){
             return false;
         }
     }
-    
     cout << message::success() << endl;
-    //fichier.close();
-    //exit(EXIT_SUCCESS);
-    return true; 
+    return true;
 }
 
 bool lecture_ligne(istringstream& data, vector<double>& tabVal, int& compteur, Game& game){
@@ -215,16 +210,23 @@ void ecriture_fichier(const string& path, Game& game){
     }
     file << endl; 
 }
-
-    
+  
 void Game::drawGame(){
+    if(correctFile_){
+        drawSquareEmpty(0, 0, arena_size, GREY);
+        pad_.drawPaddle();
+        for(auto& p : stockBrick()){
+            p->drawBrick();
+        }
+        for(auto& p : stockBall()){
+            p.drawBall();
+        }
+    }
+}
 
-    drawSquareEmpty(0, 0, arena_size, GREY);
-    pad_.drawPaddle();
-    for(auto& p : stockBrick()){
-        p->drawBrick();
-    }
-    for(auto& p : stockBall()){
-        p.drawBall();
-    }
+void Game::clear(){
+    stockBricks.clear();
+    stockBalls.clear();
+    score_ = 0;
+    lives_ = 0;
 }
