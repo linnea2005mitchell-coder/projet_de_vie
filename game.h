@@ -28,7 +28,7 @@ private:
     std::vector<Ball> stockBalls;
 };
 
-void lecture_fichier(const std::string& nomFichier, Game& game);
+bool lecture_fichier(const std::string& nomFichier, Game& game);
 bool lecture_ligne(std::istringstream& data, std::vector<double>& tabVal, 
                    int& compteur, Game& game);
 bool verif_ligne(int valeur, std::vector <double>& tabVal, Game& game);

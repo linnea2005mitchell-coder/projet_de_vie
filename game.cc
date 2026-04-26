@@ -15,11 +15,12 @@ constexpr size_t NB_VAL_BRICK(4);
 constexpr size_t NB_VAL_BALL(5);
 static unsigned etat(0);
 
-void lecture_fichier(const string& nomFichier, Game& game){ 
+bool lecture_fichier(const string& nomFichier, Game& game){ 
     ifstream fichier(nomFichier);      //changer "tests/"" avec nom dossier
     if(fichier.fail()){
         cout << "Impossible d'accéder au fichier." << endl;
-        exit(EXIT_FAILURE);
+       // exit(EXIT_FAILURE);
+       return false;
     }
 
     int compteur(0);
@@ -29,12 +30,16 @@ void lecture_fichier(const string& nomFichier, Game& game){
     while(getline(fichier >> ws, line)){
         if(line[0]=='#') continue; 
         istringstream data(line);
-        if(lecture_ligne(data, tabVal, compteur, game)) exit(EXIT_FAILURE);
+        if(lecture_ligne(data, tabVal, compteur, game)) {
+            exit(EXIT_FAILURE);
+            return false;
+        }
     }
     
     cout << message::success() << endl;
     //fichier.close();
     //exit(EXIT_SUCCESS);
+    return true; 
 }
 
 bool lecture_ligne(istringstream& data, vector<double>& tabVal, int& compteur, Game& game){

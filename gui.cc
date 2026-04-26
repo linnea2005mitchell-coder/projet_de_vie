@@ -205,11 +205,14 @@ void My_window::dialog_response(int response, Gtk::FileChooserDialog *dialog)
         if (file_name != "")
         {
             cout << "open file " << file_name << endl; // TODO: s'assurer que ça affiche et update correctement
-            Game game( 0, 0, {}, {}, {});
-            lecture_fichier(file_name, game);
+            game_ = Game( 0, 0, {}, {}, {});
+            if(lecture_fichier(file_path, game_)){
+                //on_draw(); //// manque arguments 
+                cout<< "dessine le jeu"<< endl;
+                update_infos(); 
+                queue_draw();
+            }
 
-            update_infos(); 
-            queue_draw();
             dialog->hide();
         }
         break;
@@ -276,6 +279,7 @@ void My_window::set_drawing()
     drawing.set_expand();
     drawing.set_draw_func(sigc::mem_fun(*this, &My_window::on_draw));
 }
+
 void My_window::on_draw(const Cairo::RefPtr<Cairo::Context> &cr, int width, int height)
 {
     graphic_set_context(cr);
@@ -285,7 +289,7 @@ void My_window::on_draw(const Cairo::RefPtr<Cairo::Context> &cr, int width, int 
     // TODO: draw the game
     //game().stockBrick().push_back(unique_ptr<Brick>(new Brick(1, 25, 44, 16, BLUE))); //test
     //game().stockBall().push_back(Ball(10, 10, new_ball_radius, 15, 15)); //test
-    game().drawGame();
+    game_.drawGame();
     //Paddle paddle(12, 13, 20); //test
     //paddle.drawPaddle(); //test
 }
