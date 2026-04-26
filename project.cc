@@ -12,7 +12,6 @@ int main(int argc, char* argv[]){
 
     if(argc>1){
         file_name = argv[1];
-        //lecture_fichier(argv[1], game);
     }
 
     auto app = Gtk::Application::create();

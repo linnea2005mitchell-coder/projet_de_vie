@@ -13,6 +13,10 @@ public:
        : cx(x), cy(y) {}
     double x() const {return cx ;}
     double y() const {return cy ;}
+    void setPos(double x, double y){
+        cx = x;
+        cy = y;
+    }
 
 protected: 
     double cx,cy;
@@ -58,6 +62,7 @@ public :
     double x() const {return pos.x(); }
     double y() const {return pos.y(); }
     double r() const {return r_; }
+    void setPos(double x, double y) {pos.setPos(x, y);}
     bool intersects(const Cercle& other) const;
     bool intersects(const Carre& c) const;
     void drawFull() const;
