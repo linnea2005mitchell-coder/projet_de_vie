@@ -18,6 +18,9 @@ public:
         cy = y;
     }
 
+    void set_x(double nx) { cx = nx; }
+    void set_y(double ny) { cy = ny; }
+
 protected: 
     double cx,cy;
 };
@@ -44,6 +47,7 @@ public :
     double x() const {return pos.x(); }
     double y() const {return pos.y(); }
     Color color() const {return color_;}
+
     bool intersects(const Carre& other) const;
     void drawFull() const;
     void drawEmpty() const;
@@ -62,7 +66,14 @@ public :
     double x() const {return pos.x(); }
     double y() const {return pos.y(); }
     double r() const {return r_; }
+<<<<<<< HEAD
     void setPos(double x, double y) {pos.setPos(x, y);}
+=======
+
+    void set_x(double new_x) { pos.set_x(new_x); }
+    void set_y(double new_y) { pos.set_y(new_y); }
+
+>>>>>>> 0948f151fbe6a191a6fbb76652eb48abcbc95b91
     bool intersects(const Cercle& other) const;
     bool intersects(const Carre& c) const;
     void drawFull() const;
