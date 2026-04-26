@@ -14,6 +14,9 @@ public:
     double x() const {return cx ;}
     double y() const {return cy ;}
 
+    void set_x(double nx) { cx = nx; }
+    void set_y(double ny) { cy = ny; }
+
 protected: 
     double cx,cy;
 };
@@ -40,6 +43,7 @@ public :
     double x() const {return pos.x(); }
     double y() const {return pos.y(); }
     Color color() const {return color_;}
+
     bool intersects(const Carre& other) const;
     void drawFull() const;
     void drawEmpty() const;
@@ -58,6 +62,10 @@ public :
     double x() const {return pos.x(); }
     double y() const {return pos.y(); }
     double r() const {return r_; }
+
+    void set_x(double new_x) { pos.set_x(new_x); }
+    void set_y(double new_y) { pos.set_y(new_y); }
+
     bool intersects(const Cercle& other) const;
     bool intersects(const Carre& c) const;
     void drawFull() const;

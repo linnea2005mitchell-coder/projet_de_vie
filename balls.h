@@ -13,6 +13,9 @@ public:
     const double& dx() const { return del.dx();}
     const double& dy() const { return del.dy();}
 
+    void set_x(double new_x) { corps_.set_x(new_x); }
+    void set_y(double new_y) { corps_.set_y(new_y); }
+
     bool intersects(const Cercle& other) {return corps_.intersects(other); }
     bool intersects(const Carre& c) {return corps_.intersects(c); }
 

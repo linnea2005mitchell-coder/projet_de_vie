@@ -131,10 +131,9 @@ void My_window::start_clicked()
 void My_window::step_clicked()
 {
     cout << __func__ << endl; // TODO: make a single update
-    reset_game(game_);
-    set_drawing();
+    update_game();
     update_infos();
-    queue_draw();
+    drawing.queue_draw();
 }
 void My_window::set_key_controller()
 {
@@ -259,7 +258,9 @@ bool My_window::loop()
 {
     if (loop_activated)
     {
-        // TODO: update the game and the interface
+        update_game();
+        update_infos();
+        drawing.queue_draw();
         return true;
     }
     return false;
@@ -287,6 +288,17 @@ void My_window::update_infos()
     {
         value.set_text("0");
     }
+}
+
+void My_window::update_game() // faire toutes les modifs pr un move 
+{
+    
+    for (auto& ball : game_.stockBall()) {
+        ball.set_x(ball.corps().x() + ball.dx());
+        ball.set_y(ball.corps().y() + ball.dy());
+    
+    }
+    cout << "Game updated"<< endl;
 }
 
 void My_window::set_drawing()

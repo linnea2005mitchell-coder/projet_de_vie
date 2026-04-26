@@ -53,6 +53,7 @@ private:
     void on_drawing_left_click(int n_press, double x, double y);
     void on_drawing_move(double x, double y);
 
+    void update_game();
     void reset_game(Game& game); 
 };
 
