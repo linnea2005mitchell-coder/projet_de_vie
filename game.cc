@@ -242,12 +242,10 @@ void Game::updatePad(){
         if (dist_diff > VITESSE_MAX_PAD){ 
             double newX = pad_.corps().x() + VITESSE_MAX_PAD;
             pad_.set_x(newX);
-            cout << "diff trop grande" << endl; //à supprimer
         }
         else if (dist_diff < -VITESSE_MAX_PAD){
             double newX = pad_.corps().x() - VITESSE_MAX_PAD;
             pad_.set_x(newX);
-            cout << "diff trop grande en négatif" << endl; //à supprimer
         }
         else{
             pad_.set_x(mouseX_);
@@ -255,15 +253,10 @@ void Game::updatePad(){
 
         for(auto& brick : stockBricks){
             if(pad_.corps().intersects((*brick).corps())){
-                cout << "pad interesects brick" << endl;
                 pad_.set_x(oldPad);
             }
         }
         if(verif_paddle(pad_.corps().x(), pad_.corps().y(), pad_.corps().r(), pad_)){
-            cout<< "pad outside arena aieaieaie" <<endl;
             pad_.set_x(oldPad);
         }
-
-
-    cout << pad_.corps().x() << endl; //à supprimer
 }

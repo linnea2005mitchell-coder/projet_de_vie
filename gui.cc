@@ -81,6 +81,13 @@ void My_window::set_commands()
         sigc::mem_fun(*this, &My_window::start_clicked));
     buttons[STEP].signal_clicked().connect(
         sigc::mem_fun(*this, &My_window::step_clicked));
+
+    buttons[EXIT].set_sensitive(true);
+    buttons[OPEN].set_sensitive(true);
+    buttons[SAVE].set_sensitive(false);
+    buttons[RESTART].set_sensitive(false);
+    //buttons[START].set_label("start");
+    buttons[STEP].set_sensitive(false);
 }
 
 void My_window::exit_clicked()
@@ -225,18 +232,19 @@ void My_window::dialog_response(int response, Gtk::FileChooserDialog *dialog)
         if (file_name != "")
         {
             cout << "open file " << file_name << endl; 
-            if(!lecture_fichier(file_path, game_)){
-                game_.set_correctFile(false);
-                game_.clear();
+            if(lecture_fichier(file_path, game_)){
+                game_.set_correctFile(true);
                 set_drawing();
                 update_infos();
                 drawing.queue_draw();
             }
             else{
-                game_.set_correctFile(true);
+                game_.set_correctFile(false);
+                game_.clear();
                 set_drawing();
                 update_infos();
                 drawing.queue_draw();
+                /// freeze le boutons
             }
             dialog->hide();
         }
@@ -361,14 +369,12 @@ void My_window::on_drawing_left_click(int n_press, double x, double y)
 }
 void My_window::on_drawing_move(double x, double y)
 {
+     cout << __func__ << endl; 
+
     double scale = drawing_size / arena_size;
     double gameX = x / scale;
     game_.setMouseX(gameX);
 
-   //if (!loop_activated) //à quoi ça sert?
-   // {
-   //     return;
-    //}
 }
 
 void My_window::start_pad_motion()
@@ -389,7 +395,7 @@ bool My_window::pad_motion()
     game_.updatePad();
     drawing.queue_draw();
 
-    if (std::abs(game_.mouseX() - game_.pad().corps().x()) <= 1e-6) //? epsil_zero?
+    if (std::abs(game_.mouseX() - game_.pad().corps().x()) <= epsil_zero) 
     {
         stop_pad_motion();
         return false;

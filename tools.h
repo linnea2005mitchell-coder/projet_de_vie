@@ -7,6 +7,8 @@
 #include "message.h"
 #include "graphic.h"
 
+constexpr double epsil_zero = 0.125;
+
 class Position {
 public: 
     Position(double x, double y) 

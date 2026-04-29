@@ -11,16 +11,17 @@
 class Game {
 public : 
     Game(int s, int l, Paddle p, std::vector<std::unique_ptr<Brick>> sbrick, std::vector<Ball> sball) 
-    : score_(s), lives_(l), pad_(p), stockBricks(std::move(sbrick)), stockBalls(sball), correctFile_(true), mouseX_(0.) {}
+    : score_(s), lives_(l), pad_(p), stockBrick_(std::move(sbrick)), stockBall_(sball), correctFile_(true), mouseX_(0.) {}
     int& score() {return score_ ;}
     int& lives() {return lives_ ;}
     bool correctFile() const{return correctFile_;}
     double mouseX() const{return mouseX_;}
-    void setMouseX(double x) {mouseX_ = x;}
     Paddle& pad() {return pad_;}
-    std::vector<std::unique_ptr<Brick>>& stockBrick() {return stockBricks;} 
-    std::vector<Ball>& stockBall() {return stockBalls;}
+    std::vector<std::unique_ptr<Brick>>& stockBrick() {return stockBrick_;} 
+    std::vector<Ball>& stockBall() {return stockBall_;}
 
+
+    void setMouseX(double x) {mouseX_ = x;}
     void drawGame(); 
     void clear();
     void set_correctFile(bool result){correctFile_ = result;}
@@ -30,8 +31,8 @@ private:
     int score_;
     int lives_;
     Paddle pad_;
-    std::vector<std::unique_ptr<Brick>> stockBricks;
-    std::vector<Ball> stockBalls;
+    std::vector<std::unique_ptr<Brick>> stockBrick_;
+    std::vector<Ball> stockBall_;
     bool correctFile_;
     double mouseX_;
 };
