@@ -13,12 +13,12 @@ enum EtatLecture {SCORE, LIVES, PADDLE, NB_BRICKS, BRICKS, NB_BALLS, BALLS};
 constexpr size_t NB_VAL_PAD(3); 
 constexpr size_t NB_VAL_BRICK(4);
 constexpr size_t NB_VAL_BALL(5);
+constexpr double VITESSE_MAX_PAD(3.0); //voir vitesse max pad
 static unsigned etat(0);
 
 bool lecture_fichier(const string& nomFichier, Game& game){ 
     ifstream fichier(nomFichier);      //changer "tests/"" avec nom dossier
     if(fichier.fail()){
-        cout << "Impossible d'accéder au fichier." << endl; //à supprimer
         return false; 
     }
 
@@ -30,6 +30,7 @@ bool lecture_fichier(const string& nomFichier, Game& game){
         if(line[0]=='#') continue; 
         istringstream data(line);
         if(lecture_ligne(data, tabVal, compteur, game)){
+            game.clear();
             return false;
         }
     }
@@ -83,7 +84,10 @@ bool verif_ligne(int valeur, vector <double>& tabVal, Game& game){
             break;
         case PADDLE:
             etat++;
-            if(verif_paddle(tabVal[0], tabVal[1], tabVal[2], game.pad())) return true;
+            if(verif_paddle(tabVal[0], tabVal[1], tabVal[2], game.pad())){
+                cout << message::paddle_outside(tabVal[0], tabVal[1]) << endl;
+                return true;
+            }
             tabVal.clear();	break;
         case BRICKS:
             if(verif_brick(tabVal[0], tabVal[1], tabVal[2], tabVal[3], tabVal[4], 
@@ -229,4 +233,37 @@ void Game::clear(){
     stockBalls.clear();
     score_ = 0;
     lives_ = 0;
+}
+
+void Game::updatePad(){
+    double dist_diff = mouseX_ - pad_.corps().x();
+    double oldPad = pad_.corps().x();
+
+        if (dist_diff > VITESSE_MAX_PAD){ 
+            double newX = pad_.corps().x() + VITESSE_MAX_PAD;
+            pad_.set_x(newX);
+            cout << "diff trop grande" << endl; //à supprimer
+        }
+        else if (dist_diff < -VITESSE_MAX_PAD){
+            double newX = pad_.corps().x() - VITESSE_MAX_PAD;
+            pad_.set_x(newX);
+            cout << "diff trop grande en négatif" << endl; //à supprimer
+        }
+        else{
+            pad_.set_x(mouseX_);
+        }
+
+        for(auto& brick : stockBricks){
+            if(pad_.corps().intersects((*brick).corps())){
+                cout << "pad interesects brick" << endl;
+                pad_.set_x(oldPad);
+            }
+        }
+        if(verif_paddle(pad_.corps().x(), pad_.corps().y(), pad_.corps().r(), pad_)){
+            cout<< "pad outside arena aieaieaie" <<endl;
+            pad_.set_x(oldPad);
+        }
+
+
+    cout << pad_.corps().x() << endl; //à supprimer
 }

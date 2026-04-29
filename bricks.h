@@ -29,8 +29,6 @@ public:
     ~Rainbow_brick() = default; //revoir
     int hitpoints(){return hitpoints_;}
 
-    void impact();
-
 private:
     int hitpoints_;
 };
@@ -42,7 +40,6 @@ public:
         : Brick(t, x, y, c, color){}
     ~Ball_brick() = default; //revoir
 
-    void impact();
     void drawBrick() const;
 
 private:
@@ -56,7 +53,6 @@ public:
         : Brick(t, x, y, c, color){} 
     ~Split_brick() = default; //revoir
 
-    void impact();
     std::vector<std::unique_ptr<Split_brick>> newBricks() const; //voir comment faire avec ce tableau et/ou tableau stockBricks
     void drawBrick() const;
 
