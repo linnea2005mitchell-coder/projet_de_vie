@@ -11,10 +11,12 @@
 class Game {
 public : 
     Game(int s, int l, Paddle p, std::vector<std::unique_ptr<Brick>> sbrick, std::vector<Ball> sball) 
-    : score_(s), lives_(l), pad_(p), stockBricks(std::move(sbrick)), stockBalls(sball), correctFile_(true) {}
+    : score_(s), lives_(l), pad_(p), stockBricks(std::move(sbrick)), stockBalls(sball), correctFile_(true), mouseX_(0.) {}
     int& score() {return score_ ;}
     int& lives() {return lives_ ;}
     bool correctFile() const{return correctFile_;}
+    double mouseX() const{return mouseX_;}
+    void setMouseX(double x) {mouseX_ = x;}
     Paddle& pad() {return pad_;}
     std::vector<std::unique_ptr<Brick>>& stockBrick() {return stockBricks;} 
     std::vector<Ball>& stockBall() {return stockBalls;}
@@ -22,6 +24,7 @@ public :
     void drawGame(); 
     void clear();
     void set_correctFile(bool result){correctFile_ = result;}
+    void updatePad();
 
 private: 
     int score_;
@@ -30,6 +33,7 @@ private:
     std::vector<std::unique_ptr<Brick>> stockBricks;
     std::vector<Ball> stockBalls;
     bool correctFile_;
+    double mouseX_;
 };
 
 bool lecture_fichier(const std::string& nomFichier, Game& game);

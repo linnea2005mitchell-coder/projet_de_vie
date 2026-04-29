@@ -76,36 +76,19 @@ bool verif_hitpoints(double hitpoints){
     return false;
 }
 
-void Rainbow_brick::impact(){
-    if (hitpoints_>1)
-        hitpoints_--;
-    if (hitpoints_==0); 
-        //~Rainbow_brick();  //comment détruire cette brique?
-}
-
-void Ball_brick::impact(){
-    //supprime la brique et création d'une nouvelle balle de même centre 
-    //et de la vitesse delta de la balle qui créée l'impact
-}
-void Split_brick::impact(){
-    //supprimer cette brique et en créer 4 nouvelles
-    //couleurs identiques aux hitpoints des rainbow_bricks
-    //processus récursif==>s'appelle lui-même jusqu'à atteindre une condition d'arrêt
-}
-
 vector<unique_ptr<Split_brick>> Split_brick::newBricks() const{ 
     vector<unique_ptr<Split_brick>> newBricks;
-    double newSize = (corps().cote() - split_brick_gap)/2;
+    double newSize = (corps_.cote() - split_brick_gap)/2;
 
     if (newSize >= brick_size_min) {
-        double offset = (corps().cote() + split_brick_gap)/4;
+        double offset = (corps_.cote() + split_brick_gap)/4;
 
-        Position posTL(corps().x() - offset, corps().y() + offset);
-        Position posTR(corps().x() + offset, corps().y() + offset);
-        Position posBL(corps().x() - offset, corps().y() - offset);
-        Position posBR(corps().x() + offset, corps().y() - offset);
+        Position posTL(corps_.x() - offset, corps_.y() + offset);
+        Position posTR(corps_.x() + offset, corps_.y() + offset);
+        Position posBL(corps_.x() - offset, corps_.y() - offset);
+        Position posBR(corps_.x() + offset, corps_.y() - offset);
 
-        int index = static_cast<int>(corps().color());
+        int index = static_cast<int>(corps_.color());
         index++; 
         Color newColor = static_cast<Color>(index);
 
@@ -133,7 +116,7 @@ void Ball_brick::drawBrick() const{
 }
 
 void Split_brick::drawBrick() const {
-    corps().drawFull();
+    corps_.drawFull();
 
     vector<unique_ptr<Split_brick>> newBricksTab = this->newBricks(); 
     if (newBricksTab.size()>0) {

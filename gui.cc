@@ -2,6 +2,7 @@
 #include <iostream>
 #include <string>
 #include <array>
+#include <cmath>
 #include "constants.h"
 #include "graphic_gui.h"
 #include "gui.h"
@@ -33,7 +34,7 @@ My_window::My_window(string file_name, Game game)
                Gtk::Button("restart"), Gtk::Button("start"), Gtk::Button("step")}),
       info_frame("Infos :"), info_text({Gtk::Label("score:"), Gtk::Label("lives:"),
                                         Gtk::Label("bricks:"), Gtk::Label("balls:")})
-{
+{ 
     set_title("Brick Breaker");
     set_child(main_box);
     main_box.append(panel_box);
@@ -49,13 +50,13 @@ My_window::My_window(string file_name, Game game)
 
     if(file_name.empty() || !lecture_fichier(file_name, game_)){
         game_.set_correctFile(false);
-        reset_game(game_);
+        game_.clear();
     }
     else{
         game_.set_correctFile(true);
     }
     update_infos(); 
-    queue_draw();
+    drawing.queue_draw();
     // TODO: set the game
 }
 void My_window::set_commands()
@@ -99,7 +100,7 @@ void My_window::save_clicked()
 }
 void My_window::restart_clicked()
 {
-    cout << __func__ << endl; // TODO: reset the game from the last read file
+    cout << __func__ << endl; // TODO: the game from the last read file
 }
 void My_window::start_clicked()
 {
@@ -117,6 +118,7 @@ void My_window::start_clicked()
     }
     else // TODO: only if the game is not finished
     {
+        stop_pad_motion(); //nouveau
         loop_conn =
             Glib::signal_timeout().connect(sigc::mem_fun(*this, &My_window::loop), dt);
         loop_activated = true;
@@ -130,7 +132,8 @@ void My_window::start_clicked()
 }
 void My_window::step_clicked()
 {
-    cout << __func__ << endl; // TODO: make a single update
+    cout << __func__ << endl; // single update step
+    game_.updatePad();
     update_game();
     update_infos();
     drawing.queue_draw();
@@ -223,16 +226,16 @@ void My_window::dialog_response(int response, Gtk::FileChooserDialog *dialog)
             cout << "open file " << file_name << endl; 
             if(!lecture_fichier(file_path, game_)){
                 game_.set_correctFile(false);
-                reset_game(game_);
+                game_.clear();
                 set_drawing();
                 update_infos();
-                queue_draw();
+                drawing.queue_draw();
             }
             else{
                 game_.set_correctFile(true);
                 set_drawing();
                 update_infos();
-                queue_draw();
+                drawing.queue_draw();
             }
             dialog->hide();
         }
@@ -303,13 +306,13 @@ void My_window::update_infos()
 
 void My_window::update_game() // faire toutes les modifs pr un move 
 {
-    
+    game_.updatePad(); 
     for (auto& ball : game_.stockBall()) {
         ball.set_x(ball.corps().x() + ball.dx());
         ball.set_y(ball.corps().y() + ball.dy());
     
     }
-    cout << "Game updated"<< endl;
+    //cout << "Game updated"<< endl;
 }
 
 void My_window::set_drawing()
@@ -328,7 +331,7 @@ void My_window::on_draw(const Cairo::RefPtr<Cairo::Context> &cr, int width, int 
     cr->scale(side / (arena_size), -side / (arena_size));
     // TODO: draw the game
     cr->set_source_rgb(1.0, 1.0, 1.0);
-    cr->paint(); //arène vide (tout blanc)
+    cr->paint(); 
 
     cr->rectangle(0, 0, arena_size, arena_size); 
     cr->clip(); 
@@ -357,26 +360,39 @@ void My_window::on_drawing_left_click(int n_press, double x, double y)
 }
 void My_window::on_drawing_move(double x, double y)
 {
-    cout << __func__ << endl; // TODO
+    double scale = drawing_size / arena_size;
+    double gameX = x / scale;
+    game_.setMouseX(gameX);
 
-    double side = min(get_allocated_width(), get_allocated_height());
-    double scale = side / arena_size; // Exemple, ajuste selon ta logique
-
-    // Conversion : Coordonnée Jeu = (Coordonnée Pixel / Efficacité) + Décalage
-    // Ou selon ta logique exacte dans on_draw :
-    // Si on_draw fait : translate(0,0) puis scale(...), alors x_pixel = x_jeu * scale
-    
-    double gameX = x / scale; // Exemple simple
-    double gameY = y / scale; 
-
-
-    game_.pad().setPos(gameX, game_.pad().corps().y());
-    cout << game_.pad().corps().x() << endl;
-
-    //update game
-    queue_draw();
+   //if (!loop_activated) //à quoi ça sert?
+   // {
+   //     return;
+    //}
 }
 
-void My_window::reset_game(Game& game){ 
-   game.clear(); //direct mettre ça au lieu d'appeler la fonction reset_game?
+void My_window::start_pad_motion()
+{
+    if (!pad_move_conn.connected()){
+        pad_move_conn = Glib::signal_timeout().connect(sigc::mem_fun(*this, &My_window::pad_motion), dt);
+    }
+}
+
+void My_window::stop_pad_motion()
+{
+    if (pad_move_conn.connected())
+        pad_move_conn.disconnect();
+}
+
+bool My_window::pad_motion()
+{
+    game_.updatePad();
+    drawing.queue_draw();
+
+    if (std::abs(game_.mouseX() - game_.pad().corps().x()) <= 1e-6) //? epsil_zero?
+    {
+        stop_pad_motion();
+        return false;
+    }
+
+    return true;
 }
