@@ -192,13 +192,13 @@ void ecriture_fichier(const string& path, Game& game){
 
     for (const auto& brick : game.stockBrick()) {
         if (brick){
-            file << "\t" << brick->getType() << " " << brick->corps().x() << " " 
-                 << brick->corps().y() << " " << brick->corps().cote(); 
+            file << brick->getType() << " " << brick->corps().x() << " " 
+                 << brick->corps().y() << " " << brick->corps().cote() ; 
                  
                  if (brick->getType() == 0){ 
                     int hitpoints=static_cast<int>(brick->corps().color());
                     ++hitpoints;
-                    file << hitpoints;  
+                    file << " " << hitpoints;  
                  }
                 file << endl; 
         }
@@ -209,7 +209,7 @@ void ecriture_fichier(const string& path, Game& game){
     file << game.stockBall().size() << endl; 
 
     for (const auto& ball : game.stockBall()) {
-            file << "\t" << ball.corps().x() << " " << ball.corps().y() << " " 
+            file << ball.corps().x() << " " << ball.corps().y() << " " 
             << ball.corps().r() << " " << ball.dx() << " " << ball.dy() << endl;
     }
     file << endl; 
