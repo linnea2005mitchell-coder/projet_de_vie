@@ -17,6 +17,7 @@ constexpr double VITESSE_MAX_PAD(3.0); //voir vitesse max pad
 static unsigned etat(0);
 
 bool lecture_fichier(const string& nomFichier, Game& game){ 
+    etat = SCORE;
     ifstream fichier(nomFichier);      //changer "tests/"" avec nom dossier
     if(fichier.fail()){
         return false; 
@@ -229,8 +230,8 @@ void Game::drawGame(){
 }
 
 void Game::clear(){
-    stockBricks.clear();
-    stockBalls.clear();
+    stockBrick_.clear();
+    stockBall_.clear();
     score_ = 0;
     lives_ = 0;
 }
@@ -251,7 +252,7 @@ void Game::updatePad(){
             pad_.set_x(mouseX_);
         }
 
-        for(auto& brick : stockBricks){
+        for(auto& brick : stockBrick_){
             if(pad_.corps().intersects((*brick).corps())){
                 pad_.set_x(oldPad);
             }

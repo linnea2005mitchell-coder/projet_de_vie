@@ -52,9 +52,14 @@ My_window::My_window(string file_name, Game game)
     if(file_name.empty() || !lecture_fichier(file_name, game_)){
         game_.set_correctFile(false);
         game_.clear();
+
     }
     else{
         game_.set_correctFile(true);
+        last_file_path_ = filesystem::path(file_name);
+        buttons[SAVE].set_sensitive(true);
+        buttons[START].set_sensitive(true);
+        buttons[STEP].set_sensitive(true);
     }
     update_infos(); 
     drawing.queue_draw();
@@ -86,7 +91,7 @@ void My_window::set_commands()
     buttons[OPEN].set_sensitive(true);
     buttons[SAVE].set_sensitive(false);
     buttons[RESTART].set_sensitive(false);
-    //buttons[START].set_label("start");
+    buttons[START].set_sensitive(false);
     buttons[STEP].set_sensitive(false);
 }
 
@@ -108,7 +113,24 @@ void My_window::save_clicked()
 }
 void My_window::restart_clicked()
 {
-    cout << __func__ << endl; // TODO: the game from the last read file
+    cout << __func__ << endl;
+    game_.clear();
+     if (last_file_path_.empty()) return;
+
+    if (lecture_fichier(last_file_path_.string(), game_)) {
+        game_.set_correctFile(true);
+
+        buttons[SAVE].set_sensitive(true);
+        buttons[RESTART].set_sensitive(true);
+        buttons[START].set_sensitive(true);
+        buttons[STEP].set_sensitive(true);
+
+    } else {
+        game_.set_correctFile(false);
+    }
+    set_drawing();
+    update_infos();
+    drawing.queue_draw();
 }
 void My_window::start_clicked()
 {
@@ -117,8 +139,7 @@ void My_window::start_clicked()
     {
         loop_conn.disconnect();
         loop_activated = false;
-        buttons[EXIT].set_sensitive(true);
-        buttons[OPEN].set_sensitive(true);
+
         buttons[SAVE].set_sensitive(true);
         buttons[RESTART].set_sensitive(true);
         buttons[START].set_label("start");
@@ -126,21 +147,20 @@ void My_window::start_clicked()
     }
     else // TODO: only if the game is not finished
     {
-        stop_pad_motion(); //nouveau
-        loop_conn =
+        stop_pad_motion(); 
+        loop_conn = 
             Glib::signal_timeout().connect(sigc::mem_fun(*this, &My_window::loop), dt);
         loop_activated = true;
-        buttons[EXIT].set_sensitive(false);
-        buttons[OPEN].set_sensitive(false);
-        buttons[SAVE].set_sensitive(false);
-        buttons[RESTART].set_sensitive(false);
+    
+        buttons[SAVE].set_sensitive(true);
+        buttons[RESTART].set_sensitive(true);
         buttons[START].set_label("stop");
-        buttons[STEP].set_sensitive(false);
+        buttons[STEP].set_sensitive(true);
     }
 }
 void My_window::step_clicked()
 {
-    cout << __func__ << endl; // single update step
+    cout << __func__ << endl;
     game_.updatePad();
     update_game();
     update_infos();
@@ -158,17 +178,14 @@ bool My_window::key_pressed(guint keyval, guint keycode, Gdk::ModifierType state
     switch (keyval)
     {
     case '1':
-        // TODO: make a single update
         step_clicked();
         cout << "[ Via Keyboard : key 1 ]" << endl;
         return true;
     case 's':
-        // TODO: pause or unpause the game
         start_clicked();
         cout << "[ Via Keyboard : key s ]" << endl;
         return true;
     case 'r':
-        // TODO: reset the game from the last read file
         restart_clicked();
         cout << "[ Via Keyboard : key r ]" << endl;
         return true;
@@ -215,51 +232,51 @@ void My_window::dialog_response(int response, Gtk::FileChooserDialog *dialog)
 {
     filesystem::path file_path = dialog->get_file()->get_path();
     string file_name;
-    if (dialog->get_file()){
 
-        
-        if (file_path.extension() != ".txt"){
-            file_name = "";
-            }
-        file_name = file_path.filename().string();
-    }
     switch (response)
     {
     case CANCEL:
         dialog->hide();
         break;
     case OPEN_FILE:
-        if (file_name != "")
-        {
-            cout << "open file " << file_name << endl; 
-            if(lecture_fichier(file_path, game_)){
-                game_.set_correctFile(true);
-                set_drawing();
-                update_infos();
-                drawing.queue_draw();
-            }
-            else{
-                game_.set_correctFile(false);
+
+        if (dialog->get_file()){
+            if (file_path.extension() == ".txt"){
+                file_name = file_path.filename().string();
+                
+                cout << "open file " << file_name << endl; 
+                if(lecture_fichier(file_path, game_)){
+                    game_.set_correctFile(true);
+                    last_file_path_ = file_path;
+
+                    buttons[SAVE].set_sensitive(true);
+                    buttons[START].set_sensitive(true);
+                    buttons[STEP].set_sensitive(true);
+
+                }}
+            else {
+               game_.set_correctFile(false);
                 game_.clear();
-                set_drawing();
-                update_infos();
-                drawing.queue_draw();
-                /// freeze le boutons
             }
+            set_drawing();
+            update_infos();
+            drawing.queue_draw();
             dialog->hide();
         }
         break;
     case SAVE_FILE:
-        if (file_name != "")
-        {
-            cout << "save file " << file_name << endl; 
-            
-            string chemin = file_path.string();
-            cout << "Sauvegarde dans : " << chemin << endl;
 
-            ecriture_fichier(chemin, game_);
+            file_name = file_path.filename().string();
+            cout << "save file " << file_name << endl; 
+            //string chemin = file_path.string();
+
+            if (file_path.extension() != ".txt"){
+                file_path += ".txt";
+            }
+            cout << "Sauvegarde dans : " << file_path << endl;
+
+            ecriture_fichier(file_path, game_);
             dialog->hide();
-        }
         break;
     default:
         break;
@@ -313,7 +330,7 @@ void My_window::update_infos()
 
 }
 
-void My_window::update_game() // faire toutes les modifs pr un move 
+void My_window::update_game() 
 {
     game_.updatePad(); 
     for (auto& ball : game_.stockBall()) {

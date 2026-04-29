@@ -17,6 +17,7 @@ public:
 private:
     Game game_;
     std::string file_name_;
+    std::filesystem::path last_file_path_;
     Gtk::Box main_box, panel_box, command_box;
     Gtk::Grid info_grid;
     bool loop_activated;
