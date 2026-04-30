@@ -2,6 +2,7 @@
 #define GUI_H
 
 #include <array>
+#include <filesystem>
 #include <gtkmm.h>
 #include <string>
 #include "game.h"
