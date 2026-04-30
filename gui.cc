@@ -49,14 +49,22 @@ My_window::My_window(string file_name, Game game)
     set_infos();
     set_drawing();
 
+    
+    
     if(file_name.empty() || !lecture_fichier(file_name, game_)){
         game_.set_correctFile(false);
         game_.clear();
 
+        if (!file_name.empty()){
+
+            buttons[RESTART].set_sensitive(true);
+
+        }
     }
     else{
-        game_.set_correctFile(true);
+
         buttons[SAVE].set_sensitive(true);
+        buttons[RESTART].set_sensitive(true);
         buttons[START].set_sensitive(true);
         buttons[STEP].set_sensitive(true);
     }
@@ -247,20 +255,28 @@ void My_window::dialog_response(int response, Gtk::FileChooserDialog *dialog)
                 file_name = file_path.filename().string();
                 
                 cout << "open file " << file_name << endl; 
+
                 last_file_path_ = file_path;
                 if(lecture_fichier(file_path, game_)){
                     game_.set_correctFile(true);
-                
                     buttons[SAVE].set_sensitive(true);
+                    buttons[RESTART].set_sensitive(true);
                     buttons[START].set_sensitive(true);
                     buttons[STEP].set_sensitive(true);
+                }
+                else {
+                game_.set_correctFile(false);
+                game_.clear();
 
-                }}
+               buttons[SAVE].set_sensitive(false);
+               buttons[RESTART].set_sensitive(true);
+               buttons[START].set_sensitive(false);
+               buttons[STEP].set_sensitive(false);
+            }}
             else {
                game_.set_correctFile(false);
                game_.clear();
 
-               buttons[RESTART].set_sensitive(true);
             }
             set_drawing();
             update_infos();
@@ -314,7 +330,6 @@ void My_window::set_infos()
 }
 
 void My_window::update_infos()
-// TODO: update the different counters
 {
     if (!game_.correctFile()){
         for (auto &value : info_value)
