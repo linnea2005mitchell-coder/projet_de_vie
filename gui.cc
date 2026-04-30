@@ -146,7 +146,7 @@ void My_window::start_clicked()
         buttons[START].set_label("start");
         buttons[STEP].set_sensitive(true);
     }
-    else // TODO: only if the game is not finished
+    else //appuie sur start
     {
         stop_pad_motion(); 
         loop_conn = 
@@ -258,7 +258,9 @@ void My_window::dialog_response(int response, Gtk::FileChooserDialog *dialog)
                 }}
             else {
                game_.set_correctFile(false);
-                game_.clear();
+               game_.clear();
+
+               buttons[RESTART].set_sensitive(true);
             }
             set_drawing();
             update_infos();
