@@ -23,16 +23,16 @@ private:
     Gtk::Grid info_grid;
     bool loop_activated;
     sigc::connection loop_conn;
-    sigc::connection pad_move_conn; //nouveau
+    sigc::connection pad_move_conn; 
     std::array<Gtk::Button, 6> buttons;
     Gtk::Frame info_frame;
     std::array<Gtk::Label, 4> info_text, info_value;
     Gtk::DrawingArea drawing;
 
     void set_commands();
-    void start_pad_motion(); //nouveau
-    void stop_pad_motion(); //nouveau
-    bool pad_motion(); //nouveau
+    void start_pad_motion(); 
+    void stop_pad_motion(); 
+    bool pad_motion();
 
     void exit_clicked();
     void open_clicked();

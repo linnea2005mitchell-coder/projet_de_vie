@@ -9,7 +9,7 @@ public:
     Brick(double t, double x, double y, double c, Color color) 
         : corps_(x, y, c, color), type(t){} 
 
-    virtual ~Brick() = default; //revoir
+    virtual ~Brick() = default; 
     double getType(){return type; }
     const Carre& corps() const { return corps_;} 
     bool intersects(const Brick& other) const{return corps_.intersects(other.corps());}
@@ -21,12 +21,11 @@ protected:
 };
 
 class Rainbow_brick : public Brick{
-    using Brick::intersects;
 public:
     Rainbow_brick(double t, double x, double y, double c, Color color)
         : Brick(t, x, y, c, color){hitpoints_=static_cast<int>(color);
                                    ++hitpoints_;}
-    ~Rainbow_brick() = default; //revoir
+    ~Rainbow_brick() = default; 
     int hitpoints(){return hitpoints_;}
 
 private:
@@ -34,7 +33,6 @@ private:
 };
 
 class Ball_brick : public Brick{
-    using Brick::intersects;
 public:
     Ball_brick(double t, double x, double y, double c, Color color)
         : Brick(t, x, y, c, color){}
@@ -47,16 +45,14 @@ private:
 };
 
 class Split_brick : public Brick{
-    using Brick::intersects;
 public:
     Split_brick(double t, double x, double y, double c, Color color) 
         : Brick(t, x, y, c, color){} 
     ~Split_brick() = default; //revoir
 
-    std::vector<std::unique_ptr<Split_brick>> newBricks() const; //voir comment faire avec ce tableau et/ou tableau stockBricks
+    std::vector<std::unique_ptr<Split_brick>> newBricks() const; 
     void drawBrick() const;
 
-    
 private:
 };
 

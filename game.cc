@@ -13,12 +13,12 @@ enum EtatLecture {SCORE, LIVES, PADDLE, NB_BRICKS, BRICKS, NB_BALLS, BALLS};
 constexpr size_t NB_VAL_PAD(3); 
 constexpr size_t NB_VAL_BRICK(4);
 constexpr size_t NB_VAL_BALL(5);
-constexpr double VITESSE_MAX_PAD(3.0); //voir vitesse max pad
+constexpr double VITESSE_MAX_PAD(3.0); 
 static unsigned etat(0);
 
 bool lecture_fichier(const string& nomFichier, Game& game){ 
     etat = SCORE;
-    ifstream fichier(nomFichier);      //changer "tests/"" avec nom dossier
+    ifstream fichier(nomFichier); 
     if(fichier.fail()){
         return false; 
     }
@@ -39,7 +39,8 @@ bool lecture_fichier(const string& nomFichier, Game& game){
     return true;
 }
 
-bool lecture_ligne(istringstream& data, vector<double>& tabVal, int& compteur, Game& game){
+bool lecture_ligne(istringstream& data, vector<double>& tabVal, int& compteur, 
+                   Game& game){
     double valeur(0);
     while(data>>valeur){ 
         switch(etat){
@@ -167,11 +168,11 @@ bool intersects_ball_brick(Game& game){
 
 bool intersects_paddle_ball(Game& game){
     Ball derniere = game.stockBall().back();
-        if (derniere.intersects(game.pad().corps())) {
-         cout << message::collision_paddle_ball(game.stockBall().size()-1) << endl;
-            return true; 
-        }
-        return false;
+    if (derniere.intersects(game.pad().corps())) {
+        cout << message::collision_paddle_ball(game.stockBall().size()-1) << endl;
+        return true; 
+    }
+    return false;
 }
 
 void ecriture_fichier(const string& path, Game& game){
@@ -185,8 +186,7 @@ void ecriture_fichier(const string& path, Game& game){
 
     file << "# paddle" << endl;
     file << game.pad().corps().x() << " " << game.pad().corps().y() 
-    << " " << game.pad().corps().r() << endl << endl;
-    
+         << " " << game.pad().corps().r() << endl << endl;
 
     file << "# bricks" << endl;
     file << game.stockBrick().size() << endl; 
@@ -196,12 +196,12 @@ void ecriture_fichier(const string& path, Game& game){
             file << brick->getType() << " " << brick->corps().x() << " " 
                  << brick->corps().y() << " " << brick->corps().cote() ; 
                  
-                 if (brick->getType() == 0){ 
-                    int hitpoints=static_cast<int>(brick->corps().color());
-                    ++hitpoints;
-                    file << " " << hitpoints;  
-                 }
-                file << endl; 
+            if (brick->getType() == 0){ 
+                int hitpoints=static_cast<int>(brick->corps().color());
+                ++hitpoints;
+                file << " " << hitpoints;  
+            }
+            file << endl; 
         }
     }
     file << endl;
@@ -237,27 +237,25 @@ void Game::clear(){
 }
 
 void Game::updatePad(){
-    double dist_diff = mouseX_ - pad_.corps().x();
+    double dist_diff = mouseX_ - pad_.corps().x() + epsil_zero; 
     double oldPad = pad_.corps().x();
 
-        if (dist_diff > VITESSE_MAX_PAD){ 
-            double newX = pad_.corps().x() + VITESSE_MAX_PAD;
-            pad_.set_x(newX);
-        }
-        else if (dist_diff < -VITESSE_MAX_PAD){
-            double newX = pad_.corps().x() - VITESSE_MAX_PAD;
-            pad_.set_x(newX);
-        }
-        else{
-            pad_.set_x(mouseX_);
-        }
+    if (dist_diff > VITESSE_MAX_PAD){ 
+        double newX = pad_.corps().x() + VITESSE_MAX_PAD;
+        pad_.set_x(newX);
+    }
+    else if (dist_diff < -VITESSE_MAX_PAD){
+        double newX = pad_.corps().x() - VITESSE_MAX_PAD;
+        pad_.set_x(newX);
+    }
+    else{
+        pad_.set_x(mouseX_);
+    }
 
-        for(auto& brick : stockBrick_){
-            if(pad_.corps().intersects((*brick).corps())){
-                pad_.set_x(oldPad);
-            }
-        }
-        if(verif_paddle(pad_.corps().x(), pad_.corps().y(), pad_.corps().r(), pad_)){
+    for(auto& brick : stockBrick_){
+        if(pad_.corps().intersects((*brick).corps()))
             pad_.set_x(oldPad);
-        }
+    }
+    if(verif_paddle(pad_.corps().x(), pad_.corps().y(), pad_.corps().r(), pad_))
+        pad_.set_x(oldPad);
 }

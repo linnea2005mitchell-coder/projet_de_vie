@@ -25,7 +25,7 @@ bool verif_brick(double type, double x, double y, double c, double hitpoints,
     }
 
     hitpoints--;
-    if (type == RAINBOW){ //vérifier que verif_hitpoints fonctionne bien
+    if (type == RAINBOW){
         if(verif_hitpoints(hitpoints)) return true;
     }
     Color color = static_cast<Color>(hitpoints);
@@ -54,7 +54,7 @@ bool verif_intersect(vector<unique_ptr<Brick>>& stockBrick,
     for (const auto& b : stockBrick) {
         if (nouvelle ->intersects(*b)) {  
             cout << message::collision_bricks(size_t(compteur), stockBrick.size()) 
-            << endl;  
+                 << endl;  
             return true; 
         }
         compteur++;

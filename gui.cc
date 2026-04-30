@@ -30,11 +30,11 @@ constexpr unsigned drawing_size(500);
 My_window::My_window(string file_name, Game game)
     : game_(std::move(game)), file_name_(file_name), 
     main_box(Gtk::Orientation::HORIZONTAL), panel_box(Gtk::Orientation::VERTICAL),
-      command_box(Gtk::Orientation::VERTICAL), loop_activated(false),
-      buttons({Gtk::Button("exit"), Gtk::Button("open"), Gtk::Button("save"),
-               Gtk::Button("restart"), Gtk::Button("start"), Gtk::Button("step")}),
-      info_frame("Infos :"), info_text({Gtk::Label("score:"), Gtk::Label("lives:"),
-                                        Gtk::Label("bricks:"), Gtk::Label("balls:")})
+    command_box(Gtk::Orientation::VERTICAL), loop_activated(false),
+    buttons({Gtk::Button("exit"), Gtk::Button("open"), Gtk::Button("save"),
+             Gtk::Button("restart"), Gtk::Button("start"), Gtk::Button("step")}),
+    info_frame("Infos :"), info_text({Gtk::Label("score:"), Gtk::Label("lives:"),
+                                      Gtk::Label("bricks:"), Gtk::Label("balls:")})
 { 
     set_title("Brick Breaker");
     set_child(main_box);
@@ -49,8 +49,6 @@ My_window::My_window(string file_name, Game game)
     set_infos();
     set_drawing();
 
-    
-    
     if(file_name.empty() || !lecture_fichier(file_name, game_)){
         game_.set_correctFile(false);
         game_.clear();
@@ -62,7 +60,6 @@ My_window::My_window(string file_name, Game game)
         }
     }
     else{
-
         buttons[SAVE].set_sensitive(true);
         buttons[RESTART].set_sensitive(true);
         buttons[START].set_sensitive(true);
@@ -121,9 +118,9 @@ void My_window::save_clicked()
 }
 void My_window::restart_clicked()
 {
-    cout << __func__ << endl;
+    //cout << __func__ << endl;
     game_.clear();
-     if (last_file_path_.empty()) return;
+    if (last_file_path_.empty()) return;
 
     if (lecture_fichier(last_file_path_.string(), game_)) {
         game_.set_correctFile(true);
@@ -142,19 +139,20 @@ void My_window::restart_clicked()
 }
 void My_window::start_clicked()
 {
-    cout << __func__ << endl;
-    if (loop_activated) //appuie sur stop
+    //cout << __func__ << endl;
+    if (loop_activated) 
     {
         loop_conn.disconnect();
         loop_activated = false;
 
         buttons[EXIT].set_sensitive(true);
+        buttons[OPEN].set_sensitive(true);
         buttons[SAVE].set_sensitive(true);
         buttons[RESTART].set_sensitive(true);
         buttons[START].set_label("start");
         buttons[STEP].set_sensitive(true);
     }
-    else //appuie sur start
+    else 
     {
         stop_pad_motion(); 
         loop_conn = 
@@ -162,6 +160,7 @@ void My_window::start_clicked()
         loop_activated = true;
     
         buttons[EXIT].set_sensitive(false);
+        buttons[OPEN].set_sensitive(false);
         buttons[SAVE].set_sensitive(false);
         buttons[RESTART].set_sensitive(false);
         buttons[START].set_label("stop");
@@ -170,7 +169,7 @@ void My_window::start_clicked()
 }
 void My_window::step_clicked()
 {
-    cout << __func__ << endl;
+    //cout << __func__ << endl;
     game_.updatePad();
     update_game();
     update_infos();
@@ -249,7 +248,6 @@ void My_window::dialog_response(int response, Gtk::FileChooserDialog *dialog)
         dialog->hide();
         break;
     case OPEN_FILE:
-
         if (dialog->get_file()){
             if (file_path.extension() == ".txt"){
                 file_name = file_path.filename().string();
@@ -268,15 +266,15 @@ void My_window::dialog_response(int response, Gtk::FileChooserDialog *dialog)
                 game_.set_correctFile(false);
                 game_.clear();
 
-               buttons[SAVE].set_sensitive(false);
-               buttons[RESTART].set_sensitive(true);
-               buttons[START].set_sensitive(false);
-               buttons[STEP].set_sensitive(false);
-            }}
+                buttons[SAVE].set_sensitive(false);
+                buttons[RESTART].set_sensitive(true);
+                buttons[START].set_sensitive(false);
+                buttons[STEP].set_sensitive(false);
+                }
+            }
             else {
                game_.set_correctFile(false);
                game_.clear();
-
             }
             set_drawing();
             update_infos();
@@ -285,7 +283,6 @@ void My_window::dialog_response(int response, Gtk::FileChooserDialog *dialog)
         }
         break;
     case SAVE_FILE:
-
             file_name = file_path.filename().string();
             cout << "save file " << file_name << endl; 
 
@@ -332,15 +329,14 @@ void My_window::set_infos()
 void My_window::update_infos()
 {
     if (!game_.correctFile()){
-        for (auto &value : info_value)
-        {
+        for (auto &value : info_value){
             value.set_text("0");
         }
     }
     else{
         array<string, 4> values({to_string(game_.score()), to_string(game_.lives()), 
                                  to_string(game_.stockBrick().size()), 
-                                 to_string(game_.stockBall().size())});  //voir si ça donne la bonne valeur après modif du nombre
+                                 to_string(game_.stockBall().size())});  
         for (size_t i=0; i<info_value.size(); i++){
             info_value[i].set_text(values[i]);
         }
@@ -356,7 +352,6 @@ void My_window::update_game()
         ball.set_y(ball.corps().y() + ball.dy());
     
     }
-    //cout << "Game updated"<< endl;
 }
 
 void My_window::set_drawing()
@@ -373,10 +368,9 @@ void My_window::on_draw(const Cairo::RefPtr<Cairo::Context> &cr, int width, int 
     double side(min(width, height));
     cr->translate((width - side) / 2, (height + side) / 2);
     cr->scale(side / (arena_size), -side / (arena_size));
-    // TODO: draw the game
-    cr->set_source_rgb(1.0, 1.0, 1.0);
-    cr->paint(); 
 
+    cr->set_source_rgb(1.0, 1.0, 1.0);
+    cr->paint();
     cr->rectangle(0, 0, arena_size, arena_size); 
     cr->clip(); 
     cr->set_line_width(1.0);
@@ -400,12 +394,11 @@ void My_window::set_mouse_controller()
 }
 void My_window::on_drawing_left_click(int n_press, double x, double y)
 {
-    cout << __func__ << endl; // TODO
+    //cout << __func__ << endl; // TODO
 }
 void My_window::on_drawing_move(double x, double y)
 {
-     cout << __func__ << endl; 
-
+    //cout << __func__ << endl; 
     double scale = drawing_size / arena_size;
     double gameX = x / scale;
     game_.setMouseX(gameX);
@@ -415,7 +408,8 @@ void My_window::on_drawing_move(double x, double y)
 void My_window::start_pad_motion()
 {
     if (!pad_move_conn.connected()){
-        pad_move_conn = Glib::signal_timeout().connect(sigc::mem_fun(*this, &My_window::pad_motion), dt);
+        pad_move_conn = Glib::signal_timeout().connect(
+            sigc::mem_fun(*this, &My_window::pad_motion), dt);
     }
 }
 

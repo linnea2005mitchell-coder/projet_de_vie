@@ -1,18 +1,18 @@
 #include <iostream> 
 #include <cmath>
-using namespace std;
-
 #include "tools.h"
+
+using namespace std;
 
 bool Carre::intersects(const Carre& other) const {
     return abs(x() - other.x()) < (cote_/2 + other.cote_/2) &&
-               abs(y() - other.y()) < (cote_/2 + other.cote_/2); 
+           abs(y() - other.y()) < (cote_/2 + other.cote_/2); 
 }
 
 
 bool Cercle::intersects(const Cercle& other) const {
     double d = sqrt((x() - other.x())*(x() - other.x()) +
-                     (y()- other.y())*(y()- other.y()));
+                    (y()- other.y())*(y()- other.y()));
     return d < (r() + other.r());
 }
 

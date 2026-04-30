@@ -27,7 +27,7 @@ protected:
 class Delta {
 public: 
     Delta(double x, double y) 
-    : dx_(x), dy_(y) {}
+        : dx_(x), dy_(y) {}
     
     const double& dx() const {return dx_ ;}
     const double& dy() const {return dy_ ;}
@@ -37,7 +37,7 @@ protected:
 
 
 class Carre {
-public : 
+public: 
     Carre(double x, double y, double c, Color color) 
         : cote_(c), pos(x,y), color_(color) {}
     
@@ -50,7 +50,7 @@ public :
     void drawFull() const;
     void drawEmpty() const;
     
-protected :
+protected:
     double cote_;
     Position pos;
     Color color_;
@@ -58,7 +58,7 @@ protected :
 
 
 class Cercle {
-public : 
+public: 
     Cercle(double x, double y, double ray) 
         :  r_(ray), pos(x, y) {}
     double x() const {return pos.x(); }
@@ -72,7 +72,7 @@ public :
     void drawFull() const;
     void drawEmpty() const;
 
-protected :
+protected:
     double r_;
     Position pos;
 };
