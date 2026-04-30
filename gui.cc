@@ -56,14 +56,14 @@ My_window::My_window(string file_name, Game game)
     }
     else{
         game_.set_correctFile(true);
-        last_file_path_ = filesystem::path(file_name);
         buttons[SAVE].set_sensitive(true);
         buttons[START].set_sensitive(true);
         buttons[STEP].set_sensitive(true);
     }
+    last_file_path_ = filesystem::path(file_name);
     update_infos(); 
     drawing.queue_draw();
-    // TODO: set the game
+    
 }
 void My_window::set_commands()
 {
@@ -135,11 +135,12 @@ void My_window::restart_clicked()
 void My_window::start_clicked()
 {
     cout << __func__ << endl;
-    if (loop_activated)
+    if (loop_activated) //appuie sur stop
     {
         loop_conn.disconnect();
         loop_activated = false;
 
+        buttons[EXIT].set_sensitive(true);
         buttons[SAVE].set_sensitive(true);
         buttons[RESTART].set_sensitive(true);
         buttons[START].set_label("start");
@@ -152,10 +153,11 @@ void My_window::start_clicked()
             Glib::signal_timeout().connect(sigc::mem_fun(*this, &My_window::loop), dt);
         loop_activated = true;
     
-        buttons[SAVE].set_sensitive(true);
-        buttons[RESTART].set_sensitive(true);
+        buttons[EXIT].set_sensitive(false);
+        buttons[SAVE].set_sensitive(false);
+        buttons[RESTART].set_sensitive(false);
         buttons[START].set_label("stop");
-        buttons[STEP].set_sensitive(true);
+        buttons[STEP].set_sensitive(false);
     }
 }
 void My_window::step_clicked()
@@ -245,10 +247,10 @@ void My_window::dialog_response(int response, Gtk::FileChooserDialog *dialog)
                 file_name = file_path.filename().string();
                 
                 cout << "open file " << file_name << endl; 
+                last_file_path_ = file_path;
                 if(lecture_fichier(file_path, game_)){
                     game_.set_correctFile(true);
-                    last_file_path_ = file_path;
-
+                
                     buttons[SAVE].set_sensitive(true);
                     buttons[START].set_sensitive(true);
                     buttons[STEP].set_sensitive(true);
@@ -268,7 +270,6 @@ void My_window::dialog_response(int response, Gtk::FileChooserDialog *dialog)
 
             file_name = file_path.filename().string();
             cout << "save file " << file_name << endl; 
-            //string chemin = file_path.string();
 
             if (file_path.extension() != ".txt"){
                 file_path += ".txt";
