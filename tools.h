@@ -8,6 +8,7 @@
 #include "graphic.h"
 
 constexpr double epsil_zero = 0.125;
+Delta impulsion(Cercle& a, Delta& da, Cercle& b, Delta& db);
 
 class Position {
 public: 
@@ -31,6 +32,14 @@ public:
     
     const double& dx() const {return dx_ ;}
     const double& dy() const {return dy_ ;}
+    void set_dx(double ndx) { dx_ = ndx; }
+    void set_dy(double ndy) { dy_ = ndy; }
+
+    void operator+=(Delta autre);
+    Delta operator-(Delta autre);
+    Delta operator*(double coef); 
+    double operator*(Delta autre); //produit scalaire
+
 protected: 
     double dx_, dy_;
 };

@@ -261,3 +261,71 @@ void Game::updatePad(){
             pad_.set_x(oldPad);
         }
 }
+
+void Game::updateBalls(int& rebonds){
+     for (auto& ball_1 : stockBall()) {
+        Position ancienne(ball_1.corps().x(),ball_1.corps().y());
+
+        ball_1.set_x(ball_1.corps().x() + ball_1.dx());
+        ball_1.set_y(ball_1.corps().y() + ball_1.dy());
+
+        if(ball_1.corps().y()>arena_size){ // si dehors (checker corrdonnées)
+            //to do : update stockball et supp la balle
+        }
+
+        while(collision(ball_1)){
+            rebonds++; 
+            ball_1.set_x(ancienne.x());
+            ball_1.set_y(ancienne.y());
+            if (rebonds < nb_bounce_max){
+                ball_1.set_x(ball_1.corps().x() + ball_1.dx());
+                ball_1.set_y(ball_1.corps().y() + ball_1.dy());
+            }
+            else continue; 
+        }
+
+}
+}
+bool Game::collision(Ball& a){
+ 
+        for (const auto& b : stockBall()) { 
+               if (a.intersects(b.corps())){ //ajouter epsil zero
+                    Delta pulse_1(impulsion(a.corps(), a.delta(), b.corps(), b.delta()));
+                    a.delta() += pulse_1;
+                    return true;
+                }
+        }
+
+        int c(0);
+        for (const auto& brick : stockBrick()) {
+            if (a.intersects((*brick).corps())) { //ajouter epsil zero
+                //modif delta
+                return true;
+            }
+        }
+
+        if (a.intersects(pad().corps())) { //ajouter epsil zero
+                //modif delta
+                return true;
+
+        }
+
+
+        if (rebond_bord){
+            return true;
+        }
+    }
+
+bool rebond_bord(Ball& a){ // pas si gand enft, mettre dans collision ?
+
+        if (a.corps().x()- a.corps().r()  < epsil_zero 
+        || a.corps().x() + a.corps().r() > arena_size - epsil_zero) {
+            a.set_dx(-a.dx());
+            return true;
+        }
+
+        if(a.corps().y() + a.corps().r() > arena_size - epsil_zero){
+            a.set_dy(-a.dy());
+            return true;
+        }
+}
