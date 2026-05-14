@@ -65,7 +65,7 @@ double Delta::operator*(Delta autre){
     return dx_*autre.dx() + dy_*autre.dy();
 }
 
-Delta impulsion(Cercle& a, Delta& da, Cercle& b, Delta& db){
+Delta impulsion(const Cercle& a, Delta& da, const Cercle& b, Delta& db){
     double diff_x(b.x() - a.x()); 
     double diff_y(b.y() - a.y()); 
     Delta vect_ab(diff_x, diff_y);
@@ -79,6 +79,6 @@ Delta impulsion(Cercle& a, Delta& da, Cercle& b, Delta& db){
 
     double coef_r = (2*b.r()*b.r()/(a.r()*a.r() + b.r()*b.r()));
     Delta pulse = (vn_b - vn_a)*coef_r;
-    
+
     return pulse;
 }

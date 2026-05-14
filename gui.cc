@@ -351,42 +351,7 @@ void My_window::update_infos()
 void My_window::update_game() 
 {
     game_.updatePad(); 
-
-    int nb_rebond;
-    for (auto& ball_1 : game_.stockBall()) {
-        Ball ancienne = ball_1;
-        nb_rebond = 0;
-
-        ball.set_x(ball_1.corps().x() + ball_1.dx());
-        ball.set_y(ball_1.corps().y() + ball_1.dy());
-
-        //Cercle future(ball_1.corps().x() + ball_1.dx(), ball_1.corps().y() + ball_1.dy(), ball_1.corps().r());
-
-        //tant que appel fonction qui checke si y'a une collisison avec quoi que ce soit ? 
-        for (const auto& ball_2 : game_.stockBall) {
-            while (ball_1.intersects(ball_2.corps()) and (nb_rebond < nb_rebonds_max)) {  
-                nb_rebond++;
-                Delta pulse_1(impulsion(ball_1.corps(), ball_1.delta(), ball_2.corps(), ball_2.delta()));
-                ball_1.delta() += pulse_1;
-
-                ball.set_x(ball_1.corps().x() + ball_1.dx());
-                ball.set_y(ball_1.corps().y() + ball_1.dy());
-
-            }
-        }
-        int c(0);
-        for (const auto& brick : game.stockBrick()) {
-            if (ball_1.intersects((*brick).corps())) {
-
-            }
-        }
-    }
-
-    // check delat norma max 
-    //set dx dy des 2 balles
-        ball.set_x(ball_1.corps().x() + ball_1.dx());
-        ball.set_y(ball_1.corps().y() + ball_1.dy());
-    
+    game_.updateBalls();
     
     //cout << "Game updated"<< endl;
 }

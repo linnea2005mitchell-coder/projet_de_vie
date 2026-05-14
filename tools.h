@@ -8,7 +8,6 @@
 #include "graphic.h"
 
 constexpr double epsil_zero = 0.125;
-Delta impulsion(Cercle& a, Delta& da, Cercle& b, Delta& db);
 
 class Position {
 public: 
@@ -85,5 +84,7 @@ protected :
     double r_;
     Position pos;
 };
+
+Delta impulsion(const Cercle& a, Delta& da, const Cercle& b, Delta& db);
 
 #endif

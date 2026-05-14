@@ -262,7 +262,8 @@ void Game::updatePad(){
         }
 }
 
-void Game::updateBalls(int& rebonds){
+void Game::updateBalls(){
+    int rebonds(0);
      for (auto& ball_1 : stockBall()) {
         Position ancienne(ball_1.corps().x(),ball_1.corps().y());
 
@@ -287,8 +288,11 @@ void Game::updateBalls(int& rebonds){
 }
 }
 bool Game::collision(Ball& a){
+
+    double ax(a.corps().x());
+    double ay(a.corps().y());
  
-        for (const auto& b : stockBall()) { 
+        for (auto& b : stockBall()) { 
                if (a.intersects(b.corps())){ //ajouter epsil zero
                     Delta pulse_1(impulsion(a.corps(), a.delta(), b.corps(), b.delta()));
                     a.delta() += pulse_1;
@@ -296,10 +300,20 @@ bool Game::collision(Ball& a){
                 }
         }
 
-        int c(0);
         for (const auto& brick : stockBrick()) {
-            if (a.intersects((*brick).corps())) { //ajouter epsil zero
-                //modif delta
+            if (a.intersects(brick->corps())) { //ajouter epsil zero
+                double by(brick->corps().y());
+                double half(brick->corps().cote()/2);
+
+                if (abs(by -ay -a.dx())<half){ //touche un coté
+                    a.set_dx(-a.dx());
+                }
+                else{ //touche en haut ou en bas
+                    a.set_dy(-a.dy());
+                }
+
+                // appel foncton casse brique 
+                
                 return true;
             }
         }
@@ -307,25 +321,17 @@ bool Game::collision(Ball& a){
         if (a.intersects(pad().corps())) { //ajouter epsil zero
                 //modif delta
                 return true;
-
         }
 
-
-        if (rebond_bord){
-            return true;
-        }
-    }
-
-bool rebond_bord(Ball& a){ // pas si gand enft, mettre dans collision ?
-
-        if (a.corps().x()- a.corps().r()  < epsil_zero 
-        || a.corps().x() + a.corps().r() > arena_size - epsil_zero) {
+        if (ax- a.corps().r()  < epsil_zero 
+        || ax + a.corps().r() > arena_size - epsil_zero) { //rebond  bord
             a.set_dx(-a.dx());
             return true;
         }
 
-        if(a.corps().y() + a.corps().r() > arena_size - epsil_zero){
+        if(ay + a.corps().r() > arena_size - epsil_zero){ //rebond plafond
             a.set_dy(-a.dy());
             return true;
         }
-}
+        return false;
+    }

@@ -26,7 +26,7 @@ public :
     void clear();
     void set_correctFile(bool result){correctFile_ = result;}
     void updatePad();
-    void updateBalls(int& rebonds);
+    void updateBalls();
     bool collision(Ball& a);
 
 private: 
@@ -52,7 +52,5 @@ bool intersects_ball_brick(Game& game);
 bool intersects_paddle_ball(Game& game);
 
 void ecriture_fichier(const std::string& path, Game& game);
-
-bool rebond_bord(Ball& a);
 
 #endif 
