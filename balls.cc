@@ -7,7 +7,6 @@ using namespace std;
 
 bool verif_ball(double x, double y, double r, double dx, double dy, 
                 vector<Ball>& stockBall){
-
     if ((x-r) < 0 || y < 0 || (x+r) > arena_size || (y+r) > arena_size) { 
         cout << message::ball_outside(x, y) << endl; 
         return true;

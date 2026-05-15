@@ -24,7 +24,7 @@ public:
 
     void drawBall() const;
     
-protected :
+protected:
     Cercle corps_;
     Delta del;
 };
