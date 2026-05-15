@@ -263,8 +263,8 @@ void Game::updatePad(){
 }
 
 void Game::updateBalls(){
-    int rebonds(0);
      for (auto& ball_1 : stockBall()) {
+        int rebonds(0);
         Position ancienne(ball_1.corps().x(),ball_1.corps().y());
 
         ball_1.set_x(ball_1.corps().x() + ball_1.dx());
@@ -282,22 +282,32 @@ void Game::updateBalls(){
                 ball_1.set_x(ball_1.corps().x() + ball_1.dx());
                 ball_1.set_y(ball_1.corps().y() + ball_1.dy());
             }
-            else continue; 
+            else break; 
         }
 
-}
+    }
 }
 bool Game::collision(Ball& a){
 
     double ax(a.corps().x());
     double ay(a.corps().y());
  
-        for (auto& b : stockBall()) { 
-               if (a.intersects(b.corps())){ //ajouter epsil zero
-                    Delta pulse_1(impulsion(a.corps(), a.delta(), b.corps(), b.delta()));
-                    a.delta() += pulse_1;
-                    return true;
-                }
+        for (auto& b : stockBall()) {
+            if (&a == &b) {
+                continue;
+            }
+            if (a.intersects(b.corps())){ //ajouter epsil zero
+                //double diff_y = b.corps().y() - a.corps().y();
+                //double dist2 = diff_x*diff_x + diff_y*diff_y;
+                //if (dist2 < epsil_zero*epsil_zero){
+                    //a.set_dx(-a.dx());
+                    //a.set_dy(-a.dy());
+                    //return true;
+                
+                Delta pulse_1(impulsion(a.corps(), a.delta(), b.corps(), b.delta()));
+                a.delta() += pulse_1;
+                return true;
+            }
         }
 
         for (const auto& brick : stockBrick()) {

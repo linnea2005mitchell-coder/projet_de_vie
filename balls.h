@@ -23,7 +23,6 @@ public:
     bool intersects(const Carre& c) {return corps_.intersects(c); }
 
     void drawBall() const;
-    ~Ball();
     
 protected :
     Cercle corps_;
