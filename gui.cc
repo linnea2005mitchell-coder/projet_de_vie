@@ -347,12 +347,10 @@ void My_window::update_infos()
 void My_window::update_game() 
 {
     game_.updatePad(); 
-    for (auto& ball : game_.stockBall()) {
-        ball.set_x(ball.corps().x() + ball.dx());
-        ball.set_y(ball.corps().y() + ball.dy());
+    game_.updateBalls();
     
     }
-}
+
 
 void My_window::set_drawing()
 {

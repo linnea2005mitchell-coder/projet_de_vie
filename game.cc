@@ -254,12 +254,13 @@ void Game::updatePad(){
     for(auto& brick : stockBrick_){
         if(pad_.corps().intersects((*brick).corps()))
             pad_.set_x(oldPad);
-    }
+        }
+     
     if(verif_paddle(pad_.corps().x(), pad_.corps().y(), pad_.corps().r(), pad_))
         pad_.set_x(oldPad);
 }
 
-void Game::collision(int index, double dx, double dy){
+void Game::collision_brick(int index, double dx, double dy){
     if ((*stockBrick_[index]).type() == 0){ //rainbow_brick
         if((*stockBrick_[index]).collision()){
             stockBrick_.erase(stockBrick_.begin() + index);
@@ -282,3 +283,90 @@ void Game::collision(int index, double dx, double dy){
         stockBrick_.erase(stockBrick_.begin() + index);
     }
 }
+        pad_.set_x(oldPad); // ça a fait un truc bizarre lors d'un pull, tu voulais mettre ça là ?
+
+}
+
+void Game::updateBalls(){
+     for (auto& ball_1 : stockBall()) {
+        int rebonds(0);
+        Position ancienne(ball_1.corps().x(),ball_1.corps().y());
+
+        ball_1.set_x(ball_1.corps().x() + ball_1.dx());
+        ball_1.set_y(ball_1.corps().y() + ball_1.dy());
+
+        if(ball_1.corps().y()>arena_size){ // si dehors (checker corrdonnées)
+            //to do : update stockball et supp la balle
+        }
+
+        while(collision(ball_1)){
+            rebonds++; 
+            ball_1.set_x(ancienne.x());
+            ball_1.set_y(ancienne.y());
+            if (rebonds < nb_bounce_max){
+                ball_1.set_x(ball_1.corps().x() + ball_1.dx());
+                ball_1.set_y(ball_1.corps().y() + ball_1.dy());
+            }
+            else break; 
+        }
+
+    }
+}
+bool Game::collision(Ball& a){
+
+    double ax(a.corps().x());
+    double ay(a.corps().y());
+ 
+        for (auto& b : stockBall()) {
+            if (&a == &b) {
+                continue;
+            }
+            if (a.intersects(b.corps())){ //ajouter epsil zero
+                //double diff_y = b.corps().y() - a.corps().y();
+                //double dist2 = diff_x*diff_x + diff_y*diff_y;
+                //if (dist2 < epsil_zero*epsil_zero){
+                    //a.set_dx(-a.dx());
+                    //a.set_dy(-a.dy());
+                    //return true;
+                
+                Delta pulse_1(impulsion(a.corps(), a.delta(), b.corps(), b.delta()));
+                a.delta() += pulse_1;
+                return true;
+            }
+        }
+
+        for (const auto& brick : stockBrick()) {
+            if (a.intersects(brick->corps())) { //ajouter epsil zero
+                double by(brick->corps().y());
+                double half(brick->corps().cote()/2);
+
+                if (abs(by -ay -a.dx())<half){ //touche un coté
+                    a.set_dx(-a.dx());
+                }
+                else{ //touche en haut ou en bas
+                    a.set_dy(-a.dy());
+                }
+
+                // appel foncton casse brique 
+                
+                return true;
+            }
+        }
+
+        if (a.intersects(pad().corps())) { //ajouter epsil zero
+                //modif delta
+                return true;
+        }
+
+        if (ax- a.corps().r()  < epsil_zero 
+        || ax + a.corps().r() > arena_size - epsil_zero) { //rebond  bord
+            a.set_dx(-a.dx());
+            return true;
+        }
+
+        if(ay + a.corps().r() > arena_size - epsil_zero){ //rebond plafond
+            a.set_dy(-a.dy());
+            return true;
+        }
+        return false;
+    }

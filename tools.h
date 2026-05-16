@@ -31,6 +31,14 @@ public:
     
     const double& dx() const {return dx_ ;}
     const double& dy() const {return dy_ ;}
+    void set_dx(double ndx) { dx_ = ndx; }
+    void set_dy(double ndy) { dy_ = ndy; }
+
+    void operator+=(Delta autre);
+    Delta operator-(Delta autre);
+    Delta operator*(double coef); 
+    double operator*(Delta autre); //produit scalaire
+
 protected: 
     double dx_, dy_;
 };
@@ -77,5 +85,7 @@ protected:
     double r_;
     Position pos;
 };
+
+Delta impulsion(const Cercle& a, Delta& da, const Cercle& b, Delta& db);
 
 #endif

@@ -45,3 +45,40 @@ void Cercle::drawEmpty() const{
     Color color = BLACK;
     drawCircleEmpty(x(), y(), r(), color );
 }
+
+void Delta::operator+=(Delta autre){
+    dx_ += autre.dx();
+    dy_ += autre.dy();
+}
+Delta Delta::operator-(Delta autre){
+    Delta resultat(dx_ - autre.dx(), dy_ - autre.dy());
+    return resultat;
+}
+
+Delta Delta::operator*(double coef){
+
+     Delta resultat(dx_ * coef, dy_ * coef);
+    return resultat;
+}
+
+double Delta::operator*(Delta autre){
+    return dx_*autre.dx() + dy_*autre.dy();
+}
+
+Delta impulsion(const Cercle& a, Delta& da, const Cercle& b, Delta& db){
+    double diff_x(b.x() - a.x()); 
+    double diff_y(b.y() - a.y()); 
+    Delta vect_ab(diff_x, diff_y);
+    Delta vect_ba(-diff_x, -diff_y);
+    
+    double coef_a = (vect_ab*da)/(diff_x*diff_x + diff_y*diff_y); 
+    Delta vn_a = vect_ab*coef_a;
+
+    double coef_b = (vect_ba*db)/(diff_x*diff_x + diff_y*diff_y); 
+    Delta vn_b = vect_ba*coef_b;
+
+    double coef_r = (2*b.r()*b.r()/(a.r()*a.r() + b.r()*b.r()));
+    Delta pulse = (vn_b - vn_a)*coef_r;
+
+    return pulse;
+}

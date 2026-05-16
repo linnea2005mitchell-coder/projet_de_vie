@@ -27,7 +27,9 @@ public:
     void clear();
     void set_correctFile(bool result){correctFile_ = result;}
     void updatePad();
-    void collision(int index, double dx, double dy); //collision ball-brick avec index de 0 à n-1
+    void collision_brick(int index, double dx, double dy); //collision ball-brick avec index de 0 à n-1
+    void updateBalls();
+    bool collision(Ball& a);
 
 private: 
     int score_;
