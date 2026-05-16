@@ -59,7 +59,7 @@ bool verif_intersect(vector<unique_ptr<Brick>>& stockBrick,
         }
         compteur++;
     }
-    stockBrick.push_back(std::move(nouvelle));
+    stockBrick.push_back(std::move(nouvelle)); //c'est quoi move?
     return false;
 }
 
@@ -118,11 +118,26 @@ void Ball_brick::drawBrick() const{
 void Split_brick::drawBrick() const {
     corps_.drawFull();
 
-    vector<unique_ptr<Split_brick>> newBricksTab = this->newBricks(); 
-    if (newBricksTab.size()>0) {
-        for (auto& b : newBricksTab){
-            b->drawBrick();
-        }
+    for (auto& b : newBricks()){
+        b->drawBrick();
     }
+}
+
+bool Rainbow_brick::collision(){
+    if (hitpoints_>1){
+        corps_.set_color(hitpoints_);
+        hitpoints_--;
+        return false; //=>n'est pas détruite
+    }
+    return true; //=>doit être détruite
+}
+
+bool Ball_brick::collision(){
+    return true;
+}
+
+bool Split_brick::collision(){
+    cout << "split brick collision" << endl;
+    return true;
 }
 

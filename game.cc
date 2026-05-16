@@ -143,8 +143,7 @@ bool verif_lives(int& live, int& liveGame){
 }
 
 bool intersects_brick_paddle(Game& game){ 
-    Brick derniere = *game.stockBrick().back(); 
-    if (game.pad().corps().intersects(derniere.corps())) {
+    if (game.pad().corps().intersects((*game.stockBrick().back()).corps())) {
         cout << message::collision_paddle_brick
         (game.stockBrick().size()-1) << endl;
         return true; 
@@ -193,10 +192,10 @@ void ecriture_fichier(const string& path, Game& game){
 
     for (const auto& brick : game.stockBrick()) {
         if (brick){
-            file << brick->getType() << " " << brick->corps().x() << " " 
+            file << brick->type() << " " << brick->corps().x() << " " 
                  << brick->corps().y() << " " << brick->corps().cote() ; 
                  
-            if (brick->getType() == 0){ 
+            if (brick->type() == 0){ 
                 int hitpoints=static_cast<int>(brick->corps().color());
                 ++hitpoints;
                 file << " " << hitpoints;  
@@ -258,4 +257,28 @@ void Game::updatePad(){
     }
     if(verif_paddle(pad_.corps().x(), pad_.corps().y(), pad_.corps().r(), pad_))
         pad_.set_x(oldPad);
+}
+
+void Game::collision(int index, double dx, double dy){
+    if ((*stockBrick_[index]).type() == 0){ //rainbow_brick
+        if((*stockBrick_[index]).collision()){
+            stockBrick_.erase(stockBrick_.begin() + index);
+        }
+    }
+    else if ((*stockBrick_[index]).type() == 1){ //ball_brick
+        Ball new_ball((*stockBrick_[index]).corps().x(), 
+                      (*stockBrick_[index]).corps().y(), new_ball_radius, dx, dy);
+        stockBall_.push_back(new_ball);
+        stockBrick_.erase(stockBrick_.begin() + index);
+    }
+    else{ //split_brick
+        Split_brick* oldBrick = dynamic_cast<Split_brick*>(stockBrick_[index].get()); //pk .get()?, faut il delete ce pointeur du coup?
+        if(oldBrick){
+            vector<unique_ptr<Split_brick>> newBricks = oldBrick->newBricks();
+            for(auto& i : newBricks){
+                stockBrick_.push_back(unique_ptr<Split_brick>(move(i)));
+            }
+        }
+        stockBrick_.erase(stockBrick_.begin() + index);
+    }
 }
