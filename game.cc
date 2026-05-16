@@ -273,7 +273,7 @@ void Game::collision_brick(int index, double dx, double dy){
         stockBrick_.erase(stockBrick_.begin() + index);
     }
     else{ //split_brick
-        Split_brick* oldBrick = dynamic_cast<Split_brick*>(stockBrick_[index].get()); //pk .get()?, faut il delete ce pointeur du coup?
+        Split_brick* oldBrick = dynamic_cast<Split_brick*>(stockBrick_[index].get()); //pk .get()?, faut il delete ce pointeur du coup?, revoir suppression
         if(oldBrick){
             vector<unique_ptr<Split_brick>> newBricks = oldBrick->newBricks();
             for(auto& i : newBricks){
@@ -282,9 +282,6 @@ void Game::collision_brick(int index, double dx, double dy){
         }
         stockBrick_.erase(stockBrick_.begin() + index);
     }
-}
-        pad_.set_x(oldPad); // ça a fait un truc bizarre lors d'un pull, tu voulais mettre ça là ?
-
 }
 
 void Game::updateBalls(){
@@ -335,6 +332,7 @@ bool Game::collision(Ball& a){
             }
         }
 
+        int compteur(0);
         for (const auto& brick : stockBrick()) {
             if (a.intersects(brick->corps())) { //ajouter epsil zero
                 double by(brick->corps().y());
@@ -347,10 +345,11 @@ bool Game::collision(Ball& a){
                     a.set_dy(-a.dy());
                 }
 
-                // appel foncton casse brique 
+                collision_brick(compteur, a.dx(), a.dy());// appel foncton casse brique 
                 
                 return true;
             }
+            compteur++;
         }
 
         if (a.intersects(pad().corps())) { //ajouter epsil zero
