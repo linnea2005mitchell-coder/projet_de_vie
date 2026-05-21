@@ -137,6 +137,9 @@ bool Ball_brick::collision(){
 }
 
 bool Split_brick::collision(){
+    int color=static_cast<int>(corps_.color());
+    color--;
+    corps_.set_color(color);
     cout << "split brick collision" << endl;
     return true;
 }

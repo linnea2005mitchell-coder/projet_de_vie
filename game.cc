@@ -277,6 +277,7 @@ void Game::collision_brick(int index, double dx, double dy){
         if(oldBrick){
             vector<unique_ptr<Split_brick>> newBricks = oldBrick->newBricks();
             for(auto& i : newBricks){
+                i->collision();
                 stockBrick_.push_back(unique_ptr<Split_brick>(move(i)));
             }
         }
