@@ -220,7 +220,7 @@ void Game::drawGame(){
         drawSquareEmpty(0, 0, arena_size, GREY);
         pad_.drawPaddle();
         for(auto& p : stockBrick()){
-            p->drawBrick();
+            p->drawBrick(p.get()->corps());
         }
         for(auto& p : stockBall()){
             p.drawBall();
@@ -276,17 +276,19 @@ void Game::collision_brick(int index, double dx, double dy){
         stockBrick_.erase(stockBrick_.begin() + index);
     }
     else{ //split_brick
-        Split_brick* oldBrick = dynamic_cast<Split_brick*>(stockBrick_[index].get()); //pk .get()?, faut il delete ce pointeur du coup?, revoir suppression
-        if(oldBrick){
-            vector<unique_ptr<Split_brick>> newBricks = oldBrick->newBricks();
-            for(auto& i : newBricks){
-                i->collision();
-                stockBrick_.push_back(unique_ptr<Split_brick>(std::move(i)));
+        if((*stockBrick_[index]).collision()){
+            Split_brick* oldBrick = dynamic_cast<Split_brick*>(stockBrick_[index].get()); //revoir suppression
+            if(oldBrick){
+                vector<unique_ptr<Split_brick>> newBricks = oldBrick->newBricks();
+                for(auto& i : newBricks){
+                    stockBrick_.push_back(unique_ptr<Split_brick>(move(i)));
+                }
             }
+            stockBrick_.erase(stockBrick_.begin() + index);
         }
-        stockBrick_.erase(stockBrick_.begin() + index);
     }
 }
+
 
 void Game::updateBalls(){
 
