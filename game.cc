@@ -238,6 +238,7 @@ void Game::clear(){
 void Game::updatePad(){
     double dist_diff = mouseX_ - pad_.corps().x() + epsil_zero; 
     double oldPad = pad_.corps().x();
+    double old_delta = pad_.delta().dx();
 
     if (dist_diff > VITESSE_MAX_PAD){ 
         double newX = pad_.corps().x() + VITESSE_MAX_PAD;
@@ -255,12 +256,22 @@ void Game::updatePad(){
     }
 
     for(auto& brick : stockBrick_){
-        if(pad_.corps().intersects((*brick).corps()))
+        if(pad_.corps().intersects((*brick).corps())){
             pad_.set_x(oldPad);
+            pad_.set_delta(old_delta);
         }
-     
-    if(verif_paddle(pad_.corps().x(), pad_.corps().y(), pad_.corps().r(), pad_))
+    }
+    
+    for(auto& ball : stockBall_){
+        if(pad_.corps().intersects(ball.corps())){
+            Delta pulse(impulsion(ball.corps(), ball.delta(), pad_.corps(), pad_.delta()));
+                ball.delta() += pulse;
+        }
+    }
+    if(verif_paddle(pad_.corps().x(), pad_.corps().y(), pad_.corps().r(), pad_)){
         pad_.set_x(oldPad);
+        pad_.set_delta(old_delta);
+    }
 }
 
 void Game::collision_brick(int index, double dx, double dy){
@@ -281,7 +292,7 @@ void Game::collision_brick(int index, double dx, double dy){
             if(oldBrick){
                 vector<unique_ptr<Split_brick>> newBricks = oldBrick->newBricks();
                 for(auto& i : newBricks){
-                    stockBrick_.push_back(unique_ptr<Split_brick>(move(i)));
+                    stockBrick_.push_back(unique_ptr<Split_brick>(std::move(i)));
                 }
             }
             stockBrick_.erase(stockBrick_.begin() + index);
