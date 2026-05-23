@@ -298,7 +298,7 @@ void Game::updateBalls(){
         ball_1.set_x(ball_1.corps().x() + ball_1.dx());
         ball_1.set_y(ball_1.corps().y() + ball_1.dy());
 
-        if(ball_1.corps().y() > arena_size - epsil_zero){ // si dehors (checker corrdonnées)
+        if(ball_1.corps().y() < epsil_zero){ // si dehors (checker corrdonnées)
              stockBall_.erase(stockBall_.begin() + compteur);
         }
 

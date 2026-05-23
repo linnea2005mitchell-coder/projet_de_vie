@@ -79,7 +79,7 @@ Delta impulsion(const Cercle& a, Delta& da, const Cercle& b,  Delta& db){
     Delta vn_b = vect_ba*coef_b;
 
      double coef_r;
-    if (b.y() > arena_size - epsil_zero) { // if b = pad
+    if (b.y() < epsil_zero) { // if b = pad
         coef_r = 2;
     }
     else {
