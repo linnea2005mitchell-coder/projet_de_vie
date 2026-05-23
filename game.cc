@@ -306,10 +306,12 @@ void Game::updateBalls(){
             rebonds++; 
             ball_1.set_x(ancienne.x());
             ball_1.set_y(ancienne.y());
-            if (rebonds < nb_bounce_max){ // check delta max 
+            if (rebonds < nb_bounce_max){ 
+
                 double delta_norm(sqrt(ball_1.dx()*ball_1.dx() + ball_1.dy()*ball_1.dy()));
                 if (delta_norm > delta_norm_max - epsil_zero){
                     ball_1.delta() = ball_1.delta()*(delta_norm_max/delta_norm);
+                    cout<<"correction delta"<< endl; 
                 }
 
                 ball_1.set_x(ball_1.corps().x() + ball_1.dx());
@@ -331,9 +333,10 @@ bool Game::collision(Ball& a){
             }
             if (a.intersects(b.corps())){ //ajouter epsil zero
         
-                
                 Delta pulse_1(impulsion(a.corps(), a.delta(), b.corps(), b.delta()));
+                Delta pulse_2(impulsion(b.corps(), b.delta(), a.corps(), a.delta()));
                 a.delta() += pulse_1;
+                b.delta() += pulse_2;
                 return true;
             }
         }
