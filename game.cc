@@ -241,13 +241,16 @@ void Game::updatePad(){
 
     if (dist_diff > VITESSE_MAX_PAD){ 
         double newX = pad_.corps().x() + VITESSE_MAX_PAD;
+        pad_.set_delta(newX - pad_.corps().x());
         pad_.set_x(newX);
     }
     else if (dist_diff < -VITESSE_MAX_PAD){
         double newX = pad_.corps().x() - VITESSE_MAX_PAD;
+        pad_.set_delta(newX - pad_.corps().x());
         pad_.set_x(newX);
     }
     else{
+        pad_.set_delta(mouseX_ - pad_.corps().x());
         pad_.set_x(mouseX_);
     }
 
@@ -288,6 +291,8 @@ void Game::collision_brick(int index, double dx, double dy){
 
 
 void Game::updateBalls(){
+
+    int compteur(0);
      for (auto& ball_1 : stockBall()) {
         int rebonds(0);
         Position ancienne(ball_1.corps().x(),ball_1.corps().y());
@@ -295,24 +300,29 @@ void Game::updateBalls(){
         ball_1.set_x(ball_1.corps().x() + ball_1.dx());
         ball_1.set_y(ball_1.corps().y() + ball_1.dy());
 
-        if(ball_1.corps().y()>arena_size){ // si dehors (checker corrdonnées)
-            //to do : update stockball et supp la balle
+        if(ball_1.corps().y() < epsil_zero){ // si dehors (checker corrdonnées)
+             stockBall_.erase(stockBall_.begin() + compteur);
         }
 
         while(collision(ball_1)){
             rebonds++; 
             ball_1.set_x(ancienne.x());
             ball_1.set_y(ancienne.y());
-            if (rebonds < nb_bounce_max){
+            if (rebonds < nb_bounce_max){ // check delta max 
+                double delta_norm(sqrt(ball_1.dx()*ball_1.dx() + ball_1.dy()*ball_1.dy()));
+                if (delta_norm > delta_norm_max - epsil_zero){
+                    ball_1.delta() = ball_1.delta()*(delta_norm_max/delta_norm);
+                }
+
                 ball_1.set_x(ball_1.corps().x() + ball_1.dx());
                 ball_1.set_y(ball_1.corps().y() + ball_1.dy());
             }
             else break; 
         }
-
+        compteur++;
     }
 }
-bool Game::collision(Ball& a){
+bool Game::collision(Ball& a){ 
 
     double ax(a.corps().x());
     double ay(a.corps().y());
@@ -322,12 +332,7 @@ bool Game::collision(Ball& a){
                 continue;
             }
             if (a.intersects(b.corps())){ //ajouter epsil zero
-                //double diff_y = b.corps().y() - a.corps().y();
-                //double dist2 = diff_x*diff_x + diff_y*diff_y;
-                //if (dist2 < epsil_zero*epsil_zero){
-                    //a.set_dx(-a.dx());
-                    //a.set_dy(-a.dy());
-                    //return true;
+        
                 
                 Delta pulse_1(impulsion(a.corps(), a.delta(), b.corps(), b.delta()));
                 a.delta() += pulse_1;
@@ -356,7 +361,10 @@ bool Game::collision(Ball& a){
         }
 
         if (a.intersects(pad().corps())) { //ajouter epsil zero
-                //modif delta
+                
+                Delta pulse_1(impulsion(a.corps(), a.delta(), pad_.corps(), pad_.delta()));
+                a.delta() += pulse_1;
+        
                 return true;
         }
 
