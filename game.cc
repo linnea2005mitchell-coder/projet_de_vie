@@ -264,6 +264,7 @@ void Game::updatePad(){
 }
 
 void Game::collision_brick(int index, double dx, double dy){
+    score_ = score_ + score_per_hit;
     if ((*stockBrick_[index]).type() == 0){ //rainbow_brick
         if((*stockBrick_[index]).collision()){
             stockBrick_.erase(stockBrick_.begin() + index);
@@ -288,7 +289,6 @@ void Game::collision_brick(int index, double dx, double dy){
         }
     }
 }
-
 
 void Game::updateBalls(){
 
@@ -322,6 +322,7 @@ void Game::updateBalls(){
         compteur++;
     }
 }
+
 bool Game::collision(Ball& a){ 
 
     double ax(a.corps().x());
@@ -380,3 +381,21 @@ bool Game::collision(Ball& a){
         }
         return false;
     }
+
+bool Game::checkEnd(){
+    if(stockBrick_.size() == 0){
+        score_ = score_ + (score_per_life * lives_);
+        cout << message::won() << endl;
+        return true;
+    }
+    if(stockBall_.size() == 0){
+        if(lives_ == 0){
+            cout << message::lost() << endl;
+            return true;
+        }
+        else{
+            leftClick_ = true;
+        }
+    }
+    return false;
+}

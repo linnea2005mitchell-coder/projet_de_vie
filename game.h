@@ -13,16 +13,19 @@ public:
     Game(int s, int l, Paddle p, std::vector<std::unique_ptr<Brick>> sbrick, 
          std::vector<Ball> sball) 
         : score_(s), lives_(l), pad_(p), stockBrick_(std::move(sbrick)), 
-        stockBall_(sball), correctFile_(true), mouseX_(0.) {}
+        stockBall_(sball), correctFile_(true), leftClick_(false), mouseX_(0.){}
     int& score() {return score_ ;}
     int& lives() {return lives_ ;}
     bool correctFile() const{return correctFile_;}
     double mouseX() const{return mouseX_;}
+    bool leftClick() const{return leftClick_;}
     Paddle& pad() {return pad_;}
     std::vector<std::unique_ptr<Brick>>& stockBrick() {return stockBrick_;} 
     std::vector<Ball>& stockBall() {return stockBall_;}
 
     void setMouseX(double x) {mouseX_ = x;}
+    void setLeftClick(bool b) {leftClick_ = b;}
+    void setLives(int l) {lives_ = l;}
     void drawGame(); 
     void clear();
     void set_correctFile(bool result){correctFile_ = result;}
@@ -30,6 +33,7 @@ public:
     void collision_brick(int index, double dx, double dy); //collision ball-brick avec index de 0 à n-1
     void updateBalls();
     bool collision(Ball& a);
+    bool checkEnd();
 
 private: 
     int score_;
@@ -38,6 +42,7 @@ private:
     std::vector<std::unique_ptr<Brick>> stockBrick_;
     std::vector<Ball> stockBall_;
     bool correctFile_;
+    bool leftClick_;
     double mouseX_;
 };
 

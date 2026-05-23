@@ -187,16 +187,22 @@ bool My_window::key_pressed(guint keyval, guint keycode, Gdk::ModifierType state
     switch (keyval)
     {
     case '1':
+        if (buttons[STEP].get_sensitive()){
         step_clicked();
         cout << "[ Via Keyboard : key 1 ]" << endl;
+        }
         return true;
     case 's':
+        if (buttons[START].get_sensitive()){
         start_clicked();
         cout << "[ Via Keyboard : key s ]" << endl;
+        }
         return true;
     case 'r':
+        if (buttons[RESTART].get_sensitive()){
         restart_clicked();
         cout << "[ Via Keyboard : key r ]" << endl;
+        }
         return true;
     default:
         break;
@@ -304,7 +310,6 @@ bool My_window::loop()
     if (loop_activated)
     {
         update_game();
-        update_infos();
         drawing.queue_draw();
         return true;
     }
@@ -348,8 +353,27 @@ void My_window::update_game()
 {
     game_.updatePad(); 
     game_.updateBalls();
+    update_infos();
+    if(game_.checkEnd()){
+        end_game();
+    } 
+}
+
+void My_window::end_game(){
+
+    if (loop_conn.connected()) loop_conn.disconnect();
+    loop_activated = false;
+    stop_pad_motion();
+
+    buttons[SAVE].set_sensitive(true);
+    buttons[RESTART].set_sensitive(true);
+    buttons[EXIT].set_sensitive(true);
+    buttons[OPEN].set_sensitive(true);
+    buttons[START].set_sensitive(false);
+    buttons[STEP].set_sensitive(false);
     
-    }
+    update_infos();
+}
 
 
 void My_window::set_drawing()
@@ -390,10 +414,20 @@ void My_window::set_mouse_controller()
     drawing.add_controller(left_click);
     drawing.add_controller(move);
 }
+
 void My_window::on_drawing_left_click(int n_press, double x, double y)
 {
-    //cout << __func__ << endl; // TODO
+    if (game_.leftClick()){
+        double scale = drawing_size / arena_size;
+        Ball newBall((x/scale), (arena_size -(y/scale)), new_ball_radius, 0, 
+                      new_ball_delta_norm);
+        game_.stockBall().push_back(newBall);
+        game_.setLives(game_.lives()-1);
+        game_.setLeftClick(false);
+        drawing.queue_draw();
+    }
 }
+
 void My_window::on_drawing_move(double x, double y)
 {
     //cout << __func__ << endl; 

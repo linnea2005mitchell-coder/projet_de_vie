@@ -60,6 +60,7 @@ private:
     void on_drawing_move(double x, double y);
 
     void update_game();
+    void end_game();
 };
 
 #endif

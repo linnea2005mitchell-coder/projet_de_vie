@@ -131,8 +131,9 @@ void Split_brick::drawBrick(Carre carre) const {
 
 bool Rainbow_brick::collision(){
     if (hitpoints_>1){
-        corps_.set_color(hitpoints_);
         hitpoints_--;
+        int color = hitpoints_ - 1;
+        corps_.set_color(color);
         return false; //=>n'est pas détruite
     }
     return true; //=>doit être détruite
