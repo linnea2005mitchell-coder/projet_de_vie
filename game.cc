@@ -238,6 +238,7 @@ void Game::clear(){
 void Game::updatePad(){
     double dist_diff = mouseX_ - pad_.corps().x() + epsil_zero; 
     double oldPad = pad_.corps().x();
+    double old_delta = pad_.delta().dx();
 
     if (dist_diff > VITESSE_MAX_PAD){ 
         double newX = pad_.corps().x() + VITESSE_MAX_PAD;
@@ -255,12 +256,22 @@ void Game::updatePad(){
     }
 
     for(auto& brick : stockBrick_){
-        if(pad_.corps().intersects((*brick).corps()))
+        if(pad_.corps().intersects((*brick).corps())){
             pad_.set_x(oldPad);
+            pad_.set_delta(old_delta);
         }
-     
-    if(verif_paddle(pad_.corps().x(), pad_.corps().y(), pad_.corps().r(), pad_))
+    }
+    
+    for(auto& ball : stockBall_){
+        if(pad_.corps().intersects(ball.corps())){
+            Delta pulse(impulsion(ball.corps(), ball.delta(), pad_.corps(), pad_.delta()));
+                ball.delta() += pulse;
+        }
+    }
+    if(verif_paddle(pad_.corps().x(), pad_.corps().y(), pad_.corps().r(), pad_)){
         pad_.set_x(oldPad);
+        pad_.set_delta(old_delta);
+    }
 }
 
 void Game::collision_brick(int index, double dx, double dy){
@@ -282,7 +293,7 @@ void Game::collision_brick(int index, double dx, double dy){
             if(oldBrick){
                 vector<unique_ptr<Split_brick>> newBricks = oldBrick->newBricks();
                 for(auto& i : newBricks){
-                    stockBrick_.push_back(unique_ptr<Split_brick>(move(i)));
+                    stockBrick_.push_back(unique_ptr<Split_brick>(std::move(i)));
                 }
             }
             stockBrick_.erase(stockBrick_.begin() + index);
@@ -308,10 +319,12 @@ void Game::updateBalls(){
             rebonds++; 
             ball_1.set_x(ancienne.x());
             ball_1.set_y(ancienne.y());
-            if (rebonds < nb_bounce_max){ // check delta max 
+            if (rebonds < nb_bounce_max){ 
+
                 double delta_norm(sqrt(ball_1.dx()*ball_1.dx() + ball_1.dy()*ball_1.dy()));
                 if (delta_norm > delta_norm_max - epsil_zero){
                     ball_1.delta() = ball_1.delta()*(delta_norm_max/delta_norm);
+                    cout<<"correction delta"<< endl; 
                 }
 
                 ball_1.set_x(ball_1.corps().x() + ball_1.dx());
@@ -334,9 +347,10 @@ bool Game::collision(Ball& a){
             }
             if (a.intersects(b.corps())){ //ajouter epsil zero
         
-                
                 Delta pulse_1(impulsion(a.corps(), a.delta(), b.corps(), b.delta()));
+                Delta pulse_2(impulsion(b.corps(), b.delta(), a.corps(), a.delta()));
                 a.delta() += pulse_1;
+                b.delta() += pulse_2;
                 return true;
             }
         }
@@ -362,10 +376,8 @@ bool Game::collision(Ball& a){
         }
 
         if (a.intersects(pad().corps())) { //ajouter epsil zero
-                
-                Delta pulse_1(impulsion(a.corps(), a.delta(), pad_.corps(), pad_.delta()));
-                a.delta() += pulse_1;
-        
+               Delta pulse_1(impulsion(a.corps(), a.delta(), pad_.corps(), pad_.delta()));
+               a.delta() += pulse_1;
                 return true;
         }
 

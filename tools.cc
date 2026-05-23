@@ -80,7 +80,7 @@ Delta impulsion(const Cercle& a, Delta& da, const Cercle& b,  Delta& db){
 
      double coef_r;
     if (b.y() < epsil_zero) { // if b = pad
-        coef_r = 2;
+        coef_r = 2; //(2 infini**2) / (r_a + infini**2) = 2
     }
     else {
         coef_r = (2*b.r()*b.r()/(a.r()*a.r() + b.r()*b.r())); 
