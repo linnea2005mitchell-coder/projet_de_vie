@@ -7,13 +7,15 @@
 # paddle
 50 -16 20
 
-# bricks
-1
-	2 70 45 50 
-	
+#bricks
+2
+1 75 15 15 
+1 70 45 15 
+
 # balls
 1
-	10 50 1 1 0
+50 50 1 0.5 0.8
+
 
 //voir bug:
 Fonctionne avec: 

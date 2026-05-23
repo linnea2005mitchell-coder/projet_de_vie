@@ -76,50 +76,56 @@ bool verif_hitpoints(double hitpoints){
     return false;
 }
 
-vector<unique_ptr<Split_brick>> Split_brick::newBricks() const{ 
-    vector<unique_ptr<Split_brick>> newBricks;
-    double newSize = (corps_.cote() - split_brick_gap)/2;
+vector<Carre> Split_brick::newSquares(Carre old) const{
+    vector<Carre> newSquares;
+    double newSize = (old.cote() - split_brick_gap)/2;
 
     if (newSize >= brick_size_min) {
-        double offset = (corps_.cote() + split_brick_gap)/4;
+        double offset = (old.cote() + split_brick_gap)/4;
 
-        Position posTL(corps_.x() - offset, corps_.y() + offset);
-        Position posTR(corps_.x() + offset, corps_.y() + offset);
-        Position posBL(corps_.x() - offset, corps_.y() - offset);
-        Position posBR(corps_.x() + offset, corps_.y() - offset);
+        Position posTL(old.x() - offset, old.y() + offset);
+        Position posTR(old.x() + offset, old.y() + offset);
+        Position posBL(old.x() - offset, old.y() - offset);
+        Position posBR(old.x() + offset, old.y() - offset);
 
-        int index = static_cast<int>(corps_.color());
+        int index = static_cast<int>(old.color());
         index++; 
         Color newColor = static_cast<Color>(index);
+        
+        newSquares.push_back(Carre(posTL, newSize, newColor));
+        newSquares.push_back(Carre(posTR, newSize, newColor));
+        newSquares.push_back(Carre(posBL, newSize, newColor));
+        newSquares.push_back(Carre(posBR, newSize, newColor));
 
-        newBricks.push_back(make_unique<Split_brick>(SPLIT, posTL.x(), posTL.y(), 
-                                                     newSize, newColor));
-        newBricks.push_back(make_unique<Split_brick>(SPLIT, posTR.x(), posTR.y(), 
-                                                     newSize, newColor));
-        newBricks.push_back(make_unique<Split_brick>(SPLIT, posBL.x(), posBL.y(), 
-                                                     newSize, newColor));
-        newBricks.push_back(make_unique<Split_brick>(SPLIT, posBR.x(), posBR.y(), 
-                                                     newSize, newColor));
-    
-        return newBricks;
+        return newSquares;
+    }
+    return newSquares;
+}
+
+vector<unique_ptr<Split_brick>> Split_brick::newBricks() const{ 
+    vector<unique_ptr<Split_brick>> newBricks;
+      
+    for(auto& i : newSquares(corps_)){
+        newBricks.push_back(make_unique<Split_brick>(SPLIT, i));
     }
     return newBricks;
 }
 
-void Brick::drawBrick() const{
-    corps_.drawFull();
+void Rainbow_brick::drawBrick(Carre carre) const{
+    carre.drawFull();
 }
 
-void Ball_brick::drawBrick() const{
-    corps_.drawFull();
+void Ball_brick::drawBrick(Carre carre) const{
+    carre.drawFull();
     drawCircleFull(corps().x(), corps().y(), new_ball_radius, BLACK);
 }
 
-void Split_brick::drawBrick() const {
-    corps_.drawFull();
+void Split_brick::drawBrick(Carre carre) const {
+    carre.drawFull();
 
-    for (auto& b : newBricks()){
-        b->drawBrick();
+    for (auto& b : newSquares(carre)){
+        b.drawFull();
+        drawBrick(b);
     }
 }
 
@@ -137,10 +143,9 @@ bool Ball_brick::collision(){
 }
 
 bool Split_brick::collision(){
-    int color=static_cast<int>(corps_.color());
+    int color = static_cast<int>(corps_.color());
     color--;
     corps_.set_color(color);
-    cout << "split brick collision" << endl;
     return true;
 }
 

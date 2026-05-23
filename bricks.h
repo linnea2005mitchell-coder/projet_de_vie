@@ -1,7 +1,6 @@
 #ifndef BRICKS_H
 #define BRICKS_H
 #include "tools.h" 
-#include "balls.h" //retirer selon façon de faire choisie
 #include <vector>
 #include <memory>
 
@@ -9,12 +8,15 @@ class Brick {
 public:
     Brick(double t, double x, double y, double c, Color color) 
         : corps_(x, y, c, color), type_(t){} 
+    Brick(double t, Carre carre)
+        : corps_(carre), type_(t){}
 
-    virtual ~Brick() = default; 
+    virtual ~Brick(){}; 
     double type(){return type_; }
     const Carre& corps() const { return corps_;} 
     bool intersects(const Brick& other) const{return corps_.intersects(other.corps());}
-    virtual void drawBrick() const;
+
+    virtual void drawBrick(Carre carre) const = 0;
     virtual bool collision() = 0;
 
 protected: 
@@ -27,8 +29,10 @@ public:
     Rainbow_brick(double t, double x, double y, double c, Color color)
         : Brick(t, x, y, c, color){hitpoints_=static_cast<int>(color);
                                    ++hitpoints_;}
-    ~Rainbow_brick() = default; 
+    ~Rainbow_brick(){}; 
     int hitpoints(){return hitpoints_;}
+
+    void drawBrick(Carre carre) const;
     bool collision();
 
 private:
@@ -39,9 +43,9 @@ class Ball_brick : public Brick{
 public:
     Ball_brick(double t, double x, double y, double c, Color color)
         : Brick(t, x, y, c, color){}
-    ~Ball_brick() = default; //revoir
+    ~Ball_brick(){}; 
 
-    void drawBrick() const;
+    void drawBrick(Carre carre) const;
     bool collision();
 
 
@@ -53,10 +57,14 @@ class Split_brick : public Brick{
 public:
     Split_brick(double t, double x, double y, double c, Color color) 
         : Brick(t, x, y, c, color){} 
-    ~Split_brick() = default; //revoir
+    Split_brick(double t, Carre carre)
+        : Brick(t, carre){}
+    ~Split_brick(){}; 
 
+    std::vector<Carre> newSquares(Carre old) const;
     std::vector<std::unique_ptr<Split_brick>> newBricks() const; 
-    void drawBrick() const;
+
+    void drawBrick(Carre carre) const;
     bool collision();
 
 private:

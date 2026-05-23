@@ -48,6 +48,8 @@ class Carre {
 public: 
     Carre(double x, double y, double c, Color color) 
         : cote_(c), pos(x,y), color_(color) {}
+    Carre(Position position, double c, Color color) 
+        : cote_(c), pos(position), color_(color) {}
     
     double cote() const {return cote_; };
     double x() const {return pos.x(); }
