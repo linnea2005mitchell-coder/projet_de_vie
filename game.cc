@@ -362,10 +362,8 @@ bool Game::collision(Ball& a){
         }
 
         if (a.intersects(pad().corps())) { //ajouter epsil zero
-                
-                Delta pulse_1(impulsion(a.corps(), a.delta(), pad_.corps(), pad_.delta()));
-                a.delta() += pulse_1;
-        
+               Delta pulse_1(impulsion(a.corps(), a.delta(), pad_.corps(), pad_.delta()));
+               a.delta() += pulse_1;
                 return true;
         }
 
