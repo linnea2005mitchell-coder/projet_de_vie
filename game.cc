@@ -143,8 +143,7 @@ bool verif_lives(int& live, int& liveGame){
 }
 
 bool intersects_brick_paddle(Game& game){ 
-    Brick derniere = *game.stockBrick().back(); 
-    if (game.pad().corps().intersects(derniere.corps())) {
+    if (game.pad().corps().intersects((*game.stockBrick().back()).corps())) {
         cout << message::collision_paddle_brick
         (game.stockBrick().size()-1) << endl;
         return true; 
@@ -193,10 +192,10 @@ void ecriture_fichier(const string& path, Game& game){
 
     for (const auto& brick : game.stockBrick()) {
         if (brick){
-            file << brick->getType() << " " << brick->corps().x() << " " 
+            file << brick->type() << " " << brick->corps().x() << " " 
                  << brick->corps().y() << " " << brick->corps().cote() ; 
                  
-            if (brick->getType() == 0){ 
+            if (brick->type() == 0){ 
                 int hitpoints=static_cast<int>(brick->corps().color());
                 ++hitpoints;
                 file << " " << hitpoints;  
@@ -261,8 +260,32 @@ void Game::updatePad(){
         }
      
     if(verif_paddle(pad_.corps().x(), pad_.corps().y(), pad_.corps().r(), pad_))
-        pad_.set_x(oldPad); // ça a fait un truc bizarre lors d'un pull, tu voulais mettre ça là ?
+        pad_.set_x(oldPad);
+}
 
+void Game::collision_brick(int index, double dx, double dy){
+    if ((*stockBrick_[index]).type() == 0){ //rainbow_brick
+        if((*stockBrick_[index]).collision()){
+            stockBrick_.erase(stockBrick_.begin() + index);
+        }
+    }
+    else if ((*stockBrick_[index]).type() == 1){ //ball_brick
+        Ball new_ball((*stockBrick_[index]).corps().x(), 
+                      (*stockBrick_[index]).corps().y(), new_ball_radius, dx, dy);
+        stockBall_.push_back(new_ball);
+        stockBrick_.erase(stockBrick_.begin() + index);
+    }
+    else{ //split_brick
+        Split_brick* oldBrick = dynamic_cast<Split_brick*>(stockBrick_[index].get()); //pk .get()?, faut il delete ce pointeur du coup?, revoir suppression
+        if(oldBrick){
+            vector<unique_ptr<Split_brick>> newBricks = oldBrick->newBricks();
+            for(auto& i : newBricks){
+                i->collision();
+                stockBrick_.push_back(unique_ptr<Split_brick>(std::move(i)));
+            }
+        }
+        stockBrick_.erase(stockBrick_.begin() + index);
+    }
 }
 
 void Game::updateBalls(){
@@ -282,6 +305,11 @@ void Game::updateBalls(){
             ball_1.set_x(ancienne.x());
             ball_1.set_y(ancienne.y());
             if (rebonds < nb_bounce_max){ // check delta max 
+                double delta_norm(sqrt(ball_1.dx()*ball_1.dx() + ball_1.dy()*ball_1.dy()));
+                if (delta_norm > delta_norm_max){
+                    ball_1.delta() = ball_1.delta()*(delta_norm_max/delta_norm);
+                }
+
                 ball_1.set_x(ball_1.corps().x() + ball_1.dx());
                 ball_1.set_y(ball_1.corps().y() + ball_1.dy());
             }
@@ -308,6 +336,7 @@ bool Game::collision(Ball& a){
             }
         }
 
+        int compteur(0);
         for (const auto& brick : stockBrick()) {
             if (a.intersects(brick->corps())) { //ajouter epsil zero
                 double by(brick->corps().y());
@@ -320,10 +349,11 @@ bool Game::collision(Ball& a){
                     a.set_dy(-a.dy());
                 }
 
-                // appel foncton casse brique 
+                collision_brick(compteur, a.dx(), a.dy());// appel foncton casse brique 
                 
                 return true;
             }
+            compteur++;
         }
 
         if (a.intersects(pad().corps())) { //ajouter epsil zero

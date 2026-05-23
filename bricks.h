@@ -1,23 +1,25 @@
 #ifndef BRICKS_H
 #define BRICKS_H
 #include "tools.h" 
+#include "balls.h" //retirer selon façon de faire choisie
 #include <vector>
 #include <memory>
 
 class Brick {
 public:
     Brick(double t, double x, double y, double c, Color color) 
-        : corps_(x, y, c, color), type(t){} 
+        : corps_(x, y, c, color), type_(t){} 
 
     virtual ~Brick() = default; 
-    double getType(){return type; }
+    double type(){return type_; }
     const Carre& corps() const { return corps_;} 
     bool intersects(const Brick& other) const{return corps_.intersects(other.corps());}
     virtual void drawBrick() const;
+    virtual bool collision() = 0;
 
 protected: 
     Carre corps_;
-    double type; 
+    double type_; 
 };
 
 class Rainbow_brick : public Brick{
@@ -27,6 +29,7 @@ public:
                                    ++hitpoints_;}
     ~Rainbow_brick() = default; 
     int hitpoints(){return hitpoints_;}
+    bool collision();
 
 private:
     int hitpoints_;
@@ -39,6 +42,8 @@ public:
     ~Ball_brick() = default; //revoir
 
     void drawBrick() const;
+    bool collision();
+
 
 private:
     
@@ -52,6 +57,7 @@ public:
 
     std::vector<std::unique_ptr<Split_brick>> newBricks() const; 
     void drawBrick() const;
+    bool collision();
 
 private:
 };

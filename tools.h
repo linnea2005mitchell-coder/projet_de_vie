@@ -53,6 +53,7 @@ public:
     double x() const {return pos.x(); }
     double y() const {return pos.y(); }
     Color color() const {return color_;}
+    void set_color(int c){color_ = static_cast<Color>(c);}
 
     bool intersects(const Carre& other) const;
     void drawFull() const;
