@@ -261,6 +261,7 @@ void My_window::dialog_response(int response, Gtk::FileChooserDialog *dialog)
                 cout << "open file " << file_name << endl; 
 
                 last_file_path_ = file_path;
+                game_.clear();
                 if(lecture_fichier(file_path, game_)){
                     game_.set_correctFile(true);
                     buttons[SAVE].set_sensitive(true);
