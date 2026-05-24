@@ -457,7 +457,7 @@ bool My_window::pad_motion()
     game_.updatePad();
     drawing.queue_draw();
 
-    if (std::abs(game_.mouseX() - game_.pad().corps().x()) <= epsil_zero) 
+    if (abs(game_.mouseX() - game_.pad().corps().x()) <= epsil_zero) 
     {
         stop_pad_motion();
         return false;

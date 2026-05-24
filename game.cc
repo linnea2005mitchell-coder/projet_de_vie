@@ -238,7 +238,6 @@ void Game::clear(){
 void Game::updatePad(){
     double dist_diff = mouseX_ - pad_.corps().x(); 
     double oldPad = pad_.corps().x();
-    //double old_delta = pad_.delta().dx();
 
     if ((dist_diff - epsil_zero) >= VITESSE_MAX_PAD){ 
         double newX = pad_.corps().x() + VITESSE_MAX_PAD;
