@@ -81,7 +81,8 @@ Delta impulsion(const Cercle& a, Delta& da, const Cercle& b,  Delta& db){
      double coef_r;
     if (b.y() < epsil_zero) { // if b = pad
         coef_r = 2; //(2 infini**2) / (r_a + infini**2) = 2
-    }
+    }// ça fait un comportement un peu bizarre par moment je trouve 
+    // mais j'ai vraiment appliqué les explications des données donc je vois pas pourquoi ce serait faux 
     else {
         coef_r = (2*b.r()*b.r()/(a.r()*a.r() + b.r()*b.r())); 
     }
