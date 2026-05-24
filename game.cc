@@ -238,14 +238,14 @@ void Game::clear(){
 void Game::updatePad(){
     double dist_diff = mouseX_ - pad_.corps().x(); 
     double oldPad = pad_.corps().x();
-    double old_delta = pad_.delta().dx();
+    //double old_delta = pad_.delta().dx();
 
     if ((dist_diff - epsil_zero) >= VITESSE_MAX_PAD){ 
         double newX = pad_.corps().x() + VITESSE_MAX_PAD;
         pad_.set_delta(newX - pad_.corps().x());
         pad_.set_x(newX);
     }
-    else if ((dist_diff + epsil_zero) <= -VITESSE_MAX_PAD){
+    else if ((dist_diff + epsil_zero) <= (-VITESSE_MAX_PAD)){
         double newX = pad_.corps().x() - VITESSE_MAX_PAD;
         pad_.set_delta(newX - pad_.corps().x());
         pad_.set_x(newX);
@@ -258,7 +258,7 @@ void Game::updatePad(){
     for(auto& brick : stockBrick_){
         if(pad_.corps().intersects((*brick).corps(), epsil_zero)){ 
             pad_.set_x(oldPad);
-            pad_.set_delta(old_delta);
+            pad_.set_delta(0);
         }
     }
 
@@ -273,7 +273,7 @@ void Game::updatePad(){
     if(verif_paddle(pad_.corps().x(), pad_.corps().y(), pad_.corps().r(), pad_, 
                     epsil_zero)){ 
         pad_.set_x(oldPad);
-        pad_.set_delta(old_delta);
+        pad_.set_delta(0);
     }
 }
 
@@ -387,12 +387,12 @@ bool Game::collision(Ball& a){
             //sans la correction de norme parfois les balles accèlerent
             // aleatoirement en rebondissant sur le pad..
         }
-        if (ax- a.corps().r()  < epsil_zero 
-        || ax + a.corps().r() > arena_size - epsil_zero) { //rebond  bord
+        if (((ax - a.corps().r())  < epsil_zero) || 
+            ((ax + a.corps().r()) > (arena_size - epsil_zero))){ //rebond  bord
             a.set_dx(-a.dx());
             return true;
         }
-        if(ay + a.corps().r() > arena_size - epsil_zero){ //rebond plafond
+        if((ay + a.corps().r()) > (arena_size - epsil_zero)){ //rebond plafond
             a.set_dy(-a.dy());
             return true;
         }
