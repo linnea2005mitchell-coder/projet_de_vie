@@ -274,9 +274,6 @@ void Game::updatePad(){
         pad_.set_x(oldPad);
         pad_.set_delta(old_delta);
     }
-
-
-
 }
 
 void Game::collision_brick(int index, Ball& a){
