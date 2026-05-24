@@ -261,11 +261,6 @@ void Game::updatePad(){
             pad_.set_delta(old_delta);
         }
     }
-    
-    if(verif_paddle(pad_.corps().x(), pad_.corps().y(), pad_.corps().r(), pad_)){ //ajouter epsil_zero
-        pad_.set_x(oldPad);
-        pad_.set_delta(old_delta);
-    }
 
     for(auto& ball : stockBall_){
         if(pad_.corps().intersects(ball.corps())){
@@ -274,6 +269,14 @@ void Game::updatePad(){
             ball.delta() += pulse;
         }
     }
+
+    if(verif_paddle(pad_.corps().x(), pad_.corps().y(), pad_.corps().r(), pad_)){ //ajouter epsil_zero
+        pad_.set_x(oldPad);
+        pad_.set_delta(old_delta);
+    }
+
+
+
 }
 
 void Game::collision_brick(int index, Ball& a){
@@ -376,9 +379,14 @@ bool Game::collision(Ball& a){
             compteur++;
         }
         if (a.intersects(pad().corps())) { //ajouter epsil zero
-               Delta pulse_1(impulsion(a.corps(), a.delta(), pad_.corps(), pad_.delta()));
-               a.delta() += pulse_1;
-               return true;
+            double old_norm(sqrt(a.dx()*a.dx() + a.dy()*a.dy()));
+            Delta pulse_1(impulsion(a.corps(), a.delta(), pad_.corps(), pad_.delta()));
+            a.delta() += pulse_1;
+            double new_norm(sqrt(a.dx()*a.dx() + a.dy()*a.dy())); 
+            a.delta() = a.delta()*(old_norm/new_norm);
+            return true;
+            //sans la correction de norme parfois les balles accèlerent
+            // aleatoirement en rebondissant sur le pad..
         }
         if (ax- a.corps().r()  < epsil_zero 
         || ax + a.corps().r() > arena_size - epsil_zero) { //rebond  bord
