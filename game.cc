@@ -261,12 +261,6 @@ void Game::updatePad(){
             pad_.set_delta(old_delta);
         }
     }
-    
-    if(verif_paddle(pad_.corps().x(), pad_.corps().y(), pad_.corps().r(), pad_, 
-                    epsil_zero)){ 
-        pad_.set_x(oldPad);
-        pad_.set_delta(old_delta);
-    }
 
     for(auto& ball : stockBall_){
         if(pad_.corps().intersects(ball.corps(), epsil_zero)){ 
@@ -274,6 +268,12 @@ void Game::updatePad(){
                         pad_.delta()));
             ball.delta() += pulse;
         }
+    }
+
+    if(verif_paddle(pad_.corps().x(), pad_.corps().y(), pad_.corps().r(), pad_, 
+                    epsil_zero)){ 
+        pad_.set_x(oldPad);
+        pad_.set_delta(old_delta);
     }
 }
 
