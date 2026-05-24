@@ -276,21 +276,35 @@ void Game::updatePad(){
     }
 }
 
-void Game::collision_brick(int index, double dx, double dy){
+void Game::collision_brick(int index, Ball& a){
+    Brick& brick = *stockBrick_[index];
+    double half(brick.corps().cote()/2);
+    double dist_x = a.corps().x() - brick.corps().x();
+    double dist_y = a.corps().y() - brick.corps().y();
+    double overlapX = half + a.corps().r() - std::abs(dist_x);
+    double overlapY = half + a.corps().r() - std::abs(dist_y);
+
+        if (overlapX < overlapY) { // collision sur un côté vertical
+            a.set_dx(-a.dx());
+        }
+        else { // collision sur le dessus ou le dessous
+            a.set_dy(-a.dy());
+        }
+
     score_ = score_ + score_per_hit;
-    if ((*stockBrick_[index]).type() == 0){ //rainbow_brick
-        if((*stockBrick_[index]).collision()){
+    if (brick.type() == 0){ //rainbow_brick
+        if((brick).collision()){
             stockBrick_.erase(stockBrick_.begin() + index);
         }
     }
-    else if ((*stockBrick_[index]).type() == 1){ //ball_brick
-        Ball new_ball((*stockBrick_[index]).corps().x(), 
-                      (*stockBrick_[index]).corps().y(), new_ball_radius, dx, dy);
+    else if ((brick).type() == 1){ //ball_brick
+        Ball new_ball((brick).corps().x(), 
+                      (brick).corps().y(), new_ball_radius, a.dx(), a.dy());
         stockBall_.push_back(new_ball);
         stockBrick_.erase(stockBrick_.begin() + index);
     }
     else{ //split_brick
-        if((*stockBrick_[index]).collision()){
+        if((brick).collision()){
             Split_brick* oldBrick = dynamic_cast<Split_brick*>(stockBrick_[index].get()); 
             if(oldBrick){
                 vector<unique_ptr<Split_brick>> newBricks = oldBrick->newBricks();
@@ -313,7 +327,7 @@ void Game::updateBalls(){
         ball_1.set_x(ball_1.corps().x() + ball_1.dx());
         ball_1.set_y(ball_1.corps().y() + ball_1.dy());
 
-        if(ball_1.corps().y() < epsil_zero){ // si dehors (checker corrdonnées)
+        if(ball_1.corps().y() < epsil_zero){ // si dehors 
              stockBall_.erase(stockBall_.begin() + compteur);
         }
 
@@ -326,7 +340,6 @@ void Game::updateBalls(){
                 double delta_norm(sqrt(ball_1.dx()*ball_1.dx() + ball_1.dy()*ball_1.dy()));
                 if (delta_norm > delta_norm_max - epsil_zero){
                     ball_1.delta() = ball_1.delta()*(delta_norm_max/delta_norm);
-                    cout<<"correction delta"<< endl; 
                 }
 
                 ball_1.set_x(ball_1.corps().x() + ball_1.dx());
@@ -339,7 +352,6 @@ void Game::updateBalls(){
 }
 
 bool Game::collision(Ball& a){ 
-
     double ax(a.corps().x());
     double ay(a.corps().y());
  
@@ -348,7 +360,6 @@ bool Game::collision(Ball& a){
                 continue;
             }
             if (a.intersects(b.corps())){ //ajouter epsil zero
-        
                 Delta pulse_1(impulsion(a.corps(), a.delta(), b.corps(), b.delta()));
                 Delta pulse_2(impulsion(b.corps(), b.delta(), a.corps(), a.delta()));
                 a.delta() += pulse_1;
@@ -356,44 +367,24 @@ bool Game::collision(Ball& a){
                 return true;
             }
         }
-
         int compteur(0);
         for (const auto& brick : stockBrick()) {
             if (a.intersects(brick->corps())) { //ajouter epsil zero
-                double bx = brick->corps().x();
-                double by = brick->corps().y();
-                double half(brick->corps().cote()/2);
-                double dist_x = a.corps().x() - bx;
-                double dist_y = a.corps().y() - by;
-                double overlapX = half + a.corps().r() - std::abs(dist_x);
-                double overlapY = half + a.corps().r() - std::abs(dist_y);
-
-                if (overlapX < overlapY) { // collision sur un côté vertical
-                    a.set_dx(-a.dx());
-                }
-                else { // collision sur le dessus ou le dessous
-                    a.set_dy(-a.dy());
-                }
-
-                collision_brick(compteur, a.dx(), a.dy()); // appel foncton casse brique 
-                
+                collision_brick(compteur, a); 
                 return true;
             }
             compteur++;
         }
-
         if (a.intersects(pad().corps())) { //ajouter epsil zero
                Delta pulse_1(impulsion(a.corps(), a.delta(), pad_.corps(), pad_.delta()));
                a.delta() += pulse_1;
-                return true;
+               return true;
         }
-
         if (ax- a.corps().r()  < epsil_zero 
         || ax + a.corps().r() > arena_size - epsil_zero) { //rebond  bord
             a.set_dx(-a.dx());
             return true;
         }
-
         if(ay + a.corps().r() > arena_size - epsil_zero){ //rebond plafond
             a.set_dy(-a.dy());
             return true;
