@@ -54,9 +54,7 @@ My_window::My_window(string file_name, Game game)
         game_.clear();
 
         if (!file_name.empty()){
-
             buttons[RESTART].set_sensitive(true);
-
         }
     }
     else{
@@ -124,13 +122,14 @@ void My_window::restart_clicked()
 
     if (lecture_fichier(last_file_path_.string(), game_)) {
         game_.set_correctFile(true);
-
+        buttons[START].set_label("start");
         buttons[SAVE].set_sensitive(true);
         buttons[RESTART].set_sensitive(true);
         buttons[START].set_sensitive(true);
         buttons[STEP].set_sensitive(true);
 
-    } else {
+    } 
+    else {
         game_.set_correctFile(false);
     }
     set_drawing();
@@ -418,9 +417,10 @@ void My_window::set_mouse_controller()
 void My_window::on_drawing_left_click(int n_press, double x, double y)
 {
     if (game_.leftClick()){
-        double scale = drawing_size / arena_size;
-        Ball newBall((x/scale), (arena_size -(y/scale)), new_ball_radius, 0, 
-                      new_ball_delta_norm);
+        double newX = game_.pad().corps().x() + epsil_zero;
+        double newY = game_.pad().corps().y() + game_.pad().corps().r() 
+                    + new_ball_radius + epsil_zero;
+        Ball newBall(newX, newY, new_ball_radius, 0, new_ball_delta_norm);
         game_.stockBall().push_back(newBall);
         game_.setLives(game_.lives()-1);
         game_.setLeftClick(false);

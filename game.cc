@@ -236,16 +236,16 @@ void Game::clear(){
 }
 
 void Game::updatePad(){
-    double dist_diff = mouseX_ - pad_.corps().x() + epsil_zero; 
+    double dist_diff = mouseX_ - pad_.corps().x(); 
     double oldPad = pad_.corps().x();
     double old_delta = pad_.delta().dx();
 
-    if (dist_diff > VITESSE_MAX_PAD){ 
+    if ((dist_diff - epsil_zero) >= VITESSE_MAX_PAD){ 
         double newX = pad_.corps().x() + VITESSE_MAX_PAD;
         pad_.set_delta(newX - pad_.corps().x());
         pad_.set_x(newX);
     }
-    else if (dist_diff < -VITESSE_MAX_PAD){
+    else if ((dist_diff + epsil_zero) <= -VITESSE_MAX_PAD){
         double newX = pad_.corps().x() - VITESSE_MAX_PAD;
         pad_.set_delta(newX - pad_.corps().x());
         pad_.set_x(newX);
@@ -262,15 +262,17 @@ void Game::updatePad(){
         }
     }
     
-    for(auto& ball : stockBall_){
-        if(pad_.corps().intersects(ball.corps())){
-            Delta pulse(impulsion(ball.corps(), ball.delta(), pad_.corps(), pad_.delta()));
-                ball.delta() += pulse;
-        }
-    }
-    if(verif_paddle(pad_.corps().x(), pad_.corps().y(), pad_.corps().r(), pad_)){
+    if(verif_paddle(pad_.corps().x(), pad_.corps().y(), pad_.corps().r(), pad_)){ //ajouter epsil_zero
         pad_.set_x(oldPad);
         pad_.set_delta(old_delta);
+    }
+
+    for(auto& ball : stockBall_){
+        if(pad_.corps().intersects(ball.corps())){
+            Delta pulse(impulsion(ball.corps(), ball.delta(), pad_.corps(), 
+                        pad_.delta()));
+            ball.delta() += pulse;
+        }
     }
 }
 
@@ -289,7 +291,7 @@ void Game::collision_brick(int index, double dx, double dy){
     }
     else{ //split_brick
         if((*stockBrick_[index]).collision()){
-            Split_brick* oldBrick = dynamic_cast<Split_brick*>(stockBrick_[index].get()); //revoir suppression
+            Split_brick* oldBrick = dynamic_cast<Split_brick*>(stockBrick_[index].get()); 
             if(oldBrick){
                 vector<unique_ptr<Split_brick>> newBricks = oldBrick->newBricks();
                 for(auto& i : newBricks){
@@ -305,7 +307,7 @@ void Game::updateBalls(){
 
     int compteur(0);
      for (auto& ball_1 : stockBall()) {
-        int rebonds(0);
+        unsigned rebonds(0);
         Position ancienne(ball_1.corps().x(),ball_1.corps().y());
 
         ball_1.set_x(ball_1.corps().x() + ball_1.dx());
