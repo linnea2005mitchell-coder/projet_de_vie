@@ -358,17 +358,22 @@ bool Game::collision(Ball& a){
         int compteur(0);
         for (const auto& brick : stockBrick()) {
             if (a.intersects(brick->corps())) { //ajouter epsil zero
-                double by(brick->corps().y());
+                double bx = brick->corps().x();
+                double by = brick->corps().y();
                 double half(brick->corps().cote()/2);
+                double dist_x = a.corps().x() - bx;
+                double dist_y = a.corps().y() - by;
+                double overlapX = half + a.corps().r() - std::abs(dist_x);
+                double overlapY = half + a.corps().r() - std::abs(dist_y);
 
-                if (abs(by -ay -a.dx())<half){ //touche un coté
+                if (overlapX < overlapY) { // collision sur un côté vertical
                     a.set_dx(-a.dx());
                 }
-                else{ //touche en haut ou en bas
+                else { // collision sur le dessus ou le dessous
                     a.set_dy(-a.dy());
                 }
 
-                collision_brick(compteur, a.dx(), a.dy());// appel foncton casse brique 
+                collision_brick(compteur, a.dx(), a.dy()); // appel foncton casse brique 
                 
                 return true;
             }
