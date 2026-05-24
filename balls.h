@@ -19,8 +19,8 @@ public:
     void set_dx(double new_dx) { del.set_dx(new_dx); }
     void set_dy(double new_dy) { del.set_dy(new_dy); }
 
-    bool intersects(const Cercle& other) {return corps_.intersects(other); }
-    bool intersects(const Carre& c) {return corps_.intersects(c); }
+    bool intersects(const Cercle& c, const double k) {return corps_.intersects(c, k);}
+    bool intersects(const Carre& c, const double k) {return corps_.intersects(c, k);}
 
     void drawBall() const;
     

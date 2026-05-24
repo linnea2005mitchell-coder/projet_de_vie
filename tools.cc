@@ -10,13 +10,13 @@ bool Carre::intersects(const Carre& other) const {
 }
 
 
-bool Cercle::intersects(const Cercle& other) const {
+bool Cercle::intersects(const Cercle& other, const double k) const {//k=epsil_zero ou 0
     double d = sqrt((x() - other.x())*(x() - other.x()) +
                     (y()- other.y())*(y()- other.y()));
-    return d < (r() + other.r());
+    return d < (r() + other.r() + k);
 }
 
-bool Cercle::intersects(const Carre& c) const {
+bool Cercle::intersects(const Carre& c, const double k) const { //k=epsil_zero ou 0
     double half = c.cote() / 2.0;
     double cx = c.x();
     double cy = c.y();
@@ -25,7 +25,7 @@ bool Cercle::intersects(const Carre& c) const {
     double dx = x() - closestX;
     double dy = y() - closestY;
 
-    return (dx*dx + dy*dy) < (r()*r()); 
+    return (dx*dx + dy*dy) < (r()*r() + k); 
 }
 
 void Carre::drawFull() const{

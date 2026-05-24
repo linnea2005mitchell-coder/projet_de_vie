@@ -86,7 +86,7 @@ bool verif_ligne(int valeur, vector <double>& tabVal, Game& game){
             break;
         case PADDLE:
             etat++;
-            if(verif_paddle(tabVal[0], tabVal[1], tabVal[2], game.pad())){
+            if(verif_paddle(tabVal[0], tabVal[1], tabVal[2], game.pad(), 0)){
                 cout << message::paddle_outside(tabVal[0], tabVal[1]) << endl;
                 return true;
             }
@@ -143,7 +143,7 @@ bool verif_lives(int& live, int& liveGame){
 }
 
 bool intersects_brick_paddle(Game& game){ 
-    if (game.pad().corps().intersects((*game.stockBrick().back()).corps())) {
+    if (game.pad().corps().intersects((*game.stockBrick().back()).corps(), 0)) {
         cout << message::collision_paddle_brick
         (game.stockBrick().size()-1) << endl;
         return true; 
@@ -155,7 +155,7 @@ bool intersects_ball_brick(Game& game){
     int k(0);
     Ball derniere = game.stockBall().back(); 
     for (const auto& brick : game.stockBrick()) {
-        if (derniere.intersects((*brick).corps())) {  
+        if (derniere.intersects((*brick).corps(), 0)) { 
             cout << message::collision_ball_brick
             (game.stockBall().size()-1, size_t(k)) << endl;
             return true; 
@@ -167,7 +167,7 @@ bool intersects_ball_brick(Game& game){
 
 bool intersects_paddle_ball(Game& game){
     Ball derniere = game.stockBall().back();
-    if (derniere.intersects(game.pad().corps())) {
+    if (derniere.intersects(game.pad().corps(), 0)) { 
         cout << message::collision_paddle_ball(game.stockBall().size()-1) << endl;
         return true; 
     }
@@ -256,19 +256,20 @@ void Game::updatePad(){
     }
 
     for(auto& brick : stockBrick_){
-        if(pad_.corps().intersects((*brick).corps())){
+        if(pad_.corps().intersects((*brick).corps(), epsil_zero)){ 
             pad_.set_x(oldPad);
             pad_.set_delta(old_delta);
         }
     }
     
-    if(verif_paddle(pad_.corps().x(), pad_.corps().y(), pad_.corps().r(), pad_)){ //ajouter epsil_zero
+    if(verif_paddle(pad_.corps().x(), pad_.corps().y(), pad_.corps().r(), pad_, 
+                    epsil_zero)){ 
         pad_.set_x(oldPad);
         pad_.set_delta(old_delta);
     }
 
     for(auto& ball : stockBall_){
-        if(pad_.corps().intersects(ball.corps())){
+        if(pad_.corps().intersects(ball.corps(), epsil_zero)){ 
             Delta pulse(impulsion(ball.corps(), ball.delta(), pad_.corps(), 
                         pad_.delta()));
             ball.delta() += pulse;
@@ -305,7 +306,7 @@ void Game::collision_brick(int index, Ball& a){
     }
     else{ //split_brick
         if((brick).collision()){
-            Split_brick* oldBrick = dynamic_cast<Split_brick*>(stockBrick_[index].get()); 
+            Split_brick* oldBrick=dynamic_cast<Split_brick*>(stockBrick_[index].get()); 
             if(oldBrick){
                 vector<unique_ptr<Split_brick>> newBricks = oldBrick->newBricks();
                 for(auto& i : newBricks){
@@ -359,7 +360,7 @@ bool Game::collision(Ball& a){
             if (&a == &b) {
                 continue;
             }
-            if (a.intersects(b.corps())){ //ajouter epsil zero
+            if (a.intersects(b.corps(), epsil_zero)){ 
                 Delta pulse_1(impulsion(a.corps(), a.delta(), b.corps(), b.delta()));
                 Delta pulse_2(impulsion(b.corps(), b.delta(), a.corps(), a.delta()));
                 a.delta() += pulse_1;
@@ -369,13 +370,13 @@ bool Game::collision(Ball& a){
         }
         int compteur(0);
         for (const auto& brick : stockBrick()) {
-            if (a.intersects(brick->corps())) { //ajouter epsil zero
+            if (a.intersects(brick->corps(), epsil_zero)) { 
                 collision_brick(compteur, a); 
                 return true;
             }
             compteur++;
         }
-        if (a.intersects(pad().corps())) { //ajouter epsil zero
+        if (a.intersects(pad().corps(), epsil_zero)) { 
                Delta pulse_1(impulsion(a.corps(), a.delta(), pad_.corps(), pad_.delta()));
                a.delta() += pulse_1;
                return true;

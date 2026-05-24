@@ -21,6 +21,6 @@ protected:
     Delta delta_;
 };
 
-bool verif_paddle(double x, double y, double r, Paddle& pad); 
+bool verif_paddle(double x, double y, double r, Paddle& pad, double k); 
 
 #endif

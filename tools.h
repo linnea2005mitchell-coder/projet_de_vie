@@ -78,8 +78,8 @@ public:
 
     void set_x(double new_x) { pos.set_x(new_x); }
     void set_y(double new_y) { pos.set_y(new_y); }
-    bool intersects(const Cercle& other) const;
-    bool intersects(const Carre& c) const;
+    bool intersects(const Cercle& other, const double k) const;
+    bool intersects(const Carre& c, const double k) const;
     void drawFull() const;
     void drawEmpty() const;
 

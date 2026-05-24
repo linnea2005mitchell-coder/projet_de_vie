@@ -188,19 +188,19 @@ bool My_window::key_pressed(guint keyval, guint keycode, Gdk::ModifierType state
     case '1':
         if (buttons[STEP].get_sensitive()){
         step_clicked();
-        cout << "[ Via Keyboard : key 1 ]" << endl;
+        //cout << "[ Via Keyboard : key 1 ]" << endl;
         }
         return true;
     case 's':
         if (buttons[START].get_sensitive()){
         start_clicked();
-        cout << "[ Via Keyboard : key s ]" << endl;
+        //cout << "[ Via Keyboard : key s ]" << endl;
         }
         return true;
     case 'r':
         if (buttons[RESTART].get_sensitive()){
         restart_clicked();
-        cout << "[ Via Keyboard : key r ]" << endl;
+        //cout << "[ Via Keyboard : key r ]" << endl;
         }
         return true;
     default:
