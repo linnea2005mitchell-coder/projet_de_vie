@@ -275,11 +275,6 @@ void Game::updatePad(){
             ball.delta() += pulse;
         }
     }
-
-    if(verif_paddle(pad_.corps().x(), pad_.corps().y(), pad_.corps().r(), pad_)){ //ajouter epsil_zero
-        pad_.set_x(oldPad);
-        pad_.set_delta(old_delta);
-    }
 }
 
 void Game::collision_brick(int index, Ball& a){
@@ -343,7 +338,8 @@ void Game::updateBalls(){
             ball_1.set_y(ancienne.y());
             if (rebonds < nb_bounce_max){ 
 
-                double delta_norm(sqrt(ball_1.dx()*ball_1.dx() + ball_1.dy()*ball_1.dy()));
+                double delta_norm(sqrt(ball_1.dx()*ball_1.dx() + 
+                                       ball_1.dy()*ball_1.dy()));
                 if (delta_norm > delta_norm_max - epsil_zero){
                     ball_1.delta() = ball_1.delta()*(delta_norm_max/delta_norm);
                 }
@@ -381,7 +377,7 @@ bool Game::collision(Ball& a){
             }
             compteur++;
         }
-        if (a.intersects(pad().corps())) { //ajouter epsil zero
+        if (a.intersects(pad().corps(), epsil_zero)) { 
             double old_norm(sqrt(a.dx()*a.dx() + a.dy()*a.dy()));
             Delta pulse_1(impulsion(a.corps(), a.delta(), pad_.corps(), pad_.delta()));
             a.delta() += pulse_1;
